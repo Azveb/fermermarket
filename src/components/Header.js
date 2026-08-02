@@ -47,7 +47,6 @@ export default function Header() {
     { href: "/campaigns", label: t("campaigns") },
     { href: "/stores", label: t("stores") },
     { href: "/agronom", label: t("agronom") },
-    { href: "/agro-services", label: t("agroServices") },
     { href: "/blog", label: t("blog") },
   ];
 
