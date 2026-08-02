@@ -45,7 +45,7 @@ export async function POST(request, { params }) {
   const authUser = getAuthUser(request);
   if (!authUser) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { id } = params;
+  const { id } = await params;
   const order = await prisma.order.findUnique({ where: { id }, include: { payment: true } });
   if (!order) return Response.json({ error: "Sifariş tapılmadı" }, { status: 404 });
   if (order.buyerId !== authUser.sub) return Response.json({ error: "Forbidden" }, { status: 403 });

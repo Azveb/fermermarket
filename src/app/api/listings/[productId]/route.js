@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 
 // POST /api/listings/:productId/click — increments click counter (CTR analytics)
 export async function POST(request, { params }) {
-  const { productId } = params;
+  const { productId } = await params;
 
   const listing = await prisma.listing.findUnique({ where: { productId } });
   if (!listing) return Response.json({ error: "Listing tapılmadı" }, { status: 404 });
@@ -17,7 +17,7 @@ export async function POST(request, { params }) {
 
 // DELETE /api/listings/:productId — downgrade back to STANDARD
 export async function DELETE(request, { params }) {
-  const { productId } = params;
+  const { productId } = await params;
   const existing = await prisma.listing.findUnique({ where: { productId } });
   if (!existing) return Response.json({ error: "Listing tapılmadı" }, { status: 404 });
 

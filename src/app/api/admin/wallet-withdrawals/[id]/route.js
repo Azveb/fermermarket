@@ -11,7 +11,7 @@ export async function PATCH(request, { params }) {
   const denied = requireRole(authUser, ["ADMIN", "SUPER_ADMIN"]);
   if (denied) return denied;
 
-  const { id } = params;
+  const { id } = await params;
   let body;
   try { body = await request.json(); }
   catch { return Response.json({ error: "Yanlış JSON formatı" }, { status: 400 }); }

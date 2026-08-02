@@ -14,7 +14,8 @@ async function findPost(identifier) {
 // GET /api/blog/:slug — public detail, increments view count. Unpublished
 // posts 404 for everyone here — admin UIs use ?all=1 on the list route.
 export async function GET(_request, { params }) {
-  const post = await findPost(params.slug);
+  const resolvedParams = await params;
+  const post = await findPost(resolvedParams.slug);
   if (!post || !post.isPublished) {
     return Response.json({ error: "Yazı tapılmadı" }, { status: 404 });
   }
@@ -25,10 +26,11 @@ export async function GET(_request, { params }) {
 }
 
 export async function PATCH(request, { params }) {
+  const resolvedParams = await params;
   const authUser = getAuthUser(request);
   if (!authUser) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-  const post = await findPost(params.slug);
+  const post = await findPost(resolvedParams.slug);
   if (!post) return Response.json({ error: "Yazı tapılmadı" }, { status: 404 });
 
   const isAuthor = post.authorId === authUser.sub;
@@ -58,10 +60,11 @@ export async function PATCH(request, { params }) {
 }
 
 export async function DELETE(request, { params }) {
+  const resolvedParams = await params;
   const authUser = getAuthUser(request);
   if (!authUser) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-  const post = await findPost(params.slug);
+  const post = await findPost(resolvedParams.slug);
   if (!post) return Response.json({ error: "Yazı tapılmadı" }, { status: 404 });
 
   const isAuthor = post.authorId === authUser.sub;

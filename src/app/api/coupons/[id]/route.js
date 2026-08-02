@@ -8,7 +8,7 @@ export async function PATCH(request, { params }) {
   const denied = requireRole(authUser, ["ADMIN", "SUPER_ADMIN"]);
   if (denied) return denied;
 
-  const { id } = params;
+  const { id } = await params;
   const existing = await prisma.coupon.findUnique({ where: { id } });
   if (!existing) return Response.json({ error: "Kupon tapılmadı" }, { status: 404 });
 
@@ -41,7 +41,7 @@ export async function DELETE(request, { params }) {
   const denied = requireRole(authUser, ["ADMIN", "SUPER_ADMIN"]);
   if (denied) return denied;
 
-  const { id } = params;
+  const { id } = await params;
   const existing = await prisma.coupon.findUnique({ where: { id } });
   if (!existing) return Response.json({ error: "Kupon tapılmadı" }, { status: 404 });
 

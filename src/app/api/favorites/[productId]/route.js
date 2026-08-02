@@ -6,7 +6,7 @@ export async function DELETE(request, { params }) {
   const authUser = getAuthUser(request);
   if (!authUser) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { productId } = params;
+  const { productId } = await params;
 
   const existing = await prisma.favorite.findUnique({
     where: { userId_productId: { userId: authUser.sub, productId } },

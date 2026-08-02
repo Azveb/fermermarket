@@ -3,8 +3,9 @@ import { getAuthUser } from "@/lib/auth";
 import { bundleUpdateSchema } from "@/lib/validators";
 
 export async function GET(_request, { params }) {
+  const resolvedParams = await params;
   const bundle = await prisma.bundle.findUnique({
-    where: { id: params.id },
+    where: { id: resolvedParams.id },
     include: { items: { include: { product: { include: { images: { take: 1 } } } } }, seller: { select: { fullName: true } } },
   });
   if (!bundle) return Response.json({ error: "Bağlama tapılmadı" }, { status: 404 });
@@ -12,10 +13,11 @@ export async function GET(_request, { params }) {
 }
 
 export async function PATCH(request, { params }) {
+  const resolvedParams = await params;
   const authUser = getAuthUser(request);
   if (!authUser) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-  const bundle = await prisma.bundle.findUnique({ where: { id: params.id } });
+  const bundle = await prisma.bundle.findUnique({ where: { id: resolvedParams.id } });
   if (!bundle) return Response.json({ error: "Bağlama tapılmadı" }, { status: 404 });
 
   const isOwner = bundle.sellerId === authUser.sub;
@@ -64,10 +66,11 @@ export async function PATCH(request, { params }) {
 }
 
 export async function DELETE(request, { params }) {
+  const resolvedParams = await params;
   const authUser = getAuthUser(request);
   if (!authUser) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-  const bundle = await prisma.bundle.findUnique({ where: { id: params.id } });
+  const bundle = await prisma.bundle.findUnique({ where: { id: resolvedParams.id } });
   if (!bundle) return Response.json({ error: "Bağlama tapılmadı" }, { status: 404 });
 
   const isOwner = bundle.sellerId === authUser.sub;

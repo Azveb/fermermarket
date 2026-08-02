@@ -10,7 +10,7 @@ async function findStore(id, authUser = null) {
 }
 
 export async function GET(request, { params }) {
-  const { id } = params;
+  const { id } = await params;
   const authUser = getAuthUser(request);
   const store = await findStore(id, authUser);
 
@@ -57,7 +57,7 @@ export async function PATCH(request, { params }) {
   const authUser = getAuthUser(request);
   if (!authUser) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { id } = params;
+  const { id } = await params;
   const store = await findStore(id, authUser);
   if (!store) return Response.json({ error: "Mağaza tapılmadı" }, { status: 404 });
 
@@ -99,7 +99,7 @@ export async function DELETE(request, { params }) {
   const authUser = getAuthUser(request);
   if (!authUser) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { id } = params;
+  const { id } = await params;
   const store = await findStore(id, authUser);
   if (!store) return Response.json({ error: "Mağaza tapılmadı" }, { status: 404 });
 

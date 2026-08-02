@@ -3,7 +3,7 @@ import { getAuthUser, requireRole } from "@/lib/auth";
 
 // GET /api/diseases/[slug]?locale=...
 export async function GET(request, { params }) {
-  const { slug } = params;
+  const { slug } = await params;
   const { searchParams } = new URL(request.url);
   const locale = (searchParams.get("locale") || "az").toLowerCase();
 
@@ -63,7 +63,7 @@ export async function GET(request, { params }) {
 
 // PATCH /api/diseases/[slug] — Admin/Super Admin only
 export async function PATCH(request, { params }) {
-  const { slug } = params;
+  const { slug } = await params;
   const authUser = getAuthUser(request);
   const denied = requireRole(authUser, ["ADMIN", "SUPER_ADMIN"]);
   if (denied) return denied;
@@ -103,7 +103,7 @@ export async function PATCH(request, { params }) {
 
 // DELETE /api/diseases/[slug] — Admin/Super Admin only
 export async function DELETE(request, { params }) {
-  const { slug } = params;
+  const { slug } = await params;
   const authUser = getAuthUser(request);
   const denied = requireRole(authUser, ["ADMIN", "SUPER_ADMIN"]);
   if (denied) return denied;

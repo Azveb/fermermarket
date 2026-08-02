@@ -3,8 +3,9 @@ import { requireRole } from "@/lib/auth";
 
 // GET /api/brands/[id] — public brand detail with products
 export async function GET(request, { params }) {
+  const resolvedParams = await params;
   const brand = await prisma.brand.findUnique({
-    where: { id: params.id },
+    where: { id: resolvedParams.id },
     include: {
       products: {
         where: { status: "ACTIVE" },
@@ -21,13 +22,14 @@ export async function GET(request, { params }) {
 
 // PATCH /api/brands/[id] — admin only
 export async function PATCH(request, { params }) {
+  const resolvedParams = await params;
   const user = await requireRole(request, ["ADMIN", "SUPER_ADMIN"]);
   if (user.error) return Response.json({ error: user.error }, { status: user.status || 403 });
 
   try {
     const body = await request.json();
     const brand = await prisma.brand.update({
-      where: { id: params.id },
+      where: { id: resolvedParams.id },
       data: body,
     });
     return Response.json({ brand });
@@ -38,11 +40,12 @@ export async function PATCH(request, { params }) {
 
 // DELETE /api/brands/[id]
 export async function DELETE(request, { params }) {
+  const resolvedParams = await params;
   const user = await requireRole(request, ["ADMIN", "SUPER_ADMIN"]);
   if (user.error) return Response.json({ error: user.error }, { status: user.status || 403 });
 
   try {
-    await prisma.brand.delete({ where: { id: params.id } });
+    await prisma.brand.delete({ where: { id: resolvedParams.id } });
     return Response.json({ success: true });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });

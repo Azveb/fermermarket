@@ -18,7 +18,7 @@ export async function PATCH(request, { params }) {
   const denied = requireRole(authUser, ["ADMIN", "SUPER_ADMIN"]);
   if (denied) return denied;
 
-  const { key } = params;
+  const { key } = await params;
   const existing = await prisma.adSlot.findUnique({ where: { key } });
   if (!existing) return Response.json({ error: "Reklam yeri tapılmadı" }, { status: 404 });
 

@@ -3,7 +3,7 @@ import { getAuthUser, requireRole } from "@/lib/auth";
 import { campaignUpdateSchema } from "@/lib/validators";
 
 export async function GET(request, { params }) {
-  const { id } = params;
+  const { id } = await params;
   const campaign = await prisma.campaign.findUnique({
     where: { id },
     include: { store: true, category: true },
@@ -17,7 +17,7 @@ export async function PATCH(request, { params }) {
   const denied = requireRole(authUser, ["STORE", "ADMIN", "SUPER_ADMIN"]);
   if (denied) return denied;
 
-  const { id } = params;
+  const { id } = await params;
   const campaign = await prisma.campaign.findUnique({ where: { id }, include: { store: true } });
   if (!campaign) return Response.json({ error: "Kampaniya tapılmadı" }, { status: 404 });
 
@@ -58,7 +58,7 @@ export async function DELETE(request, { params }) {
   const denied = requireRole(authUser, ["ADMIN", "SUPER_ADMIN"]);
   if (denied) return denied;
 
-  const { id } = params;
+  const { id } = await params;
   const campaign = await prisma.campaign.findUnique({ where: { id } });
   if (!campaign) return Response.json({ error: "Kampaniya tapılmadı" }, { status: 404 });
 

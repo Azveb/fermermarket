@@ -7,7 +7,7 @@ export async function PATCH(request, { params }) {
   const denied = requireRole(authUser, ["ADMIN", "SUPER_ADMIN"]);
   if (denied) return denied;
 
-  const { id } = params;
+  const { id } = await params;
 
   // Only SUPER_ADMIN can promote/demote to ADMIN or SUPER_ADMIN
   let body;

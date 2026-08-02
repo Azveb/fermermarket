@@ -7,7 +7,7 @@ const trackSchema = z.object({
 
 // POST /api/campaigns/:id/track — public, called by frontend on banner render/click
 export async function POST(request, { params }) {
-  const { id } = params;
+  const { id } = await params;
 
   let body;
   try {

@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 
 // GET /api/crops/[slug]/products?problemType=disease|pest&problemId=...&locale=...
 export async function GET(request, { params }) {
-  const { slug } = params;
+  const { slug } = await params;
   const { searchParams } = new URL(request.url);
   const problemType = searchParams.get("problemType"); // "disease" | "pest"
   const problemId = searchParams.get("problemId"); // CUID or slug

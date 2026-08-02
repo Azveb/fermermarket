@@ -3,7 +3,7 @@ import { getAuthUser, requireRole } from "@/lib/auth";
 
 // GET /api/active-ingredients/[id]?locale=...
 export async function GET(request, { params }) {
-  const { id } = params;
+  const { id } = await params;
   const { searchParams } = new URL(request.url);
   const locale = (searchParams.get("locale") || "az").toLowerCase();
 
@@ -60,7 +60,7 @@ export async function GET(request, { params }) {
 
 // PATCH /api/active-ingredients/[id] — Admin/Super Admin only
 export async function PATCH(request, { params }) {
-  const { id } = params;
+  const { id } = await params;
   const authUser = getAuthUser(request);
   const denied = requireRole(authUser, ["ADMIN", "SUPER_ADMIN"]);
   if (denied) return denied;
@@ -97,7 +97,7 @@ export async function PATCH(request, { params }) {
 
 // DELETE /api/active-ingredients/[id] — Admin/Super Admin only
 export async function DELETE(request, { params }) {
-  const { id } = params;
+  const { id } = await params;
   const authUser = getAuthUser(request);
   const denied = requireRole(authUser, ["ADMIN", "SUPER_ADMIN"]);
   if (denied) return denied;

@@ -14,7 +14,7 @@ export async function GET(request, { params }) {
   const authUser = getAuthUser(request);
   if (!authUser) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { id } = params;
+  const { id } = await params;
   const order = await prisma.order.findUnique({
     where: { id },
     include: {
@@ -42,7 +42,7 @@ export async function PATCH(request, { params }) {
   const authUser = getAuthUser(request);
   if (!authUser) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { id } = params;
+  const { id } = await params;
   const order = await prisma.order.findUnique({ where: { id }, include: { items: true } });
   if (!order) return Response.json({ error: "Sifariş tapılmadı" }, { status: 404 });
 
