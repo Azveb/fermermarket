@@ -10,10 +10,10 @@ export const metadata = {
 };
 
 const CATEGORY_LABELS = {
-  tips: "Tövsiyyələr 💡",
-  news: "Xəbərlər 📰",
-  market: "Bazar 📈",
-  agronomy: "Aqronomiya 🌿",
+  tips: "Tövsiyyələr ",
+  news: "Xəbərlər ",
+  market: "Bazar ",
+  agronomy: "Aqronomiya ",
 };
 
 export default async function BlogPage() {
@@ -35,7 +35,7 @@ export default async function BlogPage() {
         <div className="flex-1 min-w-0 w-full">
       <main className="max-w-3xl mx-auto px-4 py-8 pb-28 md:pb-10 bg-white rounded-3xl border border-gray-100 shadow-sm">
         <div className="mb-6">
-          <h1 className="text-2xl font-extrabold">Bloq & Xəbərlər 📰</h1>
+          <h1 className="text-2xl font-extrabold">Bloq & Xəbərlər </h1>
           <p className="text-gray-500 text-sm mt-1">
             Kənd təsərrüfatı, aqronomiya və bazar xəbərləri
           </p>
@@ -43,7 +43,7 @@ export default async function BlogPage() {
 
         {posts.length === 0 ? (
           <div className="card p-10 text-center">
-            <p className="text-4xl mb-3">📰</p>
+            <p className="text-4xl mb-3"></p>
             <p className="text-gray-500">Hələ bloq yazısı yoxdur</p>
           </div>
         ) : (

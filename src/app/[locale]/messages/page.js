@@ -150,7 +150,7 @@ function MessagesInner() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-4 md:py-6 h-[85vh] md:h-[80vh] flex flex-col">
       <div className="flex items-center justify-between mb-4 flex-shrink-0">
-        <h1 className="text-xl md:text-2xl font-black text-gray-900">💬 Mesajlar</h1>
+        <h1 className="text-xl md:text-2xl font-black text-gray-900"> Mesajlar</h1>
       </div>
 
       <div className="flex flex-1 gap-0 border border-gray-200 rounded-3xl overflow-hidden bg-white shadow-md relative">
@@ -294,8 +294,7 @@ function MessagesInner() {
                     className="hidden sm:flex items-center gap-2 bg-gray-50 hover:bg-brand-50 border border-gray-200 hover:border-brand-200 px-3 py-1.5 rounded-xl transition max-w-[200px]"
                   >
                      <div className="w-8 h-8 bg-white rounded flex items-center justify-center shadow-sm text-lg shrink-0">
-                       🌾
-                     </div>
+                       </div>
                      <div className="flex flex-col min-w-0">
                        <span className="text-[10px] text-gray-500 font-medium">Elan</span>
                        <span className="text-xs text-brand-700 font-bold truncate block">{activeConv.product.titleAz}</span>

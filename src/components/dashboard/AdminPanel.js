@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
+import Icon from "@/components/ui/Icon";
 import { apiFetch } from "@/lib/apiClient";
 import StatCard from "@/components/ui/StatCard";
 import AnalyticsPanel from "@/components/dashboard/AnalyticsPanel";
@@ -16,39 +17,39 @@ const PRODUCT_STATUS_COLORS = { PENDING_REVIEW:"badge-yellow",ACTIVE:"badge-gree
 
 const SIDEBAR_GROUPS = [
   { label:"Əsas", items:[
-    { id:"stats",     icon:"📊", label:"İdarə Paneli" },
-    { id:"activity",  icon:"⚡", label:"Son Fəaliyyət" },
+    { id:"stats",     icon:"dashboard", label:"İdarə Paneli" },
+    { id:"activity",  icon:"zap", label:"Son Fəaliyyət" },
   ]},
   { label:"Analitika", items:[
-    { id:"analytics", icon:"📈", label:"Analitika Paneli" },
+    { id:"analytics", icon:"trendingUp", label:"Analitika Paneli" },
   ]},
   { label:"Marketplace", items:[
-    { id:"pending",   icon:"⏳", label:"Moderasiya", badge:"pending" },
-    { id:"all-listings",icon:"📋",label:"Bütün Elanlar" },
-    { id:"corporate", icon:"🏢", label:"Korporativ" },
-    { id:"categories",icon:"🗂", label:"Kateqoriyalar" },
-    { id:"stores",    icon:"🏪", label:"Mağazalar" },
+    { id:"pending",   icon:"clock", label:"Moderasiya", badge:"pending" },
+    { id:"all-listings",icon:"clipboard",label:"Bütün Elanlar" },
+    { id:"corporate", icon:"building", label:"Korporativ" },
+    { id:"categories",icon:"grid", label:"Kateqoriyalar" },
+    { id:"stores",    icon:"store", label:"Mağazalar" },
   ]},
   { label:"Sifarişlər & Maliyyə", items:[
-    { id:"orders",    icon:"📦", label:"Sifarişlər" },
-    { id:"wallet",    icon:"💰", label:"Pul Kisəsi" },
-    { id:"coupons",   icon:"🎟", label:"Kuponlar" },
+    { id:"orders",    icon:"package", label:"Sifarişlər" },
+    { id:"wallet",    icon:"wallet", label:"Pul Kisəsi" },
+    { id:"coupons",   icon:"tag", label:"Kuponlar" },
   ]},
   { label:"İcma", items:[
-    { id:"users",     icon:"👥", label:"İstifadəçilər" },
-    { id:"reviews",   icon:"⭐", label:"Rəylər", badge:"reviews" },
-    { id:"bundles",   icon:"🎁", label:"Bağlamalar" },
+    { id:"users",     icon:"user", label:"İstifadəçilər" },
+    { id:"reviews",   icon:"star", label:"Rəylər", badge:"reviews" },
+    { id:"bundles",   icon:"gift", label:"Bağlamalar" },
   ]},
   { label:"Məzmun & Reklam", items:[
-    { id:"blog",      icon:"📝", label:"Bloq" },
-    { id:"campaigns", icon:"📣", label:"Kampaniyalar" },
-    { id:"adslots",   icon:"🖼", label:"Reklam Yerləri" },
-    { id:"notify",    icon:"🔔", label:"Push Bildirişi" },
-    { id:"slider",    icon:"🎠", label:"Slider İdarəsi" },
+    { id:"blog",      icon:"fileText", label:"Bloq" },
+    { id:"campaigns", icon:"bell", label:"Kampaniyalar" },
+    { id:"adslots",   icon:"image", label:"Reklam Yerləri" },
+    { id:"notify",    icon:"bell", label:"Push Bildirişi" },
+    { id:"slider",    icon:"image", label:"Slider İdarəsi" },
   ]},
   { label:"Sistem", items:[
-    { id:"user-modules", icon:"🔧", label:"Rol Modulları" },
-    { id:"studio", icon:"🧩", label:"No-Code Studio" },
+    { id:"user-modules", icon:"settings", label:"Rol Modulları" },
+    { id:"studio", icon:"component", label:"No-Code Studio" },
   ]},
 ];
 
@@ -71,7 +72,7 @@ function AdminSidebar({ tab, setTab, badges, collapsed, setCollapsed }) {
               return (
                 <button key={item.id} onClick={()=>setTab(item.id)}
                   className={`w-full flex items-center ${collapsed?"justify-center":"gap-3"} px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 relative ${tab===item.id?"bg-brand-50 text-brand-700 font-semibold":"text-gray-600 hover:bg-gray-100 hover:text-gray-900"}`}>
-                  <span className="text-base shrink-0">{item.icon}</span>
+                  <Icon name={item.icon} size={18} className="shrink-0" />
                   {!collapsed && <span className="flex-1 text-left">{item.label}</span>}
                   {!collapsed && badgeNum>0 && (
                     <span className="bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">{badgeNum}</span>
@@ -98,7 +99,7 @@ function AdminMobileNav({ tab, setTab }) {
         {allItems.map(item=>(
           <button key={item.id} onClick={()=>setTab(item.id)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${tab===item.id?"bg-brand-50 text-brand-700":"text-gray-500"}`}>
-            <span>{item.icon}</span>{item.label}
+            <Icon name={item.icon} size={16} />{item.label}
           </button>
         ))}
       </div>
@@ -111,14 +112,14 @@ function DashboardStats({ stats, loading }) {
   if (loading) return <div className="grid grid-cols-2 md:grid-cols-4 gap-3">{[1,2,3,4,5,6,7,8].map(i=><SkeletonCard key={i}/>)}</div>;
   if (!stats) return null;
   const cards = [
-    { icon:"👥", label:"Ümumi İstifadəçi", value:stats.users.total, change: null, color:"brand" },
-    { icon:"✅", label:"Aktiv Elan", value:stats.products.active, color:"brand" },
-    { icon:"⏳", label:"Moderasiya Gözləyir", value:stats.products.pending, color:"amber" },
-    { icon:"📦", label:"Ümumi Sifariş", value:stats.orders.total, color:"blue" },
-    { icon:"💰", label:"Bu Ay Gəlir (AZN)", value:stats.revenue.thisMonth, suffix:"", prefix:"₼", color:"brand", change:stats.revenue.growth },
-    { icon:"🏪", label:"Mağazalar", value:stats.stores.total, color:"purple" },
-    { icon:"⭐", label:"Gözləyən Rəy", value:stats.reviews.pending, color:"amber" },
-    { icon:"📣", label:"Aktiv Kampaniya", value:stats.campaigns.active, color:"blue" },
+    { icon:"user", label:"Ümumi İstifadəçi", value:stats.users.total, change: null, color:"brand" },
+    { icon:"checkCircle", label:"Aktiv Elan", value:stats.products.active, color:"brand" },
+    { icon:"clock", label:"Moderasiya Gözləyir", value:stats.products.pending, color:"amber" },
+    { icon:"package", label:"Ümumi Sifariş", value:stats.orders.total, color:"blue" },
+    { icon:"wallet", label:"Bu Ay Gəlir (AZN)", value:stats.revenue.thisMonth, suffix:"", prefix:"₼", color:"brand", change:stats.revenue.growth },
+    { icon:"store", label:"Mağazalar", value:stats.stores.total, color:"purple" },
+    { icon:"star", label:"Gözləyən Rəy", value:stats.reviews.pending, color:"amber" },
+    { icon:"bell", label:"Aktiv Kampaniya", value:stats.campaigns.active, color:"blue" },
   ];
   return (
     <div className="space-y-6">
@@ -137,7 +138,7 @@ function DashboardStats({ stats, loading }) {
             <p className="text-3xl font-extrabold text-brand-700 mt-1">₼{Number(stats.revenue.total).toLocaleString("az-AZ")}</p>
             <p className="text-xs text-gray-500 mt-1">Bu ay: ₼{Number(stats.revenue.thisMonth).toLocaleString("az-AZ")} <span className={`ml-2 font-semibold ${Number(stats.revenue.growth)>=0?"text-emerald-600":"text-red-500"}`}>{Number(stats.revenue.growth)>=0?"↑":"↓"}{Math.abs(Number(stats.revenue.growth))}%</span></p>
           </div>
-          <div className="text-5xl opacity-20">📈</div>
+          <div className="text-gray-300 opacity-20"><Icon name="trendingUp" size={48} /></div>
         </div>
         <div className="card p-5">
           <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">İstifadəçi Durumu</p>
@@ -155,8 +156,8 @@ function DashboardStats({ stats, loading }) {
 // ─── Recent Activity ──────────────────────────────────────────────────────────
 function RecentActivity({ activity, loading }) {
   if (loading) return <SkeletonList />;
-  if (!activity?.length) return <EmptyState icon="⚡" title="Fəaliyyət yoxdur" />;
-  const ACTION_ICONS = { REVIEW_CREATED:"⭐", REVIEW_APPROVED:"✅", REVIEW_REJECTED:"❌", ORDER_CREATED:"📦", USER_BANNED:"🚫", PRODUCT_APPROVED:"✅", LOGIN:"🔑" };
+  if (!activity?.length) return <EmptyState icon="zap" title="Fəaliyyət yoxdur" />;
+  const ACTION_ICONS = { REVIEW_CREATED:"star", REVIEW_APPROVED:"checkCircle", REVIEW_REJECTED:"closeCircle", ORDER_CREATED:"package", USER_BANNED:"ban", PRODUCT_APPROVED:"checkCircle", LOGIN:"key" };
   return (
     <div className="space-y-4">
       <h2 className="section-title">Son Fəaliyyət</h2>
@@ -164,7 +165,7 @@ function RecentActivity({ activity, loading }) {
         <div className="divide-y divide-gray-100">
           {activity.map(log=>(
             <div key={log.id} className="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
-              <span className="text-lg shrink-0 mt-0.5">{ACTION_ICONS[log.action]||"📌"}</span>
+              <span className="shrink-0 mt-0.5 text-gray-500"><Icon name={ACTION_ICONS[log.action]||"info"} size={18} /></span>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900">{log.action.replace(/_/g," ")}</p>
                 <p className="text-xs text-gray-500 truncate">{log.user?.fullName||"System"} · {log.entity}</p>
@@ -188,10 +189,10 @@ function PendingProducts() {
   },[]);
   useEffect(()=>{ load(); },[load]);
   async function decide(id,status) {
-    try { await apiFetch(`/api/products/${id}`,{method:"PATCH",body:JSON.stringify({status})}); toast(status==="ACTIVE"?"Elan təsdiqləndi ✓":"Elan rədd edildi","success"); load(); } catch(e){ toast(e.message,"error"); }
+    try { await apiFetch(`/api/products/${id}`,{method:"PATCH",body:JSON.stringify({status})}); toast(status==="ACTIVE"?"Elan təsdiqləndi":"Elan rədd edildi","success"); load(); } catch(e){ toast(e.message,"error"); }
   }
   if (loading) return <SkeletonList count={5} />;
-  if (!items.length) return <EmptyState icon="✅" title="Moderasiya gözləyən elan yoxdur" subtitle="Bütün elanlar yoxlanılmışdır" />;
+  if (!items.length) return <EmptyState icon="checkCircle" title="Moderasiya gözləyən elan yoxdur" subtitle="Bütün elanlar yoxlanılmışdır" />;
   return (
     <div className="space-y-4">
       <ToastContainer/>
@@ -212,8 +213,8 @@ function PendingProducts() {
                 <td className="table-cell hidden sm:table-cell font-semibold text-brand-700">₼{Number(p.price).toLocaleString("az-AZ")}</td>
                 <td className="table-cell">
                   <div className="flex items-center gap-2 justify-end">
-                    <button onClick={()=>decide(p.id,"ACTIVE")} className="btn-primary btn-xs">✓ Təsdiqlə</button>
-                    <button onClick={()=>decide(p.id,"REJECTED")} className="btn-danger btn-xs">✕ Rədd et</button>
+                    <button onClick={()=>decide(p.id,"ACTIVE")} className="btn-primary btn-xs flex items-center gap-1"><Icon name="check" size={12} />Təsdiqlə</button>
+                    <button onClick={()=>decide(p.id,"REJECTED")} className="btn-danger btn-xs flex items-center gap-1"><Icon name="close" size={12} />Rədd et</button>
                   </div>
                 </td>
               </tr>
@@ -236,7 +237,7 @@ function UsersManager() {
     apiFetch(`/api/admin/users?${q}`).then(d=>setUsers(d.users||[])).catch(e=>toast(e.message,"error")).finally(()=>setLoading(false));
   },[search,roleFilter]);
   async function updateUser(id,data){
-    try{ await apiFetch(`/api/admin/users/${id}`,{method:"PATCH",body:JSON.stringify(data)}); toast("Güncəlləndi ✓"); setUsers(p=>p.map(u=>u.id===id?{...u,...data}:u)); }catch(e){toast(e.message,"error");}
+    try{ await apiFetch(`/api/admin/users/${id}`,{method:"PATCH",body:JSON.stringify(data)}); toast("Güncəlləndi"); setUsers(p=>p.map(u=>u.id===id?{...u,...data}:u)); }catch(e){toast(e.message,"error");}
   }
   const STATUS_COLOR = { ACTIVE:"badge-green",PENDING_VERIFICATION:"badge-yellow",SUSPENDED:"badge-yellow",BANNED:"badge-red" };
   return (
@@ -253,7 +254,7 @@ function UsersManager() {
           {ROLES.map(r=><option key={r} value={r}>{r}</option>)}
         </select>
       </div>
-      {loading ? <SkeletonList count={6}/> : !users.length ? <EmptyState icon="👥" title="İstifadəçi tapılmadı"/> : (
+      {loading ? <SkeletonList count={6}/> : !users.length ? <EmptyState icon="user" title="İstifadəçi tapılmadı"/> : (
         <div className="card overflow-x-auto">
           <table className="w-full min-w-[600px]">
             <thead className="table-header"><tr>
@@ -306,7 +307,7 @@ function OrdersAll() {
     apiFetch(`/api/orders?${q}`).then(d=>setOrders(d.orders||[])).catch(e=>toast(e.message,"error")).finally(()=>setLoading(false));
   }
   async function changeStatus(id,status){
-    try{ await apiFetch(`/api/orders/${id}`,{method:"PATCH",body:JSON.stringify({status})}); toast("Status dəyişdirildi ✓"); load(); }catch(e){toast(e.message,"error");}
+    try{ await apiFetch(`/api/orders/${id}`,{method:"PATCH",body:JSON.stringify({status})}); toast("Status dəyişdirildi"); load(); }catch(e){toast(e.message,"error");}
   }
   return (
     <div className="space-y-4">
@@ -318,7 +319,7 @@ function OrdersAll() {
         <option value="">Bütün statuslar</option>
         {Object.entries(ORDER_STATUS_LABELS).map(([k,v])=><option key={k} value={k}>{v}</option>)}
       </select>
-      {loading ? <SkeletonList count={5}/> : !orders.length ? <EmptyState icon="📦" title="Sifariş tapılmadı"/> : (
+      {loading ? <SkeletonList count={5}/> : !orders.length ? <EmptyState icon="package" title="Sifariş tapılmadı"/> : (
         <div className="card overflow-x-auto">
           <table className="w-full min-w-[580px]">
             <thead className="table-header"><tr>
@@ -361,7 +362,7 @@ function ReviewsManager() {
     apiFetch(`/api/admin/reviews?filter=${filter}`)
       .then(d=>setItems(d.reviews||[])).catch(e=>toast(e.message,"error")).finally(()=>setLoading(false));
   }
-  async function approve(id){ try{ await apiFetch(`/api/reviews/${id}`,{method:"PATCH",body:JSON.stringify({isApproved:true})}); toast("Rəy təsdiqləndi ✓"); setItems(p=>p.map(r=>r.id===id?{...r,isApproved:true}:r)); }catch(e){toast(e.message,"error");} }
+  async function approve(id){ try{ await apiFetch(`/api/reviews/${id}`,{method:"PATCH",body:JSON.stringify({isApproved:true})}); toast("Rəy təsdiqləndi"); setItems(p=>p.map(r=>r.id===id?{...r,isApproved:true}:r)); }catch(e){toast(e.message,"error");} }
   async function reject(id){ try{ await apiFetch(`/api/reviews/${id}`,{method:"PATCH",body:JSON.stringify({isApproved:false})}); toast("Rəy geri çəkildi"); setItems(p=>p.map(r=>r.id===id?{...r,isApproved:false}:r)); }catch(e){toast(e.message,"error");} }
   async function del(id){ if(!confirm("Bu rəyi silmək istədiyinizə əminsiniz?"))return; try{ await apiFetch(`/api/reviews/${id}`,{method:"DELETE"}); setItems(p=>p.filter(r=>r.id!==id)); toast("Rəy silindi"); }catch(e){toast(e.message,"error");} }
   return (
@@ -376,7 +377,7 @@ function ReviewsManager() {
           <button key={v} onClick={()=>setFilter(v)} className={`btn-sm ${filter===v?"btn-primary":"btn-secondary"}`}>{l}</button>
         ))}
       </div>
-      {loading?<SkeletonList count={4}/>:!items.length?<EmptyState icon="⭐" title="Rəy tapılmadı"/>:(
+      {loading?<SkeletonList count={4}/>:!items.length?<EmptyState icon="star" title="Rəy tapılmadı"/>:(
         <div className="space-y-2">
           {items.map(r=>(
             <div key={r.id} className={`card p-4 border-l-4 ${r.isApproved?"border-l-emerald-400":"border-l-amber-400"}`}>
@@ -384,14 +385,14 @@ function ReviewsManager() {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 flex-wrap mb-1">
                     <span className="font-semibold text-sm">{r.author?.fullName}</span>
-                    <span className="text-amber-500 text-sm">{"★".repeat(r.rating)}{"☆".repeat(5-r.rating)}</span>
+                    <span className="text-amber-500 text-sm">{Array.from({length: 5}).map((_, i) => <Icon key={i} name="star" size={14} className={i < r.rating ? "fill-amber-400 text-amber-500 inline" : "text-gray-300 inline"} />)}</span>
                     <span className={`badge ${r.isApproved?"badge-green":"badge-yellow"}`}>{r.isApproved?"Aktiv":"Gözləmədə"}</span>
                   </div>
                   <p className="caption truncate">{r.product?.titleAz}</p>
                   {r.comment&&<p className="text-sm text-gray-700 mt-1">{r.comment}</p>}
                 </div>
                 <div className="flex flex-col gap-1.5 shrink-0">
-                  {!r.isApproved?<button onClick={()=>approve(r.id)} className="btn-primary btn-xs">✓ Təsdiqlə</button>:<button onClick={()=>reject(r.id)} className="btn-secondary btn-xs">Geri çək</button>}
+                  {!r.isApproved?<button onClick={()=>approve(r.id)} className="btn-primary btn-xs flex items-center gap-1"><Icon name="check" size={12} />Təsdiqlə</button>:<button onClick={()=>reject(r.id)} className="btn-secondary btn-xs">Geri çək</button>}
                   <button onClick={()=>del(r.id)} className="text-[11px] text-red-500 hover:underline">Sil</button>
                 </div>
               </div>
@@ -410,8 +411,8 @@ function CategoriesManager() {
   const [msg,setMsg]=useState(""); const [err,setErr]=useState("");
   const { toast, ToastContainer } = useToast();
   useEffect(()=>{ apiFetch("/api/categories").then(d=>setItems(d.categories||[])).finally(()=>setLoading(false)); },[]);
-  async function create(e){ e.preventDefault(); setErr(""); try{ const d=await apiFetch("/api/categories",{method:"POST",body:JSON.stringify(form)}); setItems(p=>[...p,d.category]); setForm({nameAz:"",slug:"",icon:"",isActive:true,parentId:""}); toast("Kateqoriya əlavə edildi ✓"); }catch(e){setErr(e.message);} }
-  async function toggleActive(id,val){ try{ await apiFetch(`/api/categories/${id}`,{method:"PATCH",body:JSON.stringify({isActive:val})}); setItems(p=>p.map(c=>c.id===id?{...c,isActive:val}:c)); toast("Yeniləndi ✓"); }catch(e){toast(e.message,"error");} }
+  async function create(e){ e.preventDefault(); setErr(""); try{ const d=await apiFetch("/api/categories",{method:"POST",body:JSON.stringify(form)}); setItems(p=>[...p,d.category]); setForm({nameAz:"",slug:"",icon:"",isActive:true,parentId:""}); toast("Kateqoriya əlavə edildi"); }catch(e){setErr(e.message);} }
+  async function toggleActive(id,val){ try{ await apiFetch(`/api/categories/${id}`,{method:"PATCH",body:JSON.stringify({isActive:val})}); setItems(p=>p.map(c=>c.id===id?{...c,isActive:val}:c)); toast("Yeniləndi"); }catch(e){toast(e.message,"error");} }
   const parents=items.filter(c=>!c.parentId);
   return (
     <div className="space-y-5">
@@ -420,7 +421,7 @@ function CategoriesManager() {
       <form onSubmit={create} className="card p-5 grid grid-cols-2 md:grid-cols-3 gap-3">
         <div><label className="label">Ad (AZ)</label><input required value={form.nameAz} onChange={e=>setForm(p=>({...p,nameAz:e.target.value}))} className="input-field"/></div>
         <div><label className="label">Slug</label><input required value={form.slug} onChange={e=>setForm(p=>({...p,slug:e.target.value}))} className="input-field" placeholder="meyvə-tərəvəz"/></div>
-        <div><label className="label">İkon</label><input value={form.icon} onChange={e=>setForm(p=>({...p,icon:e.target.value}))} className="input-field" placeholder="🌾"/></div>
+        <div><label className="label">İkon</label><input value={form.icon} onChange={e=>setForm(p=>({...p,icon:e.target.value}))} className="input-field" placeholder="sprout"/></div>
         <div className="col-span-2 md:col-span-1"><label className="label">Valideyn kateqoriya</label>
           <select value={form.parentId} onChange={e=>setForm(p=>({...p,parentId:e.target.value}))} className="select-field">
             <option value="">— Ana kateqoriya —</option>
@@ -439,7 +440,7 @@ function CategoriesManager() {
               <td className="table-cell hidden sm:table-cell"><code className="text-xs bg-gray-100 px-1.5 py-0.5 rounded">{c.slug}</code></td>
               <td className="table-cell hidden md:table-cell"><span className={`badge ${c.parentId?"badge-blue":"badge-purple"}`}>{c.parentId?"Alt":"Ana"}</span></td>
               <td className="table-cell text-right">
-                <button onClick={()=>toggleActive(c.id,!c.isActive)} className={`badge cursor-pointer ${c.isActive?"badge-green":"badge-gray"}`}>{c.isActive?"✓ Aktiv":"✗ Deaktiv"}</button>
+                <button onClick={()=>toggleActive(c.id,!c.isActive)} className={`badge cursor-pointer ${c.isActive?"badge-green":"badge-gray"}`}>{c.isActive ? "Aktiv" : "Deaktiv"}</button>
               </td>
             </tr>
           ))}</tbody></table>
@@ -466,7 +467,7 @@ function WalletWithdrawalsManager() {
   async function decide(id,action){
     try{
       await apiFetch(`/api/admin/wallet-withdrawals/${id}`,{method:"PATCH",body:JSON.stringify({action})});
-      toast(action==="approve"?"✅ Ödəniş təsdiqləndi":"❌ Ödəniş rədd edildi — məbləğ geri qaytarıldı");
+      toast(action==="approve"?"Ödəniş təsdiqləndi":"Ödəniş rədd edildi — məbləğ geri qaytarıldı");
       setItems(p=>p.filter(r=>r.id!==id));
     }catch(e){toast(e.message,"error");}
   }
@@ -487,7 +488,7 @@ function WalletWithdrawalsManager() {
           ))}
         </div>
       </div>
-      {loading?<SkeletonList count={3}/>:!items.length?<EmptyState icon="💰" title="Tələb tapılmadı"/>:(
+      {loading?<SkeletonList count={3}/>:!items.length?<EmptyState icon="wallet" title="Tələb tapılmadı"/>:(
         <div className="space-y-3">
           {items.map(r=>(
             <div key={r.id} className="card p-4">
@@ -510,14 +511,14 @@ function WalletWithdrawalsManager() {
               </div>
               {filter==="PENDING"&&(
                 <div className="flex gap-2 mt-3 pt-3 border-t border-gray-100">
-                  <button onClick={()=>decide(r.id,"approve")} className="btn-primary btn-xs flex-1">✓ Təsdiqlə</button>
-                  <button onClick={()=>decide(r.id,"reject")} className="btn-danger btn-xs flex-1">✗ Rədd et</button>
+                  <button onClick={()=>decide(r.id,"approve")} className="btn-primary btn-xs flex-1 flex items-center justify-center gap-1"><Icon name="check" size={12}/>Təsdiqlə</button>
+                  <button onClick={()=>decide(r.id,"reject")} className="btn-danger btn-xs flex-1 flex items-center justify-center gap-1"><Icon name="close" size={12}/>Rədd et</button>
                 </div>
               )}
               {filter!=="PENDING"&&(
                 <div className="mt-2 pt-2 border-t border-gray-100">
                   <span className={`badge ${filter==="COMPLETED"?"badge-green":"badge-red"}`}>
-                    {filter==="COMPLETED"?"✅ Tamamlandı":"❌ Rədd edildi"}
+                    {filter==="COMPLETED" ? <span className="flex items-center gap-1 text-emerald-600"><Icon name="checkCircle" size={14}/>Tamamlandı</span> : <span className="flex items-center gap-1 text-red-500"><Icon name="closeCircle" size={14}/>Rədd edildi</span>}
                   </span>
                 </div>
               )}
@@ -538,7 +539,7 @@ function BlogManager() {
   useEffect(()=>{ apiFetch("/api/blog?pageSize=50").then(d=>setPosts(d.posts||[])).finally(()=>setLoading(false)); },[]);
   async function create(e){
     e.preventDefault(); setCreating(true);
-    try{ const d=await apiFetch("/api/blog",{method:"POST",body:JSON.stringify(form)}); setPosts(p=>[d.post,...p]); setForm({titleAz:"",contentAz:"",category:"tips",isPublished:false}); toast("Bloq yazısı əlavə edildi ✓"); }catch(e){toast(e.message,"error");}finally{setCreating(false);}
+    try{ const d=await apiFetch("/api/blog",{method:"POST",body:JSON.stringify(form)}); setPosts(p=>[d.post,...p]); setForm({titleAz:"",contentAz:"",category:"tips",isPublished:false}); toast("Bloq yazısı əlavə edildi"); }catch(e){toast(e.message,"error");}finally{setCreating(false);}
   }
   async function del(id){ if(!confirm("Silmək istədiyinizə əminsiniz?"))return; try{ await apiFetch(`/api/blog/${id}`,{method:"DELETE"}); setPosts(p=>p.filter(x=>x.id!==id)); toast("Silindi"); }catch(e){toast(e.message,"error");} }
   return (
@@ -560,7 +561,7 @@ function BlogManager() {
         </div>
         <button type="submit" disabled={creating} className="btn-primary">{creating?"Yüklənir...":"Əlavə et"}</button>
       </form>
-      {loading?<SkeletonList count={3}/>:!posts.length?<EmptyState icon="📝" title="Bloq yazısı yoxdur"/>:(
+      {loading?<SkeletonList count={3}/>:!posts.length?<EmptyState icon="fileText" title="Bloq yazısı yoxdur"/>:(
         <div className="space-y-2">
           {posts.map(p=>(
             <div key={p.id} className="card p-4 flex items-start gap-4">
@@ -571,7 +572,7 @@ function BlogManager() {
                   <span className="caption">{new Date(p.createdAt).toLocaleDateString("az-AZ")}</span>
                 </div>
               </div>
-              <button onClick={()=>del(p.id)} className="btn-icon text-red-500">🗑</button>
+              <button onClick={()=>del(p.id)} className="btn-icon text-red-500"><Icon name="trash" size={16} /></button>
             </div>
           ))}
         </div>
@@ -586,7 +587,7 @@ function PushBroadcastManager() {
   const { toast, ToastContainer } = useToast();
   async function send(e){
     e.preventDefault(); setSending(true);
-    try{ const d=await apiFetch("/api/admin/push/broadcast",{method:"POST",body:JSON.stringify({title,body})}); toast(`${d.sent||0} abunəçiyə göndərildi ✓`); setTitle(""); setBody(""); }catch(e){toast(e.message,"error");}finally{setSending(false);}
+    try{ const d=await apiFetch("/api/admin/push/broadcast",{method:"POST",body:JSON.stringify({title,body})}); toast(`${d.sent||0} abunəçiyə göndərildi`); setTitle(""); setBody(""); }catch(e){toast(e.message,"error");}finally{setSending(false);}
   }
   return (
     <div className="space-y-5">
@@ -595,7 +596,7 @@ function PushBroadcastManager() {
       <form onSubmit={send} className="card p-5 space-y-4 max-w-md">
         <div><label className="label">Başlıq</label><input required value={title} onChange={e=>setTitle(e.target.value)} className="input-field"/></div>
         <div><label className="label">Məzmun</label><textarea required rows={3} value={body} onChange={e=>setBody(e.target.value)} className="input-field"/></div>
-        <button type="submit" disabled={sending} className="btn-primary">{sending?"Göndərilir...":"📤 Hamıya Göndər"}</button>
+        <button type="submit" disabled={sending} className="btn-primary">{sending?"Göndərilir...":<span className="flex items-center gap-1"><Icon name="upload" size={16}/>Hamıya Göndər</span>}</button>
       </form>
     </div>
   );
@@ -615,7 +616,7 @@ function StoresManager() {
       const res = await apiFetch(`/api/stores/${id}`,{method:"PATCH",body:JSON.stringify({[field]:val})}); 
       const updatedStore = res?.store;
       setStores(p=>p.map(s=>s.id===id?(updatedStore?{...s,...updatedStore}:{...s,[field]:val}):s)); 
-      toast(val?"✅ Aktivləşdirildi":"⛔ Deaktiv edildi"); 
+      toast(val?"Aktivləşdirildi":"Deaktiv edildi"); 
     }catch(e){toast(e.message,"error");} 
   }
   const filtered = search ? stores.filter(s=>
@@ -630,7 +631,7 @@ function StoresManager() {
         <span className="badge badge-gray">{stores.length} mağaza</span>
       </div>
       <input placeholder="Mağaza adı, sahib axtar..." value={search} onChange={e=>setSearch(e.target.value)} className="input-sm w-full"/>
-      {loading?<SkeletonList count={4}/>:!filtered.length?<EmptyState icon="🏪" title="Mağaza tapılmadı"/>:(
+      {loading?<SkeletonList count={4}/>:!filtered.length?<EmptyState icon="store" title="Mağaza tapılmadı"/>:(
         <div className="space-y-3">
           {filtered.map(s=>(
             <div key={s.id} className="card p-4">
@@ -640,17 +641,17 @@ function StoresManager() {
                   <div className="flex items-center gap-2 flex-wrap justify-between">
                     <p className="font-semibold text-sm">{s.name}</p>
                     <div className="flex gap-1">
-                      {s.isVerified&&<span className="badge badge-green text-[10px]">✓ Verified</span>}
+                      {s.isVerified&&<span className="badge badge-green text-[10px] inline-flex items-center gap-1"><Icon name="check" size={10}/>Verified</span>}
                       {!s.isVerified&&<span className="badge badge-gray text-[10px]">Təsdiqlənməyib</span>}
                       <span className={`badge text-[10px] ${s.isActive?"badge-green":"badge-red"}`}>{s.isActive?"Aktiv":"Deaktiv"}</span>
                     </div>
                   </div>
-                  <p className="text-xs text-gray-600 mt-0.5">👤 {s.owner?.fullName||"—"} {s.owner?.phone&&<span className="text-brand-600 font-medium">· {s.owner.phone}</span>}</p>
+                  <p className="text-xs text-gray-600 mt-0.5 inline-flex items-center gap-1"><Icon name="user" size={12}/>{s.owner?.fullName||"—"} {s.owner?.phone&&<span className="text-brand-600 font-medium">· {s.owner.phone}</span>}</p>
                   <p className="caption">{s.owner?.email}</p>
                   {s.description&&<p className="text-xs text-gray-400 mt-1 line-clamp-1">{s.description}</p>}
-                  {s._count&&<p className="text-xs text-gray-500 mt-1">📦 {s._count.products||0} məhsul</p>}
+                  {s._count&&<p className="text-xs text-gray-500 mt-1 inline-flex items-center gap-1"><Icon name="package" size={12}/>{s._count.products||0} məhsul</p>}
                   <div className="flex gap-2 mt-2 flex-wrap">
-                    {!s.isVerified&&<button onClick={()=>toggle(s.id,"isVerified",true)} className="btn-primary btn-xs">✓ Doğrula</button>}
+                    {!s.isVerified&&<button onClick={()=>toggle(s.id,"isVerified",true)} className="btn-primary btn-xs flex items-center gap-1"><Icon name="check" size={12}/>Doğrula</button>}
                     {s.isVerified&&<button onClick={()=>toggle(s.id,"isVerified",false)} className="btn-secondary btn-xs">Doğrulanmağı çıxar</button>}
                     <button onClick={()=>toggle(s.id,"isActive",!s.isActive)} className={`btn-xs ${s.isActive?"btn-danger":"btn-primary"}`}>{s.isActive?"Deaktiv et":"Aktivləşdir"}</button>
                   </div>
@@ -670,7 +671,7 @@ function CouponsManager() {
   const [form,setForm]=useState({code:"",discountType:"PERCENTAGE",discountValue:"10",maxUses:"",isActive:true});
   const { toast, ToastContainer } = useToast();
   useEffect(()=>{ apiFetch("/api/coupons").then(d=>setItems(d.coupons||[])).finally(()=>setLoading(false)); },[]);
-  async function create(e){ e.preventDefault(); try{ const d=await apiFetch("/api/coupons",{method:"POST",body:JSON.stringify({...form,discountValue:parseFloat(form.discountValue),maxUses:form.maxUses?parseInt(form.maxUses):null})}); setItems(p=>[d.coupon,...p]); toast("Kupon əlavə edildi ✓"); }catch(e){toast(e.message,"error");} }
+  async function create(e){ e.preventDefault(); try{ const d=await apiFetch("/api/coupons",{method:"POST",body:JSON.stringify({...form,discountValue:parseFloat(form.discountValue),maxUses:form.maxUses?parseInt(form.maxUses):null})}); setItems(p=>[d.coupon,...p]); toast("Kupon əlavə edildi"); }catch(e){toast(e.message,"error");} }
   return (
     <div className="space-y-5">
       <ToastContainer/>
@@ -682,7 +683,7 @@ function CouponsManager() {
         <div><label className="label">Max istifadə</label><input type="number" value={form.maxUses} onChange={e=>setForm(p=>({...p,maxUses:e.target.value}))} className="input-field" placeholder="Limitsiz"/></div>
         <div className="col-span-full"><button type="submit" className="btn-primary">Əlavə et</button></div>
       </form>
-      {loading?<SkeletonList count={3}/>:!items.length?<EmptyState icon="🎟" title="Kupon yoxdur"/>:(
+      {loading?<SkeletonList count={3}/>:!items.length?<EmptyState icon="tag" title="Kupon yoxdur"/>:(
         <div className="card overflow-x-auto">
           <table className="w-full min-w-[400px]">
             <thead className="table-header"><tr><th className="table-cell text-left">Kod</th><th className="table-cell text-left">Endirim</th><th className="table-cell text-left hidden sm:table-cell">İstifadə</th><th className="table-cell text-left">Status</th></tr></thead>
@@ -706,12 +707,12 @@ function BundlesManager() {
   const [items,setItems]=useState([]); const [loading,setLoading]=useState(true);
   const { toast, ToastContainer } = useToast();
   useEffect(()=>{ apiFetch("/api/bundles").then(d=>setItems(d.bundles||[])).finally(()=>setLoading(false)); },[]);
-  async function toggleActive(id,val){ try{ await apiFetch(`/api/bundles/${id}`,{method:"PATCH",body:JSON.stringify({isActive:val})}); setItems(p=>p.map(b=>b.id===id?{...b,isActive:val}:b)); toast("Yeniləndi ✓"); }catch(e){toast(e.message,"error");} }
+  async function toggleActive(id,val){ try{ await apiFetch(`/api/bundles/${id}`,{method:"PATCH",body:JSON.stringify({isActive:val})}); setItems(p=>p.map(b=>b.id===id?{...b,isActive:val}:b)); toast("Yeniləndi"); }catch(e){toast(e.message,"error");} }
   return (
     <div className="space-y-4">
       <ToastContainer/>
       <h2 className="section-title">Bağlamalar</h2>
-      {loading?<SkeletonList count={3}/>:!items.length?<EmptyState icon="🎁" title="Bağlama tapılmadı"/>:(
+      {loading?<SkeletonList count={3}/>:!items.length?<EmptyState icon="gift" title="Bağlama tapılmadı"/>:(
         <div className="space-y-2">
           {items.map(b=>(
             <div key={b.id} className="card p-4 flex items-center gap-4">
@@ -740,7 +741,7 @@ function AllListingsManager() {
     try{ 
       await apiFetch(`/api/products/${id}`,{method:"PATCH",body:JSON.stringify({status})}); 
       setItems(p=>p.map(x=>x.id===id?{...x,status}:x)); 
-      toast(status==="ACTIVE"?"✅ Elan təsdiqləndi":"⛔ Elan rədd edildi"); 
+      toast(status==="ACTIVE"?"Elan təsdiqləndi":"Elan rədd edildi"); 
     }catch(e){toast(e.message,"error");} 
   }
   async function del(id){ if(!confirm("Bu elanı silmək istədiyinizə əminsiniz?"))return; try{ await apiFetch(`/api/products/${id}`,{method:"DELETE"}); setItems(p=>p.filter(x=>x.id!==id)); toast("Silindi"); }catch(e){toast(e.message,"error");} }
@@ -752,7 +753,7 @@ function AllListingsManager() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h2 className="section-title">Bütün Elanlar</h2>
-          {pendingCount>0&&statusFilter==="PENDING_REVIEW"&&<p className="text-xs text-amber-600 font-medium mt-0.5">⏳ {pendingCount} elan təsdiq gözləyir</p>}
+          {pendingCount>0&&statusFilter==="PENDING_REVIEW"&&<p className="text-xs text-amber-600 font-medium mt-0.5 inline-flex items-center gap-1"><Icon name="clock" size={12}/>{pendingCount} elan təsdiq gözləyir</p>}
         </div>
         <span className="badge badge-gray">{items.length} nəticə</span>
       </div>
@@ -760,10 +761,10 @@ function AllListingsManager() {
         <input placeholder="Ad, region, satıcı axtar..." value={search} onChange={e=>setSearch(e.target.value)} className="input-sm flex-1 min-w-40"/>
         <select value={statusFilter} onChange={e=>setStatusFilter(e.target.value)} className="select-field w-auto text-xs py-2">
           <option value="">Bütün statuslar</option>
-          {STATUSES.map(s=><option key={s} value={s}>{s==="PENDING_REVIEW"?"⏳ Gözləyən":s==="ACTIVE"?"✅ Aktiv":s==="REJECTED"?"❌ Rədd":s==="SOLD"?"💰 Satılıb":s==="DRAFT"?"📝 Qaralama":"⌛ Bitmib"}</option>)}
+          {STATUSES.map(s=><option key={s} value={s}>{s==="PENDING_REVIEW"?"Gözləyən":s==="ACTIVE"?"Aktiv":s==="REJECTED"?"Rədd":s==="SOLD"?"Satılıb":s==="DRAFT"?"Qaralama":"Bitmib"}</option>)}
         </select>
       </div>
-      {loading?<SkeletonList count={5}/>:!items.length?<EmptyState icon="📋" title="Elan tapılmadı"/>:(
+      {loading?<SkeletonList count={5}/>:!items.length?<EmptyState icon="clipboard" title="Elan tapılmadı"/>:(
         <div className="space-y-2">
           {items.map(p=>(
             <div key={p.id} className={`card p-4 ${p.status==="PENDING_REVIEW"?"border-l-4 border-amber-400":""}`}>
@@ -774,7 +775,7 @@ function AllListingsManager() {
                     <div>
                       <p className="font-semibold text-sm line-clamp-1">{p.titleAz}</p>
                       <p className="caption">₼{Number(p.price).toLocaleString("az-AZ")} · {p.region||""} {p.city||""}</p>
-                      <p className="text-xs text-gray-500 mt-0.5">👤 {p.seller?.fullName||"—"} {p.seller?.phone&&<span className="text-brand-600 font-medium">· {p.seller.phone}</span>}</p>
+                      <p className="text-xs text-gray-500 mt-0.5 inline-flex items-center gap-1"><Icon name="user" size={12}/>{p.seller?.fullName||"—"} {p.seller?.phone&&<span className="text-brand-600 font-medium">· {p.seller.phone}</span>}</p>
                       <p className="text-[11px] text-gray-400">{new Date(p.createdAt).toLocaleDateString("az-AZ")}</p>
                     </div>
                     <span className={`badge flex-shrink-0 ${PRODUCT_STATUS_COLORS[p.status]||"badge-gray"}`}>{p.status}</span>
@@ -782,8 +783,8 @@ function AllListingsManager() {
                   <div className="flex items-center gap-2 mt-2 flex-wrap">
                     {p.status==="PENDING_REVIEW"&&(
                       <>
-                        <button onClick={()=>changeStatus(p.id,"ACTIVE")} className="btn-primary btn-xs">✓ Təsdiqlə</button>
-                        <button onClick={()=>changeStatus(p.id,"REJECTED")} className="btn-danger btn-xs">✗ Rədd et</button>
+                        <button onClick={()=>changeStatus(p.id,"ACTIVE")} className="btn-primary btn-xs flex items-center gap-1"><Icon name="check" size={12}/>Təsdiqlə</button>
+                        <button onClick={()=>changeStatus(p.id,"REJECTED")} className="btn-danger btn-xs flex items-center gap-1"><Icon name="close" size={12}/>Rədd et</button>
                       </>
                     )}
                     {p.status!=="PENDING_REVIEW"&&(
@@ -791,8 +792,8 @@ function AllListingsManager() {
                         {STATUSES.map(s=><option key={s} value={s}>{s}</option>)}
                       </select>
                     )}
-                    <a href={`/products/${p.slug}`} target="_blank" rel="noopener" className="btn-secondary btn-xs">👁 Bax</a>
-                    <button onClick={()=>del(p.id)} className="btn-danger btn-xs">🗑 Sil</button>
+                    <a href={`/products/${p.slug}`} target="_blank" rel="noopener" className="btn-secondary btn-xs flex items-center gap-1"><Icon name="eye" size={12}/>Bax</a>
+                    <button onClick={()=>del(p.id)} className="btn-danger btn-xs flex items-center gap-1"><Icon name="trash" size={12}/>Sil</button>
                   </div>
                 </div>
               </div>
@@ -811,12 +812,12 @@ function CorporateListingsManager() {
   useEffect(()=>{
     apiFetch("/api/products?corporate=1&pageSize=50").then(d=>setItems(d.products||[])).finally(()=>setLoading(false));
   },[]);
-  async function updateMinQty(id,minOrderQty){ try{ await apiFetch(`/api/products/${id}`,{method:"PATCH",body:JSON.stringify({minOrderQty:parseInt(minOrderQty)})}); toast("Min sifariş güncəlləndi ✓"); }catch(e){toast(e.message,"error");} }
+  async function updateMinQty(id,minOrderQty){ try{ await apiFetch(`/api/products/${id}`,{method:"PATCH",body:JSON.stringify({minOrderQty:parseInt(minOrderQty)})}); toast("Min sifariş güncəlləndi"); }catch(e){toast(e.message,"error");} }
   return (
     <div className="space-y-4">
       <ToastContainer/>
       <h2 className="section-title">Korporativ Elanlar</h2>
-      {loading?<SkeletonList count={3}/>:!items.length?<EmptyState icon="🏢" title="Korporativ elan yoxdur"/>:(
+      {loading?<SkeletonList count={3}/>:!items.length?<EmptyState icon="building" title="Korporativ elan yoxdur"/>:(
         <div className="space-y-2">
           {items.map(p=>(
             <div key={p.id} className="card p-4 flex items-center gap-4 flex-wrap">
@@ -853,7 +854,7 @@ function CampaignsManager() {
     try{ 
       const d=await apiFetch("/api/campaigns",{method:"POST",body:JSON.stringify(payload)}); 
       setItems(p=>[d.campaign,...p]); 
-      toast("✅ Kampaniya əlavə edildi"); 
+      toast("Kampaniya əlavə edildi"); 
       setShowForm(false);
       setForm({title:"",type:"HOMEPAGE_BANNER",targetUrl:"",imageUrl:"",startDate:"",endDate:"",status:"ACTIVE"});
     }catch(e){toast(e.message,"error");}
@@ -863,7 +864,7 @@ function CampaignsManager() {
     try{ 
       await apiFetch(`/api/campaigns/${id}`,{method:"PATCH",body:JSON.stringify({status:newStatus})}); 
       setItems(p=>p.map(c=>c.id===id?{...c,status:newStatus}:c)); 
-      toast(newStatus==="ACTIVE"?"▶️ Kampaniya aktivləşdirildi":"⏸ Kampaniya dayandırıldı"); 
+      toast(newStatus==="ACTIVE"?"Kampaniya aktivləşdirildi":"Kampaniya dayandırıldı"); 
     }catch(e){toast(e.message,"error");}
   }
   async function deleteCampaign(id){ 
@@ -879,7 +880,7 @@ function CampaignsManager() {
       <ToastContainer/>
       <div className="flex items-center justify-between flex-wrap gap-3">
         <h2 className="section-title">Kampaniyalar</h2>
-        <button onClick={()=>setShowForm(p=>!p)} className="btn-primary btn-sm">{showForm?"✕ Bağla":"+ Yeni Kampaniya"}</button>
+        <button onClick={()=>setShowForm(p=>!p)} className="btn-primary btn-sm">{showForm ? <span className="flex items-center gap-1"><Icon name="close" size={14}/>Bağla</span> : <span className="flex items-center gap-1"><Icon name="plus" size={14}/>Yeni Kampaniya</span>}</button>
       </div>
       {showForm&&(
         <form onSubmit={create} className="card p-5 space-y-3">
@@ -898,7 +899,7 @@ function CampaignsManager() {
           </div>
         </form>
       )}
-      {loading?<SkeletonList count={3}/>:!items.length?<EmptyState icon="📣" title="Kampaniya tapılmadı"/>:(
+      {loading?<SkeletonList count={3}/>:!items.length?<EmptyState icon="bell" title="Kampaniya tapılmadı"/>:(
         <div className="space-y-3">
           {items.map(c=>(
             <div key={c.id} className="card p-4">
@@ -913,16 +914,16 @@ function CampaignsManager() {
                   <p className="text-xs text-gray-400">{new Date(c.startDate).toLocaleDateString("az-AZ")} – {new Date(c.endDate).toLocaleDateString("az-AZ")}</p>
                   {c.targetUrl&&<p className="text-xs text-brand-600 truncate">{c.targetUrl}</p>}
                   <div className="flex items-center gap-2 mt-2 flex-wrap">
-                    <p className="text-xs text-gray-500">👁 {c.impressions||0} göstəriş · 🖱 {c.clicks||0} klik</p>
+                    <p className="text-xs text-gray-500 inline-flex items-center gap-2"><span className="inline-flex items-center gap-1"><Icon name="eye" size={12}/>{c.impressions||0} göstəriş</span> · <span className="inline-flex items-center gap-1"><Icon name="link" size={12}/>{c.clicks||0} klik</span></p>
                     {c.clicks>0&&c.impressions>0&&<p className="text-xs font-medium text-brand-600">CTR: {((c.clicks/c.impressions)*100).toFixed(1)}%</p>}
                   </div>
                 </div>
               </div>
               <div className="flex gap-2 mt-3 pt-3 border-t border-gray-100">
                 <button onClick={()=>toggleStatus(c.id,c.status)} className={`btn-xs flex-1 ${c.status==="ACTIVE"?"btn-secondary":"btn-primary"}`}>
-                  {c.status==="ACTIVE"?"⏸ Dayandır":"▶️ Aktivləşdir"}
+                  {c.status==="ACTIVE"?<span className="flex items-center gap-1"><Icon name="pause" size={12}/>Dayandır</span>:<span className="flex items-center gap-1"><Icon name="check" size={12}/>Aktivləşdir</span>}
                 </button>
-                <button onClick={()=>deleteCampaign(c.id)} className="btn-danger btn-xs">🗑 Sil</button>
+                <button onClick={()=>deleteCampaign(c.id)} className="btn-danger btn-xs flex items-center gap-1"><Icon name="trash" size={12}/>Sil</button>
               </div>
             </div>
           ))}
@@ -941,7 +942,7 @@ function AdSlotsManager() {
       const obj=Array.isArray(arr)?Object.fromEntries(arr.map(s=>[s.key,s])):arr;
       setSlots(obj);
     }).finally(()=>setLoading(false)); },[]);
-  async function save(key,data){ try{ await apiFetch(`/api/ad-slots/${key}`,{method:"PATCH",body:JSON.stringify(data)}); toast("Reklam yeri yeniləndi ✓"); }catch(e){toast(e.message,"error");} }
+  async function save(key,data){ try{ await apiFetch(`/api/ad-slots/${key}`,{method:"PATCH",body:JSON.stringify(data)}); toast("Reklam yeri yeniləndi"); }catch(e){toast(e.message,"error");} }
   return (
     <div className="space-y-5">
       <ToastContainer/>
@@ -955,7 +956,7 @@ function AdSlotsManager() {
               <div key={key} className="card p-4">
                 <div className="flex items-center justify-between mb-2">
                   <p className="font-semibold text-sm">{key.replace(/_/g," ")}</p>
-                  <span className={`badge ${hasCampaign?"badge-green":"badge-yellow"}`}>{hasCampaign?"✅ Aktiv kampaniya":"⚠️ Boş"}</span>
+                  <span className={`badge ${hasCampaign?"badge-green":"badge-yellow"} inline-flex items-center gap-1`}>{hasCampaign?<><Icon name="checkCircle" size={12}/>Aktiv kampaniya</>:<><Icon name="alert" size={12}/>Boş</>}</span>
                 </div>
                 {hasCampaign&&<p className="caption">Kampaniya: {slot.liveCampaignTitle}</p>}
               </div>
@@ -973,7 +974,7 @@ function AdSlotsManager() {
 function SliderManager() {
   const [slides, setSlides] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [form, setForm] = useState({ tag: "", title: "", subtitle: "", cta: "Bax", href: "/products", bg: "from-brand-700 to-brand-500", emoji: "🌱" });
+  const [form, setForm] = useState({ tag: "", title: "", subtitle: "", cta: "Bax", href: "/products", bg: "from-brand-700 to-brand-500", emoji: "sprout" });
   const [saving, setSaving] = useState(false);
   const [dragIdx, setDragIdx] = useState(null);
   const [overIdx, setOverIdx] = useState(null);
@@ -997,7 +998,7 @@ function SliderManager() {
     setSaving(true);
     try {
       await apiFetch("/api/slides", { method: "POST", body: JSON.stringify(form) });
-      setForm({ tag: "", title: "", subtitle: "", cta: "Bax", href: "/products", bg: "from-brand-700 to-brand-500", emoji: "🌱" });
+      setForm({ tag: "", title: "", subtitle: "", cta: "Bax", href: "/products", bg: "from-brand-700 to-brand-500", emoji: "sprout" });
       await load();
       toast("Slide əlavə edildi", "success");
     } catch (err) { toast(err.message, "error"); }
@@ -1042,12 +1043,12 @@ function SliderManager() {
   function resetDrag() { setDragIdx(null); setOverIdx(null); }
 
   const BG_OPTIONS = [
-    { value: "from-brand-700 to-brand-500", label: "🟢 Yaşıl" },
-    { value: "from-amber-600 to-amber-400", label: "🟡 Sarı" },
-    { value: "from-sky-700 to-sky-500", label: "🔵 Mavi" },
-    { value: "from-orange-600 to-orange-400", label: "🟠 Narıncı" },
-    { value: "from-red-700 to-red-500", label: "🔴 Qırmızı" },
-    { value: "from-purple-700 to-purple-500", label: "🟣 Bənövşəyi" },
+    { value: "from-brand-700 to-brand-500", label: "Yaşıl" },
+    { value: "from-amber-600 to-amber-400", label: "Sarı" },
+    { value: "from-sky-700 to-sky-500", label: "Mavi" },
+    { value: "from-orange-600 to-orange-400", label: "Narıncı" },
+    { value: "from-red-700 to-red-500", label: "Qırmızı" },
+    { value: "from-purple-700 to-purple-500", label: "Bənövşəyi" },
   ];
 
   return (
@@ -1055,21 +1056,21 @@ function SliderManager() {
       <ToastContainer/>
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="font-bold text-lg">🎠 Slider İdarəsi</h2>
+          <h2 className="font-bold text-lg flex items-center gap-2"><Icon name="image" size={20}/>Slider İdarəsi</h2>
           <p className="text-sm text-gray-500">Slide-ları sürükləyərək sırasını dəyişin</p>
         </div>
       </div>
 
       {/* Create form */}
       <div className="card p-5">
-        <h3 className="font-semibold mb-4">➕ Yeni Slide Əlavə Et</h3>
+        <h3 className="font-semibold mb-4 flex items-center gap-2"><Icon name="plus" size={18}/>Yeni Slide Əlavə Et</h3>
         <form onSubmit={createSlide} className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <input className="input-field" placeholder="Etiket (məs: 🔥 Kampaniya)" value={form.tag} onChange={e=>setForm(f=>({...f,tag:e.target.value}))} />
+          <input className="input-field" placeholder="Etiket (məs: Kampaniya)" value={form.tag} onChange={e=>setForm(f=>({...f,tag:e.target.value}))} />
           <input className="input-field" placeholder="Başlıq *" required value={form.title} onChange={e=>setForm(f=>({...f,title:e.target.value}))} />
           <input className="input-field md:col-span-2" placeholder="Alt başlıq" value={form.subtitle} onChange={e=>setForm(f=>({...f,subtitle:e.target.value}))} />
           <input className="input-field" placeholder="Link (məs: /products) *" required value={form.href} onChange={e=>setForm(f=>({...f,href:e.target.value}))} />
           <input className="input-field" placeholder="Düymə mətni (məs: Bax)" value={form.cta} onChange={e=>setForm(f=>({...f,cta:e.target.value}))} />
-          <input className="input-field" placeholder="Emoji (məs: 🌱)" value={form.emoji} onChange={e=>setForm(f=>({...f,emoji:e.target.value}))} />
+          <input className="input-field" placeholder="İkon (məs: sprout)" value={form.emoji} onChange={e=>setForm(f=>({...f,emoji:e.target.value}))} />
           <select className="input-field" value={form.bg} onChange={e=>setForm(f=>({...f,bg:e.target.value}))}>
             {BG_OPTIONS.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}
           </select>
@@ -1081,10 +1082,10 @@ function SliderManager() {
       {loading ? (
         <div className="text-center py-8 text-gray-400">Yüklənir...</div>
       ) : slides.length === 0 ? (
-        <EmptyState icon="🎠" title="Hələ slide yoxdur" subtitle="Yuxarıdakı formdan birini əlavə edin" />
+        <EmptyState icon="image" title="Hələ slide yoxdur" subtitle="Yuxarıdakı formdan birini əlavə edin" />
       ) : (
         <div className="space-y-2">
-          <p className="text-xs text-gray-400 flex items-center gap-1">⬆️⬇️ Sürükləyin — dəyişiklik avtomatik saxlanılır</p>
+          <p className="text-xs text-gray-400 flex items-center gap-1">Sürükləyin — dəyişiklik avtomatik saxlanılır</p>
           {slides.map((slide, idx) => (
             <div
               key={slide.id}
@@ -1110,9 +1111,9 @@ function SliderManager() {
                   onClick={() => toggleActive(slide)}
                   className={`text-xs font-semibold px-2 py-1 rounded-lg transition-colors ${slide.isActive ? "bg-green-100 text-green-700 hover:bg-red-50 hover:text-red-600" : "bg-gray-100 text-gray-500 hover:bg-green-50 hover:text-green-700"}`}
                 >
-                  {slide.isActive ? "✅ Aktiv" : "⏸ Deaktiv"}
+                  {slide.isActive ? <span className="inline-flex items-center gap-1 text-emerald-600"><Icon name="checkCircle" size={14}/>Aktiv</span> : <span className="inline-flex items-center gap-1 text-gray-500"><Icon name="pause" size={14}/>Deaktiv</span>}
                 </button>
-                <button onClick={() => deleteSlide(slide.id)} className="text-red-400 hover:text-red-600 text-sm px-2 py-1 rounded-lg hover:bg-red-50 transition-colors">🗑</button>
+                <button onClick={() => deleteSlide(slide.id)} className="text-red-400 hover:text-red-600 text-sm px-2 py-1 rounded-lg hover:bg-red-50 transition-colors"><Icon name="trash" size={16}/></button>
               </div>
             </div>
           ))}
@@ -1161,11 +1162,11 @@ export default function AdminPanel() {
       case "notify":      return <PushBroadcastManager/>;
       case "slider":      return <SliderManager/>;
       case "analytics":   return (
-        <div className="space-y-4"><h2 className="font-bold text-lg">📈 Analitika Paneli</h2><AnalyticsPanel mode="admin" /></div>
+        <div className="space-y-4"><h2 className="font-bold text-lg flex items-center gap-2"><Icon name="trendingUp" size={20}/>Analitika Paneli</h2><AnalyticsPanel mode="admin" /></div>
       );
       case "user-modules": return <UserModulesPanel/>;
       case "studio":      return <NoCodeAdminStudio />;
-      default:            return <EmptyState icon="🚧" title="Gəlir..."/>;
+      default:            return <EmptyState icon="clock" title="Gəlir..."/>;
     }
   }
 

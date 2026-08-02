@@ -18,8 +18,8 @@ export default function UserPromoteProductPage({ params }) {
 
   const TIERS = [
     { id: "FEATURED", label: "Önə Çıxan (Featured)", price: 5, color: "text-blue-700", bg: "bg-blue-50", border: "border-blue-200" },
-    { id: "PREMIUM", label: "Premium ⭐", price: 15, color: "text-amber-700", bg: "bg-amber-50", border: "border-amber-200" },
-    { id: "VIP", label: "VIP 👑", price: 30, color: "text-purple-700", bg: "bg-purple-50", border: "border-purple-200" }
+    { id: "PREMIUM", label: "Premium ", price: 15, color: "text-amber-700", bg: "bg-amber-50", border: "border-amber-200" },
+    { id: "VIP", label: "VIP ", price: 30, color: "text-purple-700", bg: "bg-purple-50", border: "border-purple-200" }
   ];
 
   useEffect(() => {
@@ -83,7 +83,7 @@ export default function UserPromoteProductPage({ params }) {
 
       {success && (
         <div className="bg-green-50 border border-green-200 text-green-800 p-6 rounded-2xl mb-6 text-center shadow-sm">
-          <div className="text-4xl mb-2">🚀</div>
+          <div className="text-4xl mb-2"></div>
           <h2 className="text-xl font-bold mb-1">Təbrik edirik!</h2>
           <p className="text-sm">Elanınız uğurla "{selectedTierInfo.label}" statusuna keçirildi.</p>
           <p className="text-xs text-gray-500 mt-2">İdarə panelinə yönləndirilirsiniz...</p>

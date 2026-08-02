@@ -52,7 +52,7 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-gradient-to-br from-green-600 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-            <span className="text-3xl">🌾</span>
+            <span className="text-3xl"></span>
           </div>
           <h1 className="text-2xl font-black text-gray-900">FermerMarket</h1>
           <p className="text-gray-500 text-sm mt-1">Kabinetinizə daxil olun</p>
@@ -62,7 +62,7 @@ export default function LoginPage() {
           <div className="p-6">
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm mb-4 flex items-center gap-2">
-              <span>⚠️</span> {error}
+              <span>️</span> {error}
             </div>
           )}
           <form onSubmit={handleSubmit} className="space-y-4">

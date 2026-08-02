@@ -141,7 +141,7 @@ export default function AgronomPage() {
           <Icon name="sprout" size={36} /> FermerMarket AI Aqronom
         </h1>
         <p className="text-base text-teal-50 max-w-2xl mx-auto">
-          📷 Şəkil yüklə · Xəstəliyi müəyyən et · Çatışmayan elementi göstər · Dozanı hesabla · Çiləmə vaxtını tövsiyə et · Uyğun məhsulları göstər
+          Şəkil yüklə · Xəstəliyi müəyyən et · Çatışmayan elementi göstər · Dozanı hesabla · Çiləmə vaxtını tövsiyə et · Uyğun məhsulları göstər
         </p>
       </div>
 
@@ -179,7 +179,7 @@ export default function AgronomPage() {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">
-                    📷 Bitki şəkli yüklə
+                    Bitki şəkli yüklə
                   </label>
                   <label className="block cursor-pointer">
                     <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />

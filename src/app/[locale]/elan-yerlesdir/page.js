@@ -195,7 +195,7 @@ export default function PostListingPage() {
   if (success) {
     return (
       <div className="max-w-lg mx-auto px-4 py-16 text-center">
-        <div className="text-5xl mb-4">✅</div>
+        <div className="text-5xl mb-4"></div>
         <h1 className="text-xl font-extrabold mb-2">Elanınız qəbul edildi!</h1>
         <p className="text-gray-600 text-sm">
           Admin yoxlamasından keçdikdən sonra elanınız saytda görünəcək. Bu adətən qısa müddət çəkir.
@@ -221,7 +221,7 @@ export default function PostListingPage() {
       {!isSellerAccount && (
         <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-6 flex justify-between items-center text-sm">
           <div className="text-amber-800 font-medium">
-            🌾 Qeydiyyatdan keç — daha çox imkan əldə et!
+             Qeydiyyatdan keç — daha çox imkan əldə et!
           </div>
           <Link href="/login" className="bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl transition-all">
             Daxil ol
@@ -229,7 +229,7 @@ export default function PostListingPage() {
         </div>
       )}
 
-      <h1 className="text-xl font-extrabold mb-1">📢 Elan Yerləşdir</h1>
+      <h1 className="text-xl font-extrabold mb-1">Elan Yerləşdir</h1>
       <p className="text-sm text-gray-500 mb-6">
         {isSellerAccount
           ? "Elanınız admin təsdiqindən sonra aktivləşəcək."

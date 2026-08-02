@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { apiFetch } from "@/lib/apiClient";
 import ImageUploader from "@/components/ImageUploader";
+import Icon from "@/components/ui/Icon";
 import MessagingPanel from "@/components/chat/MessagingPanel";
 import AnalyticsPanel from "@/components/dashboard/AnalyticsPanel";
 import CatalogPanel from "@/components/dashboard/CatalogPanel";
@@ -113,7 +114,7 @@ function OverviewTab({ user }) {
           <p className="caption mt-1">Bu Ay Sifariş</p>
         </div>
         <div className="card p-4 text-center">
-          <p className="text-2xl font-bold text-amber-500">{stats.avgRating||"—"} ⭐</p>
+          <p className="text-2xl font-bold text-amber-500">{stats.avgRating||"—"}</p>
           <p className="caption mt-1">Ortalama Reytinq</p>
         </div>
       </div>
@@ -122,7 +123,7 @@ function OverviewTab({ user }) {
       {pushStatus !== "success" && (
         <div className="card p-4 bg-brand-50 border border-brand-100 flex items-center justify-between">
           <div>
-            <h3 className="font-bold text-sm text-brand-900">🔔 Yeni Sifariş və Mesaj Bildirişləri</h3>
+            <h3 className="font-bold text-sm text-brand-900">Yeni Sifariş və Mesaj Bildirişləri</h3>
             <p className="text-xs text-brand-700 mt-1">Tarayıcıda bildirişləri açaraq yeniliklərdən dərhal xəbərdar olun.</p>
           </div>
           <button 
@@ -138,7 +139,7 @@ function OverviewTab({ user }) {
       {/* Monthly Revenue Chart */}
       {stats.monthlyRevenue?.length > 0 && (
         <div className="card p-5">
-          <h3 className="font-bold text-sm mb-4">📈 Aylıq Gəlir (son 6 ay)</h3>
+          <h3 className="font-bold text-sm mb-4">Aylıq Gəlir (son 6 ay)</h3>
           <div className="space-y-2">
             {stats.monthlyRevenue.map((m, i) => (
               <div key={i} className="flex items-center gap-3">
@@ -161,7 +162,7 @@ function OverviewTab({ user }) {
       {/* Top Products */}
       {stats.topProducts?.length > 0 && (
         <div className="card p-5">
-          <h3 className="font-bold text-sm mb-3">🏆 Ən Çox Satan Məhsullar</h3>
+          <h3 className="font-bold text-sm mb-3">Ən Çox Satan Məhsullar</h3>
           <div className="space-y-2">
             {stats.topProducts.slice(0, 5).map((p, i) => (
               <div key={i} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
@@ -182,7 +183,7 @@ function OverviewTab({ user }) {
       {/* Recent Orders */}
       {stats.recentOrders?.length > 0 && (
         <div className="card p-5">
-          <h3 className="font-bold text-sm mb-3">📦 Son Sifarişlər</h3>
+          <h3 className="font-bold text-sm mb-3">Son Sifarişlər</h3>
           <div className="space-y-2">
             {stats.recentOrders.slice(0, 5).map(o => (
               <div key={o.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
@@ -203,13 +204,13 @@ function OverviewTab({ user }) {
       {/* Recent Reviews */}
       {stats.recentReviews?.length > 0 && (
         <div className="card p-5">
-          <h3 className="font-bold text-sm mb-3">⭐ Son Rəylər</h3>
+          <h3 className="font-bold text-sm mb-3">Son Rəylər</h3>
           <div className="space-y-3">
             {stats.recentReviews.map(r => (
               <div key={r.id} className="pb-3 border-b border-gray-50 last:border-0">
                 <div className="flex items-center justify-between mb-1">
                   <p className="text-sm font-medium">{r.user?.fullName}</p>
-                  <span className="text-xs text-amber-500">{"⭐".repeat(r.rating)}</span>
+                  <span className="inline-flex gap-0.5">{[1,2,3,4,5].map(n => <Icon key={n} name="star" size={12} className={n <= r.rating ? "text-amber-400 fill-amber-400" : "text-gray-300"} />)}</span>
                 </div>
                 <p className="text-xs text-gray-500">{r.comment}</p>
                 <p className="text-[10px] text-gray-400 mt-1">{r.product?.titleAz} • {new Date(r.createdAt).toLocaleDateString("az-AZ")}</p>
@@ -457,7 +458,7 @@ export default function FarmerPanel({ user }) {
         method: "POST",
         body: JSON.stringify({ packageId })
       });
-      setMsg("Elan Premium edildi! ⭐");
+      setMsg("Elan Premium edildi!");
       setPromoteModal(null);
       setTimeout(() => setMsg(""), 3000);
       loadMyProducts();
@@ -663,16 +664,16 @@ export default function FarmerPanel({ user }) {
     <div className="space-y-6">
       <div className="flex gap-2 border-b border-gray-200 overflow-x-auto">
         {[
-          { id: "overview", label: "📊 Ümumi Baxış" },
+          { id: "overview", label: "Ümumi Baxış" },
           { id: "products", label: "Elanlarım" },
           { id: "orders", label: "Sifarişlərim" },
           { id: "bundles", label: "Bağlamalar" },
           { id: "wallet", label: "Pul Kisəm" },
-          { id: "messages", label: "💬 Mesajlar" },
+          { id: "messages", label: "Mesajlar" },
           { id: "analytics", label: "Analitika" },
-          ...(user?.store ? [{ id: "catalog", label: "📦 Məhsullarım" }] : []),
-          ...(user?.store ? [{ id: "settings", label: "🏪 Mağazam" }] : []),
-          ...(!user?.store ? [{ id: "create-store", label: "🏪 Mağaza Aç" }] : []),
+          ...(user?.store ? [{ id: "catalog", label: "Məhsullarım" }] : []),
+          ...(user?.store ? [{ id: "settings", label: "Mağazam" }] : []),
+          ...(!user?.store ? [{ id: "create-store", label: "Mağaza Aç" }] : []),
         ].map((t) => (
           <button
             key={t.id}
@@ -840,7 +841,7 @@ export default function FarmerPanel({ user }) {
                             <div className="flex items-center gap-2">
                               {p.status === "ACTIVE" && (
                                 <button onClick={() => setPromoteModal(p.id)} className="text-[11px] font-bold text-amber-600 hover:text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md">
-                                  ⭐ Premium et
+                                  Premium et
                                 </button>
                               )}
                               {p.status !== "SOLD" && (
@@ -925,7 +926,7 @@ export default function FarmerPanel({ user }) {
 
       {tab === "settings" && user?.store && (
         <div className="card p-5">
-          <h2 className="font-bold mb-4">🏪 Mağaza Ayarları</h2>
+          <h2 className="font-bold mb-4">Mağaza Ayarları</h2>
           {storeSettingsError && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-2 mb-3">{storeSettingsError}</p>}
           {storeSettingsMsg && <p className="text-sm text-green-700 bg-green-50 rounded-lg p-2 mb-3">{storeSettingsMsg}</p>}
           
@@ -998,7 +999,7 @@ export default function FarmerPanel({ user }) {
       {tab === "bundles" && (
         <div className="space-y-4">
           <div className="card p-5">
-            <h2 className="font-bold mb-1">🎁 Yeni Bağlama Yarat</h2>
+            <h2 className="font-bold mb-1">Yeni Bağlama Yarat</h2>
             <p className="text-xs text-gray-500 mb-3">Ən azı 2 öz elanınızı seçib birgə endirimli qiymətə təklif edin. Bağlama aktiv elanlarınız arasında görünür və ana səhifədə "Bağlamalar" bölməsində alıcılara göstərilir.</p>
             {bundlesMsg && <p className="text-sm text-brand-700 bg-brand-50 rounded-lg p-2 mb-3">{bundlesMsg}</p>}
             {bundlesError && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-2 mb-3">{bundlesError}</p>}
@@ -1105,7 +1106,7 @@ export default function FarmerPanel({ user }) {
       {tab === "wallet" && (
         <div className="space-y-4">
           <div className="card p-5">
-            <h2 className="font-bold mb-1">💰 Balans</h2>
+            <h2 className="font-bold mb-1">Balans</h2>
             {walletLoading ? (
               <p className="text-sm text-gray-400">Yüklənir...</p>
             ) : walletError ? (
@@ -1180,7 +1181,7 @@ export default function FarmerPanel({ user }) {
 
       {tab === "analytics" && (
         <div className="card p-5">
-          <h2 className="font-bold mb-4">📊 Satış Analitikam</h2>
+          <h2 className="font-bold mb-4">Satış Analitikam</h2>
           <AnalyticsPanel mode="farmer" />
         </div>
       )}
@@ -1270,7 +1271,7 @@ export default function FarmerPanel({ user }) {
               &times;
             </button>
             <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
-              <span>⭐ Premium Paketlər</span>
+              <span>Premium Paketlər</span>
             </h3>
             <p className="text-sm text-gray-500 mb-4">Elanınızı ana səhifədə Premium bölməsinə çıxararaq daha çox müştəri cəlb edin.</p>
             {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-2 mb-3">{error}</p>}
@@ -1293,7 +1294,7 @@ export default function FarmerPanel({ user }) {
                 onClick={() => promoteProduct("2")} 
                 className="w-full relative text-left p-3 border-2 border-amber-400 rounded-xl bg-amber-50 hover:bg-amber-100 transition-colors flex justify-between items-center overflow-hidden"
               >
-                <div className="absolute top-0 right-0 bg-amber-400 text-white text-[10px] font-bold px-2 py-0.5 rounded-bl-lg">Fürsət Kampaniyası 🎁</div>
+                <div className="absolute top-0 right-0 bg-amber-400 text-white text-[10px] font-bold px-2 py-0.5 rounded-bl-lg">Fürsət Kampaniyası</div>
                 <div>
                   <p className="font-bold text-amber-900">15 Günlük Premium</p>
                   <p className="text-xs text-amber-700">500 Coin və ya 5 AZN</p>
@@ -1306,7 +1307,7 @@ export default function FarmerPanel({ user }) {
                 onClick={() => promoteProduct("3")} 
                 className="w-full relative text-left p-3 border border-gray-200 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-colors flex justify-between items-center overflow-hidden"
               >
-                <div className="absolute top-0 right-0 bg-blue-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-bl-lg">Ən Çox Seçilən 🔥</div>
+                <div className="absolute top-0 right-0 bg-blue-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-bl-lg">Ən Çox Seçilən</div>
                 <div>
                   <p className="font-bold text-blue-900">10 Günlük Premium</p>
                   <p className="text-xs text-blue-700">1000 Coin və ya 10 AZN</p>

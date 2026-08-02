@@ -31,10 +31,10 @@ export async function generateMetadata({ params }) {
 }
 
 const CATEGORY_LABELS = {
-  tips: "Tövsiyyələr 💡",
-  news: "Xəbərlər 📰",
-  market: "Bazar 📈",
-  agronomy: "Aqronomiya 🌿",
+  tips: "Tövsiyyələr ",
+  news: "Xəbərlər ",
+  market: "Bazar ",
+  agronomy: "Aqronomiya ",
 };
 
 export default async function BlogPostPage({ params }) {

@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useState } from "react";
 import { apiFetch } from "@/lib/apiClient";
 
@@ -36,7 +37,7 @@ export default function ReportModal({ productId, productTitle }) {
         onClick={() => setOpen(true)}
         className="text-[11px] text-gray-400 hover:text-red-500 flex items-center justify-end gap-1 font-semibold transition"
       >
-        ⚠️ Şikayət et
+        Şikayət et
       </button>
 
       {open && (
@@ -48,7 +49,7 @@ export default function ReportModal({ productId, productTitle }) {
             
             {success ? (
               <div className="text-center py-6">
-                <span className="text-4xl">✅</span>
+                <Icon name="checkCircle" size={48} className="text-green-500" />
                 <p className="font-bold mt-3 text-gray-800">Şikayət göndərildi</p>
                 <p className="text-xs text-gray-500 mt-1">Moderatorlar qısa zamanda baxacaq.</p>
               </div>

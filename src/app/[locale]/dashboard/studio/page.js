@@ -61,7 +61,7 @@ export default function StudioPage() {
       if (iframe?.contentWindow) {
         iframe.contentWindow.postMessage({ type: "FMK_RELOAD_BLOCKS" }, "*");
       }
-      alert("Dizayn uğurla yadda saxlanıldı! ✅");
+      alert("Dizayn uğurla yadda saxlanıldı! ");
     } catch (e) {
       alert("Xəta: " + e.message);
     } finally {

@@ -40,7 +40,7 @@ function ResetForm() {
   if (!token) {
     return (
       <div className="card p-6 text-center">
-        <p className="text-4xl mb-3">⚠️</p>
+        <p className="text-4xl mb-3">️</p>
         <p className="font-bold text-red-600">Keçərsiz link</p>
         <p className="text-sm text-gray-500 mt-2">Bu link etibarsız və ya müddəti bitib.</p>
         <Link href="/forgot-password" className="btn-primary mt-4 inline-block">Yenidən cəhd edin</Link>
@@ -51,7 +51,7 @@ function ResetForm() {
   if (done) {
     return (
       <div className="card p-6 text-center">
-        <div className="text-4xl mb-3">✅</div>
+        <div className="text-4xl mb-3"></div>
         <p className="font-bold text-gray-900">Şifrəniz yeniləndi!</p>
         <p className="text-sm text-gray-500 mt-2">Giriş səhifəsinə yönləndirilirsiniz...</p>
       </div>
@@ -96,7 +96,7 @@ export default function ResetPasswordPage() {
     <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-white px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="text-5xl mb-3">🔐</div>
+          <div className="text-5xl mb-3"></div>
           <h1 className="text-2xl font-black text-gray-900">Yeni Şifrə</h1>
           <p className="text-gray-500 text-sm mt-1">Hesabınız üçün yeni şifrə seçin</p>
         </div>

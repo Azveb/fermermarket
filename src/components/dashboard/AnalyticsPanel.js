@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Icon from "@/components/ui/Icon";
 import { apiFetch } from "@/lib/apiClient";
 
 const ORDER_STATUS_AZ = {
@@ -73,7 +74,7 @@ function SummaryCard({ icon, label, value, sub, color = "brand" }) {
   const colors = { brand: "bg-brand-50 text-brand-700", blue: "bg-blue-50 text-blue-700", amber: "bg-amber-50 text-amber-700", purple: "bg-purple-50 text-purple-700" };
   return (
     <div className={`rounded-2xl p-4 ${colors[color]}`}>
-      <p className="text-2xl mb-1">{icon}</p>
+      <div className="mb-1"><Icon name={icon} size={24} /></div>
       <p className="text-xl font-extrabold">{value}</p>
       <p className="text-xs font-medium opacity-80">{label}</p>
       {sub && <p className="text-[11px] opacity-60 mt-0.5">{sub}</p>}
@@ -115,21 +116,21 @@ function AdminAnalytics() {
         <>
           {/* Summary cards */}
           <div className="grid grid-cols-2 gap-3">
-            <SummaryCard icon="💰" label={`Gəlir (${range} gün)`} value={`₼${totalRevenue.toLocaleString("az-AZ", {maximumFractionDigits:0})}`} color="brand"/>
-            <SummaryCard icon="📦" label="Sifarişlər" value={totalOrders} color="blue"/>
-            <SummaryCard icon="👤" label="Yeni qeydiyyat" value={totalSignups} color="purple"/>
-            <SummaryCard icon="📊" label="Ort. sifariş dəyəri" value={totalOrders ? `₼${(totalRevenue/totalOrders).toFixed(1)}` : "—"} color="amber"/>
+            <SummaryCard icon="wallet" label={`Gəlir (${range} gün)`} value={`₼${totalRevenue.toLocaleString("az-AZ", {maximumFractionDigits:0})}`} color="brand"/>
+            <SummaryCard icon="package" label="Sifarişlər" value={totalOrders} color="blue"/>
+            <SummaryCard icon="user" label="Yeni qeydiyyat" value={totalSignups} color="purple"/>
+            <SummaryCard icon="dashboard" label="Ort. sifariş dəyəri" value={totalOrders ? `₼${(totalRevenue/totalOrders).toFixed(1)}` : "—"} color="amber"/>
           </div>
 
           {/* Revenue line chart */}
           <div className="card p-4">
-            <p className="font-semibold text-sm mb-3">📈 Gündəlik Gəlir</p>
+            <p className="font-semibold text-sm mb-3">Gündəlik Gəlir</p>
             <LineChart data={data?.dailyOrders || []} dayKey="day" valueKey="revenue" label="Gəlir (₼)"/>
           </div>
 
           {/* Orders line chart */}
           <div className="card p-4">
-            <p className="font-semibold text-sm mb-3">📦 Gündəlik Sifarişlər</p>
+            <p className="font-semibold text-sm mb-3">Gündəlik Sifarişlər</p>
             <LineChart data={data?.dailyOrders || []} dayKey="day" valueKey="orders" label="Sifarişlər"/>
           </div>
 
@@ -159,7 +160,7 @@ function AdminAnalytics() {
               </div>
             </div>
             <div className="card p-4">
-              <p className="font-semibold text-sm mb-3">📋 Sifariş statusları</p>
+              <p className="font-semibold text-sm mb-3">Sifariş statusları</p>
               <div className="space-y-1.5">
                 {(data?.orderStatusBreakdown || []).map(r => (
                   <div key={r.status} className="flex justify-between text-xs">
@@ -204,13 +205,13 @@ function FarmerAnalytics() {
       ) : (
         <>
           <div className="grid grid-cols-3 gap-2">
-            <SummaryCard icon="📦" label="Sifarişlər" value={data?.summary?.totalOrders || 0} color="blue"/>
-            <SummaryCard icon="🛒" label="Satılan" value={`${data?.summary?.totalSold || 0} ədəd`} color="brand"/>
-            <SummaryCard icon="💰" label="Balans" value={`₼${(data?.summary?.walletBalance || 0).toFixed(2)}`} color="amber"/>
+            <SummaryCard icon="package" label="Sifarişlər" value={data?.summary?.totalOrders || 0} color="blue"/>
+            <SummaryCard icon="cart" label="Satılan" value={`${data?.summary?.totalSold || 0} ədəd`} color="brand"/>
+            <SummaryCard icon="wallet" label="Balans" value={`₼${(data?.summary?.walletBalance || 0).toFixed(2)}`} color="amber"/>
           </div>
 
           <div className="card p-4">
-            <p className="font-semibold text-sm mb-3">📈 Gündəlik Satış Gəliri</p>
+            <p className="font-semibold text-sm mb-3">Gündəlik Satış Gəliri</p>
             <LineChart data={data?.dailySales || []} dayKey="day" valueKey="revenue" label="Gəlir (₼)"/>
           </div>
 
@@ -223,7 +224,7 @@ function FarmerAnalytics() {
 
           {(data?.activeProducts || []).length > 0 && (
             <div className="card p-4">
-              <p className="font-semibold text-sm mb-3">📋 Aktiv Məhsullarım</p>
+              <p className="font-semibold text-sm mb-3">Aktiv Məhsullarım</p>
               <div className="space-y-2">
                 {data.activeProducts.map(p => (
                   <div key={p.id} className="flex justify-between items-center text-sm py-1 border-b border-gray-50 last:border-0">

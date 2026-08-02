@@ -35,14 +35,14 @@ export default function ForgotPasswordPage() {
     <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-white px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="text-5xl mb-3">🔑</div>
+          <div className="text-5xl mb-3"></div>
           <h1 className="text-2xl font-black text-gray-900">Şifrəni Yenilə</h1>
           <p className="text-gray-500 text-sm mt-1">E-poçtunuzu daxil edin, link göndərəcəyik</p>
         </div>
 
         {done ? (
           <div className="card p-6 text-center">
-            <div className="text-4xl mb-3">📬</div>
+            <div className="text-4xl mb-3"></div>
             <p className="font-bold text-gray-900 mb-2">Link göndərildi!</p>
             <p className="text-sm text-gray-500 mb-4">
               <strong>{email}</strong> ünvanına şifrə sıfırlama linki göndərildi. Zəhmət olmasa yoxlayın.

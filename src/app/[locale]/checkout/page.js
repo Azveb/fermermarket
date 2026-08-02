@@ -53,13 +53,13 @@ export default function CheckoutPage() {
   if (success) {
     return (
       <div className="max-w-md mx-auto px-4 py-16 text-center">
-        <p className="text-5xl mb-3">✅</p>
+        <p className="text-5xl mb-3"></p>
         <h1 className="text-2xl font-black">Sifariş qəbul edildi!</h1>
         <p className="text-gray-500 mt-2">Sifariş nömrəniz: {success.id?.slice(0, 8)}</p>
         <p className="text-brand-700 font-bold text-lg mt-1">{Number(success.total || 0).toFixed(2)} AZN</p>
         
         <div className="mt-6 bg-gradient-to-r from-yellow-100 to-yellow-50 border border-yellow-200 p-4 rounded-2xl">
-          <p className="text-sm text-yellow-800 font-bold">🎉 Təbriklər!</p>
+          <p className="text-sm text-yellow-800 font-bold">Təbriklər!</p>
           <p className="text-xs text-yellow-700 mt-1">Bu alış-verişdən <strong className="text-lg">+{success.earnedCoin} 🪙</strong> FermerCoin qazandınız. Balansınızı Panelinizdən yoxlaya bilərsiniz.</p>
         </div>
 

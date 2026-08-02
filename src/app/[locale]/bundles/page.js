@@ -38,7 +38,7 @@ export default function BundlesPage() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
       <div className="text-center mb-10">
-        <h1 className="text-4xl font-black text-gray-900 tracking-tight">🎁 Sərfəli Bağlamalar</h1>
+        <h1 className="text-4xl font-black text-gray-900 tracking-tight"> Sərfəli Bağlamalar</h1>
         <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
           Məhsulları paket şəklində alaraq daha çox qənaət edin. Fermerlərin xüsusi təklifləri.
         </p>
@@ -79,7 +79,7 @@ export default function BundlesPage() {
                       {item.product.images?.[0]?.url ? (
                         <img src={item.product.images[0].url} alt="" className="w-8 h-8 rounded-lg object-cover" />
                       ) : (
-                        <div className="w-8 h-8 rounded-lg bg-gray-200 flex items-center justify-center text-xs">📸</div>
+                        <div className="w-8 h-8 rounded-lg bg-gray-200 flex items-center justify-center text-xs"></div>
                       )}
                       <Link href={`/products/${item.product.slug}`} className="hover:text-brand-600 truncate flex-1">
                         {item.product.titleAz}

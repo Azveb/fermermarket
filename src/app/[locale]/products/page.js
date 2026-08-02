@@ -179,7 +179,7 @@ export default async function ProductsPage({ searchParams }) {
 
           {showFallbackBanner && (
             <div className="flex items-center gap-2 px-4 py-3 bg-amber-50 border border-amber-200 rounded-2xl text-sm text-amber-800 mb-6">
-              ⚠️ Bu kateqoriyada dəqiq uyğun elan tapılmadı. Sizin üçün oxşar kateqoriyaların elanlarını göstəririk.
+              ️ Bu kateqoriyada dəqiq uyğun elan tapılmadı. Sizin üçün oxşar kateqoriyaların elanlarını göstəririk.
             </div>
           )}
 
@@ -197,7 +197,7 @@ export default async function ProductsPage({ searchParams }) {
           {products.length === 0 ? (
             <div className="text-center py-24 bg-white rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center justify-center">
               <div className="w-20 h-20 bg-gray-50 text-gray-400 rounded-full flex items-center justify-center mb-4">
-                <span className="text-4xl">🔍</span>
+                <span className="text-4xl"></span>
               </div>
               <h2 className="text-xl font-bold text-gray-900 mb-2">Heç bir elan tapılmadı</h2>
               <p className="text-gray-500 max-w-sm mb-6">Axtarış şərtlərinizə uyğun nəticə yoxdur. Zəhmət olmasa filtrləri dəyişərək yenidən yoxlayın.</p>

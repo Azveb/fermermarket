@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import Icon from "@/components/ui/Icon";
 
 function useCountUp(target, started) {
   const [count, setCount] = useState(0);
@@ -37,7 +38,9 @@ export default function StatCard({ icon, label, value, suffix="", prefix="", cha
   return (
     <div ref={ref} className="stat-card hover:shadow-md transition-shadow group">
       <div className="flex items-start justify-between">
-        <span className={`w-10 h-10 rounded-2xl flex items-center justify-center text-xl ${colors[color]||colors.brand}`}>{icon}</span>
+        <span className={`w-10 h-10 rounded-2xl flex items-center justify-center ${colors[color]||colors.brand}`}>
+          {typeof icon === "string" ? <Icon name={icon} size={20} /> : icon}
+        </span>
         {change !== undefined && (
           <span className={`badge text-[10px] ${Number(change)>=0?"badge-green":"badge-red"}`}>
             {Number(change)>=0?"↑":"↓"} {Math.abs(change)}%

@@ -288,7 +288,7 @@ export default async function ProductDetailPage({ params }) {
         <div>
           {product.status !== "ACTIVE" && (
             <div className="mb-4 bg-orange-50 border border-orange-200 text-orange-800 px-4 py-3 rounded-xl flex items-start gap-3 shadow-sm">
-              <span className="text-xl">⚠️</span>
+              <span className="text-xl"></span>
               <div>
                 <h3 className="font-bold text-sm">Bu elan aktiv deyil</h3>
                 <p className="text-xs mt-0.5">Məhsul satılıb və ya vaxtı bitib. Zəhmət olmasa, aşağıdakı oxşar məhsullara göz atın.</p>
@@ -302,11 +302,11 @@ export default async function ProductDetailPage({ params }) {
             {Number(product.price).toLocaleString("az-AZ")} {product.currency}
           </p>
           <p className="text-sm text-gray-500 mt-1">
-            📍 {product.city || product.region || "Qeyd olunmayıb"} · Stok: {product.stock}
+            {product.city || product.region || "Qeyd olunmayıb"} · Stok: {product.stock}
           </p>
           {product.store && (
             <div className="flex items-center gap-1.5 mt-2">
-              <span className="text-sm text-gray-600">🏪 Satıcı:</span>
+              <span className="text-sm text-gray-600"> Satıcı:</span>
               {product.store.slug ? (
                 <a href={`/stores/${product.store.slug}`} className="font-bold text-brand-700 hover:underline text-sm flex items-center gap-1">
                   {product.store.name}
@@ -323,18 +323,18 @@ export default async function ProductDetailPage({ params }) {
           {product.isCorporate && (
             <div className="flex items-center gap-2 mt-3 flex-wrap">
               <span className="inline-flex items-center gap-1.5 bg-purple-100 text-purple-800 text-xs font-semibold px-3 py-1 rounded-full">
-                🏢 Korporativ / Toplu satış
+                Korporativ / Toplu satış
               </span>
               {product.minOrderQty && (
                 <span className="inline-flex items-center gap-1 bg-orange-50 text-orange-700 border border-orange-200 text-xs font-medium px-3 py-1 rounded-full">
-                  📦 Minimum sifariş: <strong className="ml-1">{product.minOrderQty} ədəd</strong>
+                   Minimum sifariş: <strong className="ml-1">{product.minOrderQty} ədəd</strong>
                 </span>
               )}
             </div>
           )}
           {isGuestListing && (
             <p className="text-sm text-gray-600 mt-2">
-              👤 Elan sahibi: <strong>{product.guestName}</strong>
+              Elan sahibi: <strong>{product.guestName}</strong>
               <span className="ml-2 text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">Fərdi elan</span>
             </p>
           )}
@@ -346,7 +346,7 @@ export default async function ProductDetailPage({ params }) {
                   href={`tel:${contactPhone}`}
                   className="bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl px-5 py-2.5 text-sm"
                 >
-                  📞 Zəng et: {contactPhone}
+                   Zəng et: {contactPhone}
                 </a>
               )
             ) : product.isCorporate ? (
@@ -486,7 +486,7 @@ export default async function ProductDetailPage({ params }) {
           {/* Alternatives Widget */}
           {alternatives.length > 0 && (
             <div className="mt-8 border-t border-gray-100 pt-6">
-              <h3 className="font-bold text-sm text-gray-800 mb-3">🧪 Oxşar Tərkibli Alternativlər (Daha Sərfəli)</h3>
+              <h3 className="font-bold text-sm text-gray-800 mb-3"> Oxşar Tərkibli Alternativlər (Daha Sərfəli)</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {alternatives.map((alt) => (
                   <Link
@@ -498,7 +498,7 @@ export default async function ProductDetailPage({ params }) {
                       {alt.images?.[0]?.url ? (
                         <SafeImage src={alt.images[0].url} alt="" fill className="object-cover" />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-lg">🌿</div>
+                        <div className="w-full h-full flex items-center justify-center text-lg"></div>
                       )}
                     </div>
                     <div className="flex-grow min-w-0 flex flex-col justify-center">
@@ -516,7 +516,7 @@ export default async function ProductDetailPage({ params }) {
 
           {diseaseAlternatives.length > 0 && (
             <div className="mt-6 border-t border-gray-100 pt-6">
-              <h3 className="font-bold text-sm text-gray-800 mb-3">🦠 Bu Xəstəliklərə Qarşı Digər Dərmanlar</h3>
+              <h3 className="font-bold text-sm text-gray-800 mb-3">Bu Xəstəliklərə Qarşı Digər Dərmanlar</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {diseaseAlternatives.map((alt) => (
                   <Link
@@ -528,7 +528,7 @@ export default async function ProductDetailPage({ params }) {
                       {alt.images?.[0]?.url ? (
                         <SafeImage src={alt.images[0].url} alt="" fill className="object-cover" />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-lg">🌿</div>
+                        <div className="w-full h-full flex items-center justify-center text-lg"></div>
                       )}
                     </div>
                     <div className="flex-grow min-w-0 flex flex-col justify-center">
@@ -546,7 +546,7 @@ export default async function ProductDetailPage({ params }) {
 
           {pestAlternatives.length > 0 && (
             <div className="mt-6 border-t border-gray-100 pt-6">
-              <h3 className="font-bold text-sm text-gray-800 mb-3">🐛 Bu Zərərvericilərə Qarşı Digər Dərmanlar</h3>
+              <h3 className="font-bold text-sm text-gray-800 mb-3">Bu Zərərvericilərə Qarşı Digər Dərmanlar</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {pestAlternatives.map((alt) => (
                   <Link
@@ -558,7 +558,7 @@ export default async function ProductDetailPage({ params }) {
                       {alt.images?.[0]?.url ? (
                         <SafeImage src={alt.images[0].url} alt="" fill className="object-cover" />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-lg">🌿</div>
+                        <div className="w-full h-full flex items-center justify-center text-lg"></div>
                       )}
                     </div>
                     <div className="flex-grow min-w-0 flex flex-col justify-center">
@@ -589,7 +589,7 @@ export default async function ProductDetailPage({ params }) {
                 </div>
                 <div>
                   <p className="font-bold">{seller.fullName}</p>
-                  <p className="text-xs text-gray-500">{seller.role === 'STORE' ? '🏪 Mağaza' : '🌾 Fermer'}</p>
+                  <p className="text-xs text-gray-500">{seller.role === 'STORE' ? ' Mağaza' : 'Fermer'}</p>
                   <div className="flex items-center gap-1 mt-0.5">
                     {'★'.repeat(Math.round(seller.avgRating||0))}{'☆'.repeat(5-Math.round(seller.avgRating||0))}
                     <span className="text-xs text-gray-400">({seller.reviewCount||0} rəy)</span>
@@ -604,7 +604,7 @@ export default async function ProductDetailPage({ params }) {
                     {seller.otherListings.slice(0,5).map(l => (
                       <a key={l.id} href={`/products/${l.slug}`} className="shrink-0 w-20">
                         <div className="aspect-square rounded-lg bg-gray-100 overflow-hidden mb-1">
-                          {l.images?.[0] ? <img src={l.images[0].url} className="w-full h-full object-cover"/> : <div className="w-full h-full flex items-center justify-center text-xl">🌾</div>}
+                          {l.images?.[0] ? <img src={l.images[0].url} className="w-full h-full object-cover"/> : <div className="w-full h-full flex items-center justify-center text-xl"></div>}
                         </div>
                         <p className="text-[10px] font-medium line-clamp-2 leading-tight">{l.titleAz}</p>
                         <p className="text-[10px] font-bold text-brand-700 mt-0.5">₼{Number(l.price).toLocaleString()}</p>

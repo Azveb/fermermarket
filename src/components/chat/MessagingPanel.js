@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { apiFetch, getUser } from "@/lib/apiClient";
 
@@ -32,7 +33,7 @@ function ChatWindow({ conversationId, user, otherName, onBack }) {
 
   useEffect(() => {
     load();
-    pollRef.current = setInterval(load, 5000); // 📡 polling every 5s
+    pollRef.current = setInterval(load, 5000); // polling every 5s
     return () => clearInterval(pollRef.current);
   }, [load]);
 
@@ -168,7 +169,7 @@ export default function MessagingPanel() {
   return (
     <div className="card p-5">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="font-bold text-gray-900">💬 Mesajlarım</h2>
+        <h2 className="font-bold text-gray-900">Mesajlarım</h2>
         <span className="badge-blue text-[11px] px-2 py-0.5 rounded-full">{conversations.length}</span>
       </div>
 
@@ -178,7 +179,7 @@ export default function MessagingPanel() {
         </div>
       ) : conversations.length === 0 ? (
         <div className="text-center py-10">
-          <p className="text-4xl mb-3">💬</p>
+          <Icon name="message" size={48} className="text-gray-300 mb-3" />
           <p className="text-gray-400 text-sm">Hələ heç bir söhbətiniz yoxdur.</p>
           <p className="text-gray-400 text-xs mt-1">Bir elanın səhifəsinə gedib "Mesaj göndər" düyməsini sınayın.</p>
         </div>
@@ -204,7 +205,7 @@ export default function MessagingPanel() {
                     </p>
                     <p className="text-[10px] text-gray-400 flex-shrink-0 ml-1">{lastMsg ? formatTime(lastMsg.createdAt) : ""}</p>
                   </div>
-                  {conv.product && <p className="text-[11px] text-brand-600 truncate">📦 {conv.product.titleAz}</p>}
+                  {conv.product && <p className="text-[11px] text-brand-600 truncate">{conv.product.titleAz}</p>}
                   {lastMsg && (
                     <p className={`text-xs truncate mt-0.5 ${isUnread ? "text-gray-800 font-medium" : "text-gray-400"}`}>
                       {lastMsg.senderId === user.id ? "Siz: " : ""}{lastMsg.content}

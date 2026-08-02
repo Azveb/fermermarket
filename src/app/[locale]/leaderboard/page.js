@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@/i18n/routing";
 
 const PERIOD_LABELS = { week: "Bu həftə", month: "Bu ay" };
-const MEDALS = ["🥇", "🥈", "🥉"];
+const MEDALS = ["", "", ""];
 
 export default function LeaderboardPage() {
   const [data, setData] = useState(null);
@@ -24,7 +24,7 @@ export default function LeaderboardPage() {
   return (
     <main className="max-w-2xl mx-auto px-4 py-8 pb-24">
         <div className="text-center mb-8">
-          <div className="text-5xl mb-3">🏆</div>
+          <div className="text-5xl mb-3"></div>
           <h1 className="text-2xl font-black text-gray-900">Ayın Fermerləri</h1>
           <p className="text-gray-500 mt-1">Ən çox satış həyata keçirən fermerlər</p>
         </div>
@@ -52,7 +52,7 @@ export default function LeaderboardPage() {
           </div>
         ) : leaders.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-4xl mb-3">📭</p>
+            <p className="text-4xl mb-3"></p>
             <p className="text-gray-500">Bu dövr üçün məlumat yoxdur</p>
           </div>
         ) : (
@@ -78,7 +78,7 @@ export default function LeaderboardPage() {
 
                 {/* Avatar placeholder */}
                 <div className="w-12 h-12 rounded-2xl bg-brand-100 flex items-center justify-center flex-shrink-0">
-                  <span className="text-xl">🧑‍🌾</span>
+                  <span className="text-xl">‍</span>
                 </div>
 
                 {/* Info */}

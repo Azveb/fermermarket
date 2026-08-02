@@ -60,22 +60,22 @@ export default async function StorePage({ params }) {
               {store.logoUrl ? (
                 <SafeImage src={store.logoUrl} alt={store.name} width={80} height={80} className="w-full h-full object-cover" />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-3xl">🏪</div>
+                <div className="w-full h-full flex items-center justify-center text-3xl"></div>
               )}
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
                 <h1 className="text-xl font-black text-gray-900">{store.name}</h1>
                 {store.isVerified && (
-                  <span className="text-xs bg-brand-100 text-brand-700 font-semibold px-2 py-0.5 rounded-full">✅ Təsdiqlənib</span>
+                  <span className="text-xs bg-brand-100 text-brand-700 font-semibold px-2 py-0.5 rounded-full">Təsdiqlənib</span>
                 )}
               </div>
               <p className="text-sm text-gray-500 mt-1">{store.owner.fullName}</p>
               <div className="flex items-center gap-4 mt-2 flex-wrap text-sm">
-                {rating && <span className="text-yellow-600 font-semibold">⭐ {rating}</span>}
-                <span className="text-gray-500">📦 {deliveredOrders} satış</span>
-                <span className="text-gray-500">🌿 {store._count.products} aktiv elan</span>
-                <span className="text-gray-500">📅 {memberSince}-ci ildən</span>
+                {rating && <span className="text-yellow-600 font-semibold"> {rating}</span>}
+                <span className="text-gray-500"> {deliveredOrders} satış</span>
+                <span className="text-gray-500">{store._count.products} aktiv elan</span>
+                <span className="text-gray-500">{memberSince}-ci ildən</span>
               </div>
             </div>
           </div>
@@ -87,10 +87,10 @@ export default async function StorePage({ params }) {
         </div>
 
         {/* Products */}
-        <h2 className="font-bold text-gray-900 mb-4">🛒 Aktiv Elanlar ({store._count.products})</h2>
+        <h2 className="font-bold text-gray-900 mb-4">Aktiv Elanlar ({store._count.products})</h2>
         {store.products.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-4xl mb-3">📭</p>
+            <p className="text-4xl mb-3"></p>
             <p className="text-gray-500">Bu mağazada aktiv elan yoxdur</p>
           </div>
         ) : (

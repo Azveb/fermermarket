@@ -16,7 +16,7 @@ export default function WhatsAppButton({ phone = "994501234567", message, label 
       rel="noopener noreferrer"
       className={`inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe57] text-white font-semibold px-4 py-2.5 rounded-xl transition-colors ${className}`}
     >
-      <span>💬</span> {label}
+      <Icon name="message" size={16} /> {label}
     </a>
   );
 }

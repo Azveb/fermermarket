@@ -4,6 +4,7 @@ import { Link } from "@/i18n/routing";
 import { apiFetch } from "@/lib/apiClient";
 import MessagingPanel from "@/components/chat/MessagingPanel";
 import AnalyticsPanel from "@/components/dashboard/AnalyticsPanel";
+import Icon from "@/components/ui/Icon";
 
 const ORDER_STATUS_LABELS = {
   PENDING:    "Gözləyir",
@@ -26,13 +27,13 @@ const ORDER_STATUS_COLORS = {
 };
 
 const ORDER_STATUS_ICONS = {
-  PENDING:    "⏳",
-  PAID:       "💳",
-  PROCESSING: "🔧",
-  SHIPPED:    "🚚",
-  DELIVERED:  "✅",
-  CANCELLED:  "❌",
-  REFUNDED:   "↩️",
+  PENDING:    "clock",
+  PAID:       "creditCard",
+  PROCESSING: "settings",
+  SHIPPED:    "truck",
+  DELIVERED:  "checkCircle",
+  CANCELLED:  "close",
+  REFUNDED:   "closeCircle",
 };
 
 
@@ -75,16 +76,18 @@ function BuyerStats() {
 
   return (
     <div className="space-y-4">
-      <h2 className="font-bold text-gray-900">📊 Alıcı Statistikam</h2>
+      <h2 className="font-bold text-gray-900 flex items-center gap-2"><Icon name="dashboard" size={20} className="text-brand-600" /> Alıcı Statistikam</h2>
       <div className="grid grid-cols-2 gap-3">
         {[
-          { label: "Ümumi sifariş", value: stats.total, icon: "📦" },
-          { label: "Tamamlanan", value: stats.delivered, icon: "✅" },
-          { label: "Ümumi xərc", value: `₼${stats.totalSpent.toFixed(2)}`, icon: "💳" },
-          { label: "Sevimlilər", value: stats.favs, icon: "❤️" },
+          { label: "Ümumi sifariş", value: stats.total, icon: "package" },
+          { label: "Tamamlanan", value: stats.delivered, icon: "checkCircle" },
+          { label: "Ümumi xərc", value: `₼${stats.totalSpent.toFixed(2)}`, icon: "creditCard" },
+          { label: "Sevimlilər", value: stats.favs, icon: "heart" },
         ].map((s, i) => (
           <div key={i} className="card p-4 text-center">
-            <div className="text-2xl mb-1">{s.icon}</div>
+            <div className="flex justify-center mb-1 text-brand-600">
+              <Icon name={s.icon} size={24} />
+            </div>
             <div className="text-xl font-black text-brand-700">{s.value}</div>
             <div className="text-xs text-gray-500 mt-0.5">{s.label}</div>
           </div>
@@ -122,8 +125,8 @@ function OrderCard({ order: o }) {
             <span className="font-mono text-xs text-gray-400">#{o.id.slice(-8)}</span>
             <p className="text-xs text-gray-500 mt-0.5">{new Date(o.createdAt).toLocaleDateString("az-AZ", {day:"numeric",month:"long",year:"numeric"})}</p>
           </div>
-          <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full flex-shrink-0 ${ORDER_STATUS_COLORS[o.status] || "bg-gray-100 text-gray-600"}`}>
-            <span>{ORDER_STATUS_ICONS[o.status]}</span>
+          <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full flex-shrink-0 ${ORDER_STATUS_COLORS[o.status] || "bg-gray-100 text-gray-600"}`}>
+            <Icon name={ORDER_STATUS_ICONS[o.status] || "clock"} size={14} />
             {ORDER_STATUS_LABELS[o.status] || o.status}
           </span>
         </div>
@@ -134,7 +137,9 @@ function OrderCard({ order: o }) {
               item.product?.images?.[0]?.url ? (
                 <img key={i} src={item.product.images[0].url} alt="" className="w-8 h-8 rounded-lg object-cover border-2 border-white"/>
               ) : (
-                <div key={i} className="w-8 h-8 rounded-lg bg-brand-100 border-2 border-white flex items-center justify-center text-sm">🌿</div>
+                <div key={i} className="w-8 h-8 rounded-lg bg-brand-100 border-2 border-white flex items-center justify-center">
+                  <Icon name="sprout" size={16} className="text-brand-600" />
+                </div>
               )
             )}
           </div>
@@ -152,7 +157,9 @@ function OrderCard({ order: o }) {
               {item.product?.images?.[0]?.url ? (
                 <img src={item.product.images[0].url} alt="" className="w-14 h-14 rounded-xl object-cover flex-shrink-0"/>
               ) : (
-                <div className="w-14 h-14 rounded-xl bg-brand-50 flex items-center justify-center text-2xl flex-shrink-0">🌿</div>
+                <div className="w-14 h-14 rounded-xl bg-brand-50 flex items-center justify-center flex-shrink-0">
+                  <Icon name="sprout" size={28} className="text-brand-600" />
+                </div>
               )}
               <div className="flex-1 min-w-0">
                 <p className="font-medium text-sm line-clamp-1">{item.product?.titleAz||"Məhsul"}</p>
@@ -172,7 +179,7 @@ function OrderCard({ order: o }) {
                 return (
                   <div key={s} className="flex items-center gap-1 flex-1">
                     <div className={`w-4 h-4 rounded-full flex items-center justify-center text-[9px] flex-shrink-0 ${done?"bg-brand-600 text-white":"bg-gray-200 text-gray-400"}`}>
-                      {ORDER_STATUS_ICONS[s]||"•"}
+                      <Icon name={ORDER_STATUS_ICONS[s] || "check"} size={10} />
                     </div>
                     {i<4&&<div className={`flex-1 h-0.5 ${done&&i<idx?"bg-brand-400":"bg-gray-200"}`}/>}
                   </div>
@@ -218,14 +225,14 @@ export default function BuyerPanel({ user }) {
   }
 
   const tabs = [
-    { id: "orders", label: "📦 Sifarişlər" },
-    { id: "favorites", label: "❤️ Sevimlilər" },
-    ...(user?.store ? [] : [{ id: "messages", label: "💬 Mesajlar" }]),
-    { id: "analytics", label: "📊 Statistika" },
-    ...(user?.store ? [] : [{ id: "store", label: "🏪 Mağazam" }]),
-    { id: "profile", label: "👤 Profil" },
+    { id: "orders", label: "Sifarişlər", icon: "package" },
+    { id: "favorites", label: "Sevimlilər", icon: "heart" },
+    ...(user?.store ? [] : [{ id: "messages", label: "Mesajlar", icon: "message" }]),
+    { id: "analytics", label: "Statistika", icon: "dashboard" },
+    ...(user?.store ? [] : [{ id: "store", label: "Mağazam", icon: "store" }]),
+    { id: "profile", label: "Profil", icon: "user" },
   ];
-  if (user?.role === "AGRONOMIST") tabs.push({ id: "agro", label: "🌿 Aqronom" });
+  if (user?.role === "AGRONOMIST") tabs.push({ id: "agro", label: "Aqronom", icon: "sprout" });
 
   return (
     <div className="space-y-4">
@@ -235,12 +242,13 @@ export default function BuyerPanel({ user }) {
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
-            className={`flex-shrink-0 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+            className={`flex-shrink-0 px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 ${
               tab === t.id
                 ? "bg-brand-600 text-white shadow-sm"
                 : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
           >
+            {t.icon && <Icon name={t.icon} size={16} />}
             {t.label}
           </button>
         ))}
@@ -258,7 +266,9 @@ export default function BuyerPanel({ user }) {
             </div>
           ) : orders.length === 0 ? (
             <div className="text-center py-10">
-              <p className="text-4xl mb-3">📦</p>
+              <div className="flex justify-center mb-3">
+                <Icon name="package" size={48} className="text-brand-300" />
+              </div>
               <p className="text-gray-400 text-sm mb-4">Hələ sifarişiniz yoxdur.</p>
               <Link href="/products" className="btn-primary inline-block">Elanlara bax</Link>
             </div>
@@ -284,7 +294,9 @@ export default function BuyerPanel({ user }) {
             </div>
           ) : favorites.length === 0 ? (
             <div className="text-center py-10">
-              <p className="text-4xl mb-3">❤️</p>
+              <div className="flex justify-center mb-3">
+                <Icon name="heart" size={48} className="text-brand-300" />
+              </div>
               <p className="text-gray-400 text-sm mb-4">Hələ sevimli elanınız yoxdur.</p>
               <Link href="/products" className="btn-primary inline-block">Elanlara bax</Link>
             </div>
@@ -307,9 +319,9 @@ export default function BuyerPanel({ user }) {
                   </Link>
                   <button
                     onClick={() => removeFavorite(fav.productId)}
-                    className="mt-2 text-xs text-red-400 hover:text-red-600 transition-colors"
+                    className="mt-2 text-xs text-red-400 hover:text-red-600 transition-colors flex items-center gap-1"
                   >
-                    ❌ Çıxart
+                    <Icon name="close" size={12} /> Çıxart
                   </button>
                 </div>
               ))}
@@ -327,7 +339,7 @@ export default function BuyerPanel({ user }) {
       {/* Store Creation */}
       {tab === "store" && (
         <div className="card p-5">
-          <h2 className="font-bold mb-4 text-gray-900">🏪 Mağaza Yarat</h2>
+          <h2 className="font-bold mb-4 text-gray-900 flex items-center gap-2"><Icon name="store" size={20} className="text-brand-600" /> Mağaza Yarat</h2>
           <p className="text-sm text-gray-500 mb-6">Öz mağazanızı yaradaraq məhsullarınızı satmağa başlayın. Mağaza yaratdıqdan sonra satıcı panelinə keçid edəcəksiniz.</p>
           <StoreCreateForm />
         </div>
@@ -340,7 +352,7 @@ export default function BuyerPanel({ user }) {
           <p className="text-sm text-gray-500 mb-4">
             Konsultasiya idarəetməsi tezliklə əlavə olunacaq.
           </p>
-          <Link href="/agronom" className="btn-primary inline-block">🌿 AI Aqronom Alətini Sınadın</Link>
+          <Link href="/agronom" className="btn-primary inline-flex items-center gap-2"><Icon name="sprout" size={18} /> AI Aqronom Alətini Sınadın</Link>
         </div>
       )}
 
@@ -371,7 +383,7 @@ function ProfileSettings({ user }) {
     setSaving(true); setMsg(""); setError("");
     try {
       await apiFetch("/api/users/me", { method: "PATCH", body: JSON.stringify(form) });
-      setMsg("Profil güncəlləndi ✓");
+      setMsg("Profil güncəlləndi");
     } catch (err) {
       setError(err.message || "Xəta baş verdi");
     } finally { setSaving(false); }
@@ -384,7 +396,7 @@ function ProfileSettings({ user }) {
     setSavingPw(true); setPwMsg(""); setPwError("");
     try {
       await apiFetch("/api/users/me", { method: "PATCH", body: JSON.stringify({ oldPassword: pwForm.currentPassword, newPassword: pwForm.newPassword }) });
-      setPwMsg("Şifrə dəyişdirildi ✓");
+      setPwMsg("Şifrə dəyişdirildi");
       setPwForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
     } catch (err) {
       setPwError(err.message || "Cari şifrə yanlışdır");
@@ -437,7 +449,7 @@ function ProfileSettings({ user }) {
 
       {/* Password Change */}
       <div className="card p-5">
-        <h3 className="font-bold mb-4">🔐 Şifrə Dəyişdir</h3>
+        <h3 className="font-bold mb-4 flex items-center gap-2"><Icon name="settings" size={18} className="text-brand-600" /> Şifrə Dəyişdir</h3>
         <form onSubmit={changePassword} className="space-y-3">
           {pwError && <p className="text-sm text-red-600 bg-red-50 rounded-xl p-3">{pwError}</p>}
           {pwMsg && <p className="text-sm text-green-600 bg-green-50 rounded-xl p-3">{pwMsg}</p>}
@@ -528,7 +540,7 @@ function StoreCreateForm() {
   if (success) {
     return (
       <div className="text-center py-8 space-y-3">
-        <div className="text-5xl">🎉</div>
+        <div className="flex justify-center mb-2"><Icon name="checkCircle" size={48} className="text-brand-600" /></div>
         <h3 className="font-bold text-lg text-brand-700">Mağazanız yaradıldı!</h3>
         <p className="text-sm text-gray-500">Səhifə yenilənir...</p>
       </div>
@@ -574,7 +586,7 @@ function StoreCreateForm() {
           onClick={() => setShowExtra(v => !v)}
           className="w-full flex items-center justify-between px-4 py-3 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition-colors"
         >
-          <span>📋 Əlavə Biznes Məlumatları (İsteğe Bağlı)</span>
+          <span className="flex items-center gap-2"><Icon name="clipboard" size={16} /> Əlavə Biznes Məlumatları (İsteğe Bağlı)</span>
           <span className="text-gray-400">{showExtra ? "▲ Bağla" : "▼ Aç"}</span>
         </button>
         {showExtra && (
@@ -600,7 +612,7 @@ function StoreCreateForm() {
         )}
       </div>
 
-      <button type="submit" disabled={creating} className="btn-primary w-full mt-2">
+      <button type="submit" disabled={creating} className="btn-primary w-full mt-2 flex items-center justify-center gap-2">
         {creating ? (
           <span className="flex items-center justify-center gap-2">
             <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
@@ -609,7 +621,11 @@ function StoreCreateForm() {
             </svg>
             Yaradılır...
           </span>
-        ) : "🏪 Mağaza Yarat"}
+        ) : (
+          <span className="flex items-center justify-center gap-2">
+            <Icon name="store" size={18} /> Mağaza Yarat
+          </span>
+        )}
       </button>
     </form>
   );
