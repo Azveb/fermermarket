@@ -35,12 +35,12 @@ export default async function CategorySubcategoryPage({ params }) {
   });
 
   if (!category) {
-    redirect(`/${locale}/categories`);
+    redirect("/categories");
   }
 
   // If it's a leaf node, redirect to products page
   if (category.children.length === 0) {
-    redirect(`/${locale}/products?category=${slug}`);
+    redirect(`/products?category=${slug}`);
   }
 
   const iconMap = {

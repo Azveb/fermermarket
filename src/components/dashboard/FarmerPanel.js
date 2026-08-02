@@ -579,6 +579,39 @@ export default function FarmerPanel({ user }) {
     }
   }
 
+
+  async function createStore(e) {
+    e.preventDefault();
+    setStoreSettingsError("");
+    setStoreSettingsMsg("");
+    setStoreSettingsLoading(true);
+    try {
+      const data = await apiFetch("/api/stores", {
+        method: "POST",
+        body: JSON.stringify({
+          name: storeSettingsForm.name,
+          description: storeSettingsForm.description || undefined,
+          address: storeSettingsForm.address || undefined,
+          phone: storeSettingsForm.phone || undefined,
+          whatsapp: storeSettingsForm.whatsapp || undefined,
+          logoUrl: storeSettingsForm.logoUrl || undefined,
+        }),
+      });
+      setStoreSettingsMsg("Mağaza uğurla yaradıldı! ✓");
+      // Update user object with new store
+      if (user) {
+        user.store = data.store;
+        user.role = data.store?.ownerId ? user.role : "STORE";
+      }
+      // Force page reload to pick up new store data
+      setTimeout(() => window.location.reload(), 1500);
+    } catch (err) {
+      setStoreSettingsError(err.message || "Mağaza yaradıla bilmədi");
+    } finally {
+      setStoreSettingsLoading(false);
+    }
+  }
+
   async function saveStoreSettings(e) {
     e.preventDefault();
     setStoreSettingsError("");
@@ -639,6 +672,7 @@ export default function FarmerPanel({ user }) {
           { id: "analytics", label: "Analitika" },
           ...(user?.store ? [{ id: "catalog", label: "📦 Məhsullarım" }] : []),
           ...(user?.store ? [{ id: "settings", label: "🏪 Mağazam" }] : []),
+          ...(!user?.store ? [{ id: "create-store", label: "🏪 Mağaza Aç" }] : []),
         ].map((t) => (
           <button
             key={t.id}

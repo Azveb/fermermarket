@@ -7,6 +7,8 @@ import {
   Check,
   ChevronDown,
   CircleCheck,
+  Cpu,
+  Clock,
   CreditCard,
   CircleX,
   ClipboardCheck,
@@ -34,7 +36,7 @@ import {
   ZoomIn,
   X,
   Apple, Bird, Bug, Carrot, Dog, Droplet, Fish, Leaf, Rabbit, Tractor, Wheat,
-  Trees, Milk, Sun, CloudRain, Snowflake, Flame, Hexagon, Component, Grid, Tag, Box, Store, ShoppingBasket, CircleDollarSign, FlameKindling, Palmtree
+  Trees, Milk, Sun, CloudRain, Snowflake, Flame, FileText, FlaskConical, Hexagon, Component, Grid, Tag, Box, Store, ShoppingBasket, CircleDollarSign, FlameKindling, Palmtree
 } from "lucide-react";
 
 export const ICONS = {
@@ -47,6 +49,8 @@ export const ICONS = {
   check: Check,
   chevronDown: ChevronDown,
   checkCircle: CircleCheck,
+  bot: Cpu,
+  clock: Clock,
   closeCircle: CircleX,
   clipboard: ClipboardCheck,
   heart: Heart,
@@ -89,6 +93,8 @@ export const ICONS = {
   cloudRain: CloudRain,
   snowflake: Snowflake,
   flame: Flame,
+  flask: FlaskConical,
+  fileText: FileText,
   flameKindling: FlameKindling,
   palmtree: Palmtree,
   hexagon: Hexagon,

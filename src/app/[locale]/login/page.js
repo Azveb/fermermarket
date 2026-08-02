@@ -22,7 +22,7 @@ export default function LoginPage() {
         body: JSON.stringify(form),
       });
       saveSession({ accessToken: data.accessToken, refreshToken: data.refreshToken, user: data.user });
-      router.push(`/${locale}/dashboard`);
+      router.push("/dashboard");
     } catch (err) {
       const msg = err?.code === "DB_CONN"
         ? "Sunucu bağlantısı hatası. Lütfen yöneticinizle iletişime geçin."

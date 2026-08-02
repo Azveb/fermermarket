@@ -43,10 +43,12 @@ export default function Header() {
   const NAV_LINKS = [
     { href: "/products", label: t("products") },
     { href: "/categories", label: t("categories") },
+    { href: "/brands", label: t("brands") },
     { href: "/campaigns", label: t("campaigns") },
     { href: "/stores", label: t("stores") },
-    { href: "/blog", label: t("blog") },
     { href: "/agronom", label: t("agronom") },
+    { href: "/agro-services", label: t("agroServices") },
+    { href: "/blog", label: t("blog") },
   ];
 
   useEffect(() => {

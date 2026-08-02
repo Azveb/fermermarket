@@ -85,6 +85,29 @@ model Listing {
   @@index([endDate])
 }
 
+
+// ==========================================================
+// Phase 14: Brand / Manufacturer Management
+// ==========================================================
+model Brand {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  logoUrl     String?
+  country     String?  // istehsalçı ölkə
+  website     String?
+  description String?  @db.Text
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+
+  products    Product[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive])
+}
+
 model Campaign {
   id     String         @id @default(cuid())
   title  String
@@ -297,6 +320,7 @@ model User {
   messages            Message[]
   pushSubscriptions   PushSubscription[]
   notifications       Notification[]
+  agroServiceRequests AgroServiceRequest[]
   farmerProfile       FarmerProfile?
   modules             UserModule[]
   grantedModules      UserModule[]       @relation("ModuleGranter")
@@ -513,6 +537,8 @@ model Product {
   wholesalePrice      Decimal? @db.Decimal(12, 2)
   wholesaleMinQty     Int?
   manufacturer        String?
+  brandId             String?
+  brand               Brand?   @relation(fields: [brandId], references: [id], onDelete: SetNull)
   countryOfOrigin     String?
   compareCount        Int      @default(0)
   isOrganic           Boolean  @default(false)
@@ -984,6 +1010,33 @@ model DynamicBlock {
 }
 
 // ==========================================================
+
+// ==========================================================
+// Phase 15: Agro Service Requests (Soil/Leaf Analysis, Consultation)
+// ==========================================================
+model AgroServiceRequest {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  serviceType   String   // "soil_analysis" | "leaf_analysis" | "consultation"
+  farmLocation  String?
+  cropType      String?
+  area          String?  // "5 ha", "10 ha"
+  notes         String?  @db.Text
+  contactPhone  String?
+  status        String   @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED, CANCELLED
+  result        String?  @db.Text // analysis result (filled by agronomist)
+  resultFileUrl String?  // PDF/image result file
+  assignedTo    String?  // agronomist user id
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
+  @@index([serviceType])
+  @@index([status])
+}
+
 // Phase 13: Contact Messages
 // ==========================================================
 model ContactMessage {

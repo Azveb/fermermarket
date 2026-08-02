@@ -13,7 +13,7 @@ export async function GET(request) {
       id: true, email: true, phone: true, fullName: true, role: true,
       status: true, locale: true, emailVerified: true, phoneVerified: true,
       createdAt: true,
-      store: { select: { id: true, name: true, slug: true, installmentEnabled: true, installmentWhatsapp: true } },
+      store: { select: { id: true, name: true, slug: true, description: true, address: true, phone: true, whatsapp: true, logoUrl: true, coverUrl: true, isVerified: true, isActive: true, installmentEnabled: true, installmentWhatsapp: true } },
       modules: { select: { module: true } },
     },
   });
