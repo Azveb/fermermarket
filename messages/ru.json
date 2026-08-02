@@ -1,0 +1,19 @@
+{
+  "Navigation": {
+    "products": "Товары",
+    "categories": "Категории",
+    "campaigns": "Кампании",
+    "stores": "Магазины",
+    "blog": "Блог",
+    "agronom": "Агроном",
+    "search_placeholder": "Поиск...",
+    "dashboard": "Кабинет",
+    "logout": "Выход",
+    "login": "Вход",
+    "home": "Главная",
+    "favorites": "Избранное",
+    "messages": "Сообщения",
+    "profile": "Профиль",
+    "sell": "Продать"
+  }
+}

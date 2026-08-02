@@ -1,0 +1,1109 @@
+// ==========================================================
+// FermerMarket — Phase 1: Core Foundation Schema
+// PostgreSQL. Run: npx prisma migrate dev --name init
+// ==========================================================
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x", "debian-openssl-3.0.x", "rhel-openssl-1.0.x", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- ENUMS ----------
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  MODERATOR
+  FARMER
+  STORE
+  AGRONOMIST
+  BUYER
+  DELIVERY_PARTNER
+}
+
+enum UserStatus {
+  ACTIVE
+  PENDING_VERIFICATION
+  SUSPENDED
+  BANNED
+}
+
+enum Locale {
+  AZ
+  EN
+  RU
+}
+
+// ---------- AUTH / USERS ----------
+
+enum ListingTier {
+  STANDARD
+  FEATURED
+  PREMIUM
+  VIP
+}
+
+enum CampaignType {
+  HOMEPAGE_BANNER
+  CATEGORY_BANNER
+  STORE_PROMOTION
+  FLASH_SALE
+  DAILY_DEAL
+  SPONSORED_PRODUCT
+  REGIONAL
+}
+
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  ACTIVE
+  PAUSED
+  EXPIRED
+}
+
+model Listing {
+  id        String      @id @default(cuid())
+  productId String      @unique
+  product   Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  tier      ListingTier @default(STANDARD)
+  startDate DateTime    @default(now())
+  endDate   DateTime?
+  autoRenew Boolean     @default(false)
+
+  views  Int @default(0)
+  clicks Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tier])
+  @@index([endDate])
+}
+
+model Campaign {
+  id     String         @id @default(cuid())
+  title  String
+  type   CampaignType
+  status CampaignStatus @default(DRAFT)
+
+  bannerUrl String?
+  targetUrl String?
+
+  storeId String?
+  store   Store?  @relation(fields: [storeId], references: [id], onDelete: SetNull)
+
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  region String?
+
+  startDate DateTime
+  endDate   DateTime
+
+  budget       Decimal? @db.Decimal(12, 2)
+  costPerClick Decimal? @db.Decimal(8, 4)
+
+  impressions Int     @default(0)
+  clicks      Int     @default(0)
+  conversions Int     @default(0)
+  spend       Decimal @default(0) @db.Decimal(12, 2)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([type])
+  @@index([startDate, endDate])
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  REFUNDED
+}
+
+model Order {
+  id      String      @id @default(cuid())
+  buyerId String
+  buyer   User        @relation("BuyerOrders", fields: [buyerId], references: [id])
+  items   OrderItem[]
+
+  subtotal   Decimal @db.Decimal(12, 2)
+  discount   Decimal @default(0) @db.Decimal(12, 2)
+  commission Decimal @default(0) @db.Decimal(12, 2)
+  total      Decimal @db.Decimal(12, 2)
+  currency   String  @default("AZN")
+
+  couponId String?
+  coupon   Coupon? @relation(fields: [couponId], references: [id], onDelete: SetNull)
+
+  status OrderStatus @default(PENDING)
+
+  payment Payment?
+
+  shippingAddress String?
+  shippingRegion  String?
+  shippingCity    String?
+
+  deliveryMethod String  @default("STANDARD") // STANDARD | EXPRESS | PICKUP
+  deliveryCost   Decimal @default(0) @db.Decimal(12, 2)
+
+  deliveryPartnerId String?
+  deliveryPartner   User?   @relation("DeliveryPartnerOrders", fields: [deliveryPartnerId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([buyerId])
+  @@index([status])
+  @@index([deliveryPartnerId])
+}
+
+model OrderItem {
+  id             String  @id @default(cuid())
+  orderId        String
+  order          Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId      String
+  product        Product @relation(fields: [productId], references: [id])
+  sellerId       String
+  seller         User    @relation("SellerOrderItems", fields: [sellerId], references: [id])
+  quantity       Int
+  unitPrice      Decimal @db.Decimal(12, 2)
+  commissionRate Decimal @default(0.05) @db.Decimal(5, 4) // 5% default platform commission
+
+  @@index([orderId])
+  @@index([sellerId])
+  @@index([productId])
+}
+
+model Payment {
+  id          String        @id @default(cuid())
+  orderId     String        @unique
+  order       Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  provider    String // e.g. "stripe", "payriff", "manual"
+  providerRef String? // external transaction/charge ID
+  amount      Decimal       @db.Decimal(12, 2)
+  currency    String        @default("AZN")
+  status      PaymentStatus @default(PENDING)
+  rawResponse Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+}
+
+model Coupon {
+  id            String    @id @default(cuid())
+  code          String    @unique
+  discountType  String // "PERCENTAGE" | "FIXED"
+  discountValue Decimal   @db.Decimal(10, 2)
+  minOrderValue Decimal?  @db.Decimal(10, 2)
+  maxUses       Int?
+  usedCount     Int       @default(0)
+  isActive      Boolean   @default(true)
+  startsAt      DateTime?
+  expiresAt     DateTime?
+
+  orders Order[]
+
+  createdAt DateTime @default(now())
+
+  @@index([isActive])
+}
+
+model SubscriptionPlan {
+  id              String  @id @default(cuid())
+  name            String  @unique // e.g. "FREE", "BASIC", "PRO", "ENTERPRISE"
+  price           Decimal @default(0) @db.Decimal(10, 2)
+  currency        String  @default("AZN")
+  durationDays    Int     @default(30)
+  maxListings     Int     @default(10)
+  freeVipListings Int     @default(0)
+  customSubdomain Boolean @default(false)
+  isActive        Boolean @default(true)
+
+  subscriptions StoreSubscription[]
+}
+
+model StoreSubscription {
+  id        String            @id @default(cuid())
+  storeId   String            @unique
+  store     Store             @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  plan      String // Legacy or generic name "FREE" | "BASIC"
+  planId    String?
+  planModel SubscriptionPlan? @relation(fields: [planId], references: [id], onDelete: SetNull)
+  status    String            @default("ACTIVE") // ACTIVE | CANCELLED | EXPIRED
+  startedAt DateTime          @default(now())
+  renewsAt  DateTime?
+
+  @@index([status])
+  @@index([planId])
+}
+
+model User {
+  id                 String     @id @default(cuid())
+  email              String?    @unique
+  phone              String?    @unique
+  username           String?    @unique
+  passwordHash       String
+  fullName           String
+  role               UserRole   @default(BUYER)
+  status             UserStatus @default(PENDING_VERIFICATION)
+  locale             Locale     @default(AZ)
+  emailVerified      Boolean    @default(false)
+  phoneVerified      Boolean    @default(false)
+  isBanned           Boolean    @default(false)
+  avgRating          Float      @default(0)
+  reviewCount        Int        @default(0)
+  deliveryRating     Float      @default(0)
+  onTimeDeliveryRate Int        @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store          Store?
+  products       Product[]
+  refreshTokens  RefreshToken[]
+  auditLogs      AuditLog[]
+  passwordResets PasswordResetToken[]
+  buyerOrders    Order[]              @relation("BuyerOrders")
+  soldItems      OrderItem[]          @relation("SellerOrderItems")
+  reviews        Review[]
+  deliveryOrders Order[]              @relation("DeliveryPartnerOrders")
+  favorites      Favorite[]
+
+  wallet              Wallet?
+  bundles             Bundle[]           @relation("SellerBundles")
+  blogPosts           BlogPost[]
+  buyerConversations  Conversation[]     @relation("BuyerConversations")
+  sellerConversations Conversation[]     @relation("SellerConversations")
+  messages            Message[]
+  pushSubscriptions   PushSubscription[]
+  notifications       Notification[]
+  farmerProfile       FarmerProfile?
+  modules             UserModule[]
+  grantedModules      UserModule[]       @relation("ModuleGranter")
+
+  @@index([role])
+  @@index([status])
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  revoked   Boolean  @default(false)
+
+  @@index([userId])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String   @unique
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  entity    String
+  entityId  String?
+  metadata  Json?
+  oldValues Json? // Added for Super Admin Rollback
+  newValues Json? // Added for Super Admin Rollback
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([entity, entityId])
+}
+
+// ---------- MULTI-LANGUAGE INFRASTRUCTURE ----------
+// Generic translation table: any entity/field can be localized
+// without schema changes when adding new languages later.
+
+model Translation {
+  id         String @id @default(cuid())
+  entityType String // e.g. "category", "product"
+  entityId   String
+  field      String // e.g. "name", "description"
+  locale     Locale
+  value      String @db.Text
+
+  @@unique([entityType, entityId, field, locale])
+  @@index([entityType, entityId])
+}
+
+// ---------- MARKETPLACE: CATEGORIES ----------
+
+model Category {
+  id        String     @id @default(cuid())
+  slug      String     @unique
+  nameAz    String
+  nameEn    String?
+  nameRu    String?
+  icon      String?
+  parentId  String?
+  parent    Category?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children  Category[] @relation("CategoryTree")
+  isActive  Boolean    @default(true)
+  sortOrder Int        @default(0)
+
+  products  Product[]
+  campaigns Campaign[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([parentId])
+  @@index([isActive])
+}
+
+// ---------- MARKETPLACE: STORES ----------
+
+model Store {
+  id          String  @id @default(cuid())
+  ownerId     String  @unique
+  owner       User    @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name        String
+  slug        String  @unique
+  description String? @db.Text
+  logoUrl     String?
+  coverUrl    String?
+  address     String?
+  lat         Float?
+  lng         Float?
+  whatsapp    String?
+  phone       String?
+  website     String?
+  isVerified  Boolean @default(false)
+  isActive    Boolean @default(true)
+  installmentEnabled Boolean @default(false)
+  installmentWhatsapp String?
+
+  products     Product[]
+  campaigns    Campaign[]
+  subscription StoreSubscription?
+  salesPoints  SalesPoint[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive])
+}
+
+// ---------- MARKETPLACE: PRODUCTS ----------
+
+enum ProductStatus {
+  DRAFT
+  PENDING_REVIEW
+  ACTIVE
+  SOLD
+  EXPIRED
+  REJECTED
+}
+
+model Product {
+  id            String  @id @default(cuid())
+  slug          String  @unique
+  titleAz       String
+  titleEn       String?
+  titleRu       String?
+  descriptionAz String? @db.Text
+  descriptionEn String? @db.Text
+  descriptionRu String? @db.Text
+
+  price    Decimal       @db.Decimal(12, 2)
+  currency String        @default("AZN")
+  stock    Int           @default(1)
+  status   ProductStatus @default(PENDING_REVIEW)
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  sellerId String?
+  seller   User?   @relation(fields: [sellerId], references: [id])
+
+  // Guest classified listing (no account required) — set when sellerId is null.
+  // Buyers contact the poster directly by phone; no online order/wallet flow applies.
+  guestName  String?
+  guestPhone String?
+
+  storeId String?
+  store   Store?  @relation(fields: [storeId], references: [id], onDelete: SetNull)
+
+  region String?
+  city   String?
+
+  // Geolocation for maps
+  lat Float?
+  lng Float?
+
+  images      ProductImage[]
+  listing     Listing?
+  orderItems  OrderItem[]
+  reviews     Review[]
+  favoritedBy Favorite[]
+
+  // Tags / hashtags for search and display
+  tags String[] @default([])
+
+  // Corporate (bulk) listing fields
+  isCorporate Boolean @default(false)
+  minOrderQty Int? // minimum order quantity for corporate listings
+  allowRetail Boolean @default(true) // If false, user cannot buy below minOrderQty
+  unit        String  @default("ədəd") // "kg", "ton", "litr", "ədəd"
+  allowInstallment Boolean @default(false) // If true, product can be bought with installments (requires Store.installmentEnabled)
+
+  viewCount  Int @default(0)
+  phoneViews Int @default(0) // Tap.az style click-to-show-phone counter
+
+  // Dynamic Categories (Tap.az style)
+  attributes Json?
+
+  // Moderation
+  rejectionReason String?
+
+  // Technical / Extended fields
+  preparativeForm     String? // "SC", "WG", "EC", "SL"
+  useNorm             String? // "0.5-1 L/ha"
+  waterVolume         String? // "200-400 L/ha"
+  waitingPeriod       Int? // gun (gozleme muddeti)
+  maxApplications     Int? // maksimum tetbiq sayi
+  mixingCompatibility String? // qarisdirilma uygunlugu
+  safetyInfo          String? // tehlukesizlik
+  storageInfo         String? // saxlama
+  certificate         String? // sertifikat URL
+  labelPdfUrl         String? // etiket PDF
+  instructionPdfUrl   String? // telimat PDF
+  labelPdf            String? 
+  instructionPdf      String? 
+  videoUrl            String? // mehsul videosu
+  barcode             String? // barkod
+  productCode         String? // SKU
+  packaging           String? // "1L, 5L, 20L"
+  wholesalePrice      Decimal? @db.Decimal(12, 2)
+  wholesaleMinQty     Int?
+  manufacturer        String?
+  countryOfOrigin     String?
+  compareCount        Int      @default(0)
+  isOrganic           Boolean  @default(false)
+
+  // Extended Relations
+  activeIngredients ProductActiveIngredient[]
+  diseases          ProductDisease[]
+  pests             ProductPest[]
+  crops             ProductCrop[]
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  publishedAt DateTime?
+  expiresAt   DateTime?
+
+  bundleItems   BundleItem[]
+  conversations Conversation[]
+  tieredPrices  TieredPrice[]
+
+  @@index([categoryId])
+  @@index([sellerId])
+  @@index([storeId])
+  @@index([status])
+  @@index([price])
+  @@index([status, createdAt(sort: Desc)])
+  @@index([status, categoryId, createdAt(sort: Desc)])
+}
+
+model ProductImage {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
+  altText   String?
+  sortOrder Int     @default(0)
+
+  @@index([productId])
+}
+
+model Review {
+  id         String  @id @default(cuid())
+  productId  String
+  product    Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  authorId   String
+  author     User    @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  rating     Int
+  comment    String? @db.Text
+  isApproved Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([productId, authorId])
+  @@index([productId])
+  @@index([authorId])
+  @@index([isApproved, productId])
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+  @@index([userId])
+  @@index([productId])
+}
+
+// ==========================================================
+// Phase 6: Wallet, Bundles, Blog, Messaging, Push Notifications
+// ==========================================================
+
+enum WalletTxType {
+  EARNING
+  WITHDRAWAL
+  REFUND
+  ADJUSTMENT
+  COMMISSION_DEDUCTION
+  COIN_GIFT
+  COIN_SPEND
+}
+
+enum WalletTxStatus {
+  PENDING
+  COMPLETED
+  REJECTED
+}
+
+model Wallet {
+  id           String              @id @default(cuid())
+  userId       String              @unique
+  user         User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  balance      Decimal             @default(0) @db.Decimal(12, 2)
+  coins        Decimal             @default(0) @db.Decimal(12, 2)
+  currency     String              @default("AZN")
+  transactions WalletTransaction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WalletTransaction {
+  id                  String         @id @default(cuid())
+  walletId            String
+  wallet              Wallet         @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  type                WalletTxType
+  status              WalletTxStatus @default(COMPLETED)
+  amount              Decimal        @db.Decimal(12, 2)
+  orderId             String?
+  description         String?
+  loyaltyPointsEarned Int            @default(0)
+
+  createdAt DateTime @default(now())
+
+  @@index([walletId])
+  @@index([type])
+}
+
+model Bundle {
+  id            String       @id @default(cuid())
+  title         String
+  description   String?      @db.Text
+  sellerId      String
+  seller        User         @relation("SellerBundles", fields: [sellerId], references: [id], onDelete: Cascade)
+  storeId       String?
+  discountType  String // "PERCENTAGE" | "FIXED"
+  discountValue Decimal      @db.Decimal(10, 2)
+  isActive      Boolean      @default(true)
+  items         BundleItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sellerId])
+  @@index([isActive])
+}
+
+model BundleItem {
+  id        String  @id @default(cuid())
+  bundleId  String
+  bundle    Bundle  @relation(fields: [bundleId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity  Int     @default(1)
+
+  @@index([bundleId])
+  @@index([productId])
+}
+
+model BlogPost {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  titleAz     String
+  titleEn     String?
+  titleRu     String?
+  contentAz   String    @db.Text
+  contentEn   String?   @db.Text
+  contentRu   String?   @db.Text
+  coverUrl    String?
+  category    String? // e.g. "Aqronomiya", "Bazar xəbərləri"
+  authorId    String
+  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  isPublished Boolean   @default(false)
+  publishedAt DateTime?
+  viewCount   Int       @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isPublished])
+  @@index([category])
+}
+
+model Conversation {
+  id        String    @id @default(cuid())
+  buyerId   String
+  buyer     User      @relation("BuyerConversations", fields: [buyerId], references: [id], onDelete: Cascade)
+  sellerId  String
+  seller    User      @relation("SellerConversations", fields: [sellerId], references: [id], onDelete: Cascade)
+  productId String?
+  product   Product?  @relation(fields: [productId], references: [id], onDelete: SetNull)
+  messages  Message[]
+
+  lastMessageAt DateTime @default(now())
+  createdAt     DateTime @default(now())
+
+  @@unique([buyerId, sellerId, productId])
+  @@index([buyerId])
+  @@index([sellerId])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User         @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  content        String       @db.Text
+  readAt         DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([conversationId])
+  @@index([senderId])
+}
+
+model PushSubscription {
+  id       String @id @default(cuid())
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  endpoint String @unique
+  p256dh   String
+  auth     String
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+// ==========================================================
+// Phase 7: Ad Slots — per-placement config: internal campaign banner,
+// external ad network embed (Google Ads / AdSense / etc), or off.
+// ==========================================================
+
+model AdSlot {
+  id           String  @id @default(cuid())
+  key          String  @unique // e.g. "HOMEPAGE_TOP", "PRODUCT_LIST_TOP", "PRODUCT_LIST_INFEED", "PRODUCT_DETAIL_SIDEBAR", "FOOTER_STRIP"
+  label        String
+  mode         String  @default("internal") // "internal" | "external" | "off"
+  campaignType String? // CampaignType to pull from when mode = "internal"
+  externalCode String? @db.Text // raw embed snippet (Google AdSense/Ad Manager tag, etc) when mode = "external"
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ==========================================================
+// Phase 8: In-App Notifications
+// ==========================================================
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String // "order_update" | "review_approved" | "message" | "wallet" | "system"
+  title     String
+  body      String
+  link      String? // optional deep-link
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId, isRead])
+  @@index([userId, createdAt(sort: Desc)])
+}
+
+// ==========================================================
+// Phase 9: Homepage Slide Management (Admin drag-to-reorder)
+// ==========================================================
+
+model HomepageSlide {
+  id        String   @id @default(cuid())
+  tag       String // e.g. "🔥 Kampaniya"
+  title     String
+  subtitle  String
+  cta       String   @default("Bax")
+  href      String
+  bg        String   @default("from-brand-700 to-brand-500") // Tailwind gradient classes
+  emoji     String   @default("🌾")
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ---------- AGRO EXTENSIONS ----------
+
+model ActiveIngredient {
+  id          String                    @id @default(cuid())
+  name        String                    @unique // "Glyphosate"
+  nameAz      String // "Qlifosat"
+  cas         String? // CAS nomresi
+  group       String? // kimyevi qrup
+  description String?
+  products    ProductActiveIngredient[]
+  createdAt   DateTime                  @default(now())
+}
+
+model ProductActiveIngredient {
+  productId          String
+  activeIngredientId String
+  concentration      String? // "480 g/L"
+  product            Product          @relation(fields: [productId], references: [id], onDelete: Cascade)
+  ingredient         ActiveIngredient @relation(fields: [activeIngredientId], references: [id], onDelete: Cascade)
+
+  @@id([productId, activeIngredientId])
+  @@index([productId])
+  @@index([activeIngredientId])
+}
+
+model Disease {
+  id            String           @id @default(cuid())
+  name          String
+  nameAz        String
+  slug          String           @unique
+  images        String[] // URL array
+  affectedCrops String[]
+  symptoms      String?
+  causes        String?
+  prevention    String?
+  treatment     String?
+  products      ProductDisease[]
+  createdAt     DateTime         @default(now())
+}
+
+model Pest {
+  id            String        @id @default(cuid())
+  name          String
+  nameAz        String
+  slug          String        @unique
+  images        String[]
+  affectedCrops String[]
+  symptoms      String?
+  lifecycle     String?
+  prevention    String?
+  products      ProductPest[]
+  createdAt     DateTime      @default(now())
+}
+
+model ProductDisease {
+  productId String
+  diseaseId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  disease   Disease @relation(fields: [diseaseId], references: [id], onDelete: Cascade)
+
+  @@id([productId, diseaseId])
+  @@index([productId])
+  @@index([diseaseId])
+}
+
+model ProductPest {
+  productId String
+  pestId    String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  pest      Pest    @relation(fields: [pestId], references: [id], onDelete: Cascade)
+
+  @@id([productId, pestId])
+  @@index([productId])
+  @@index([pestId])
+}
+
+model Crop {
+  id       String        @id @default(cuid())
+  name     String
+  nameAz   String
+  slug     String        @unique
+  image    String?
+  products ProductCrop[]
+}
+
+model ProductCrop {
+  productId String
+  cropId    String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  crop      Crop    @relation(fields: [cropId], references: [id], onDelete: Cascade)
+
+  @@id([productId, cropId])
+  @@index([productId])
+  @@index([cropId])
+}
+
+model CalculatorSession {
+  id           String   @id @default(cuid())
+  userId       String?
+  productId    String?
+  area         Float
+  areaUnit     String // "ha" | "sot"
+  useNorm      Float
+  waterNorm    Float
+  applications Int
+  result       Json // hesablanmis netice
+  createdAt    DateTime @default(now())
+}
+
+model FarmerProfile {
+  id               String   @id @default(cuid())
+  userId           String   @unique
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  region           String?
+  village          String?
+  totalArea        Float? // hektar
+  crops            String[] // becerilen bitkiler
+  greenhouse       Float? // istixana sahesi (ha)
+  garden           Float? // bag sahesi (ha)
+  irrigationType   String? // suvarma novu
+  soilAnalysis     Json? // torpaq analizi
+  previousProducts String[] // evvel istifade edilen mehsullar
+  updatedAt        DateTime @updatedAt
+}
+
+model ComparisonSession {
+  id         String   @id @default(cuid())
+  userId     String?
+  productIds String[] // max 5
+  createdAt  DateTime @default(now())
+}
+
+model SalesPoint {
+  id        String  @id @default(cuid())
+  storeId   String
+  store     Store   @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  region    String
+  city      String?
+  address   String
+  lat       Float?
+  lng       Float?
+  phone     String?
+  workHours String? // "09:00-18:00"
+  isActive  Boolean @default(true)
+
+  @@index([storeId])
+}
+
+// ─── USER MODULES (Super Admin assigns extra feature access per user) ─────────
+enum ModuleKey {
+  WALLET
+  BLOG
+  BUNDLES
+  CORPORATE_LISTINGS
+  AI_AGRONOM
+  ANALYTICS
+  CAMPAIGNS
+  BULK_CSV
+  DELIVERY
+  LEADERBOARD
+}
+
+model UserModule {
+  id        String    @id @default(cuid())
+  userId    String
+  module    ModuleKey
+  grantedBy String // SUPER_ADMIN userId
+  createdAt DateTime  @default(now())
+
+  user    User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  granter User @relation("ModuleGranter", fields: [grantedBy], references: [id])
+
+  @@unique([userId, module])
+  @@index([userId])
+}
+
+// ==========================================================
+// Phase 10: Visual "No-Code" Admin Studio (Dynamic Blocks)
+// ==========================================================
+model DynamicBlock {
+  id        String   @id @default(cuid())
+  page      String   @default("home")
+  type      String
+  props     Json
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([page, isActive])
+  @@index([sortOrder])
+}
+
+// ==========================================================
+// Phase 13: Contact Messages
+// ==========================================================
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String?
+  message   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+// ==========================================
+// Phase 14: SUPER ADMIN ENTERPRISE MODULES
+// ==========================================
+
+model Permission {
+  id          String           @id @default(cuid())
+  action      String           @unique
+  description String?
+  roles       RolePermission[]
+}
+
+model RolePermission {
+  id           String     @id @default(cuid())
+  role         UserRole
+  permissionId String
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([role, permissionId])
+}
+
+model PageLayout {
+  id         String   @id @default(cuid())
+  pageName   String   @unique
+  components Json
+  themeColor String   @default("green")
+  isActive   Boolean  @default(true)
+  updatedAt  DateTime @updatedAt
+}
+
+model SystemText {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  valueAz   String
+  valueEn   String?
+  valueRu   String?
+  module    String
+  updatedAt DateTime @updatedAt
+}
+
+model TieredPrice {
+  id          String  @id @default(cuid())
+  productId   String
+  product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  tierType    String
+  minQuantity Int     @default(1)
+  price       Decimal @db.Decimal(12, 2)
+  regionCode  String?
+  isActive    Boolean @default(true)
+
+  @@index([productId, tierType])
+}
+
+model AIAgroRule {
+  id                    String   @id @default(cuid())
+  triggerDiseaseId      String?
+  triggerPestId         String?
+  condition             String?
+  recommendedProductIds String[]
+  priority              Int      @default(0)
+  isActive              Boolean  @default(true)
+}
+
+model AiSettings {
+  id           String   @id @default(cuid())
+  modelName    String   @default("gpt-4")
+  systemPrompt String   @db.Text
+  temperature  Float    @default(0.7)
+  updatedAt    DateTime @updatedAt
+}
+
+model ClimateWarning {
+  id          String   @id @default(cuid())
+  region      String
+  warningType String
+  severity    String
+  message     String   @db.Text
+  startDate   DateTime
+  endDate     DateTime
+  isSmsSent   Boolean  @default(false)
+  isPushSent  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model LoyaltyLevel {
+  id              String   @id @default(cuid())
+  levelName       String   @unique
+  minPoints       Int
+  discountPercent Float    @default(0)
+  perks           String[]
+}
+
+model LogisticsTariff {
+  id            String  @id @default(cuid())
+  fromRegion    String
+  toRegion      String
+  basePrice     Decimal @db.Decimal(10, 2)
+  pricePerKg    Decimal @db.Decimal(10, 2)
+  estimatedDays Int
+}
+
+model EscrowTransaction {
+  id            String   @id @default(cuid())
+  orderId       String   @unique
+  amount        Decimal  @db.Decimal(12, 2)
+  status        String
+  disputeReason String?  @db.Text
+  resolvedBy    String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

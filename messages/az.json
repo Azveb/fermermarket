@@ -1,0 +1,19 @@
+{
+  "Navigation": {
+    "products": "Məhsullar",
+    "categories": "Kateqoriyalar",
+    "campaigns": "Kampaniyalar",
+    "stores": "Mağazalar",
+    "blog": "Bloq",
+    "agronom": "Aqronom",
+    "search_placeholder": "Axtarış...",
+    "dashboard": "Kabinet",
+    "logout": "Çıxış",
+    "login": "Giriş",
+    "home": "Ana səhifə",
+    "favorites": "Seçilmişlər",
+    "messages": "Mesajlar",
+    "profile": "Profil",
+    "sell": "Sat"
+  }
+}
