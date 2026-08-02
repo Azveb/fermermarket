@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, Suspense } from "react";
 import { prisma } from "@/lib/prisma";
 import ProductCard from "@/components/ProductCard";
 import { Link } from "@/i18n/routing";
@@ -171,7 +171,7 @@ export default async function ProductsPage({ searchParams }) {
         <div className="flex-1 min-w-0 w-full flex flex-col md:flex-row gap-6 items-start">
         
         {/* Advanced Filter Sidebar */}
-        <AdvancedFilterSidebar categories={categories} />
+        <Suspense fallback={<div className="w-80 h-96 bg-white rounded-2xl animate-pulse" />}><AdvancedFilterSidebar categories={categories} /></Suspense>
 
         {/* Main Content Area */}
         <div className="flex-1 min-w-0 w-full">

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, Link, usePathname } from "@/i18n/routing";
 import { useLocale } from "next-intl";
 import { useSearchParams } from "next/navigation";
@@ -7,7 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { apiFetch, saveSession } from "@/lib/apiClient";
 import PasswordInput from "@/components/PasswordInput";
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
   const locale = useLocale();
   const [form, setForm] = useState({ login: "", password: "" });
@@ -107,5 +107,13 @@ export default function LoginPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="w-full max-w-sm p-8 text-center text-gray-400">Yüklənir...</div>}>
+      <LoginContent />
+    </Suspense>
   );
 }
