@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useEffect, useState, useCallback } from "react";
 import { Link } from "@/i18n/routing";
 import { apiFetch, getUser } from "@/lib/apiClient";
@@ -26,7 +27,7 @@ function CatalogProductCard({ product, onEdit, onDelete, isOwner }) {
         {img ? (
           <img src={img} alt={product.titleAz} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-4xl text-gray-300">📦</div>
+          <div className="w-full h-full flex items-center justify-center text-gray-300"><Icon name="package" size={48} /></div>
         )}
         {product.status && (
           <span className={`absolute top-2 right-2 text-xs font-bold px-2 py-1 rounded-full ${statusColors[product.status] || "bg-gray-100 text-gray-600"}`}>
@@ -47,7 +48,7 @@ function CatalogProductCard({ product, onEdit, onDelete, isOwner }) {
           {product.titleAz}
         </h3>
         {product.store && (
-          <p className="text-xs text-brand-600 mb-1">🏪 {product.store.name}</p>
+          <p className="text-xs text-brand-600 mb-1 flex items-center gap-1"><Icon name="store" size={14} /> {product.store.name}</p>
         )}
         <div className="flex items-center justify-between mt-2">
           <div>
@@ -57,7 +58,7 @@ function CatalogProductCard({ product, onEdit, onDelete, isOwner }) {
           <span className="text-xs text-gray-500">Stok: {product.stock ?? "—"}</span>
         </div>
         {product.packaging && (
-          <p className="text-xs text-gray-400 mt-1">📦 {product.packaging}</p>
+          <p className="text-xs text-gray-400 mt-1 flex items-center gap-1"><Icon name="package" size={14} /> {product.packaging}</p>
         )}
       </div>
 
@@ -73,7 +74,7 @@ function CatalogProductCard({ product, onEdit, onDelete, isOwner }) {
         )}
         {isOwner && onDelete && (
           <button onClick={() => onDelete(product.id)} className="text-xs py-2 px-3 text-red-500 hover:text-red-700 transition-colors">
-            🗑
+            <Icon name="trash" size={16} />
           </button>
         )}
       </div>
@@ -142,7 +143,7 @@ function CatalogProductModal({ editProduct, categories, storeId, onClose, onSave
       <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between rounded-t-3xl">
           <h2 className="font-black text-lg text-gray-900">
-            {isEdit ? "✏️ Məhsulu Düzəlt" : "➕ Yeni Katalog Məhsulu"}
+            {isEdit ? <span className="flex items-center gap-1.5"><Icon name="pencil" size={18} /> Məhsulu Düzəlt</span> : <span className="flex items-center gap-1.5"><Icon name="plus" size={18} /> Yeni Katalog Məhsulu</span>}
           </h2>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">×</button>
         </div>
@@ -152,7 +153,7 @@ function CatalogProductModal({ editProduct, categories, storeId, onClose, onSave
 
           {/* Basic Info */}
           <section>
-            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">📋 Əsas Məlumatlar</h3>
+            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-1.5"><Icon name="clipboard" size={16} /> Əsas Məlumatlar</h3>
             <div className="space-y-3">
               <div>
                 <label className="label-sm">Məhsul Adı *</label>
@@ -176,7 +177,7 @@ function CatalogProductModal({ editProduct, categories, storeId, onClose, onSave
 
           {/* Price & Stock */}
           <section>
-            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">💰 Qiymət & Stok</h3>
+            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-1.5"><Icon name="dollar" size={16} /> Qiymət & Stok</h3>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="label-sm">Qiymət (₼) *</label>
@@ -211,7 +212,7 @@ function CatalogProductModal({ editProduct, categories, storeId, onClose, onSave
 
           {/* Product Codes */}
           <section>
-            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">🔖 Məhsul Kodları</h3>
+            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-1.5"><Icon name="tag" size={16} /> Məhsul Kodları</h3>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="label-sm">SKU / Məhsul Kodu</label>
@@ -226,7 +227,7 @@ function CatalogProductModal({ editProduct, categories, storeId, onClose, onSave
 
           {/* Production Info */}
           <section>
-            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">🏭 İstehsal Məlumatları</h3>
+            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-1.5"><Icon name="building" size={16} /> İstehsal Məlumatları</h3>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="label-sm">İstehsalçı</label>
@@ -241,7 +242,7 @@ function CatalogProductModal({ editProduct, categories, storeId, onClose, onSave
 
           {/* Agro Technical Info */}
           <section>
-            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">🌿 Aqrotexniki Məlumatlar</h3>
+            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-1.5"><Icon name="leaf" size={16} /> Aqrotexniki Məlumatlar</h3>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="label-sm">İstifadə norması</label>
@@ -260,7 +261,7 @@ function CatalogProductModal({ editProduct, categories, storeId, onClose, onSave
 
           {/* PDF Links */}
           <section>
-            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">📄 PDF Sənədlər</h3>
+            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-1.5"><Icon name="fileText" size={16} /> PDF Sənədlər</h3>
             <div className="space-y-3">
               <div>
                 <label className="label-sm">Etiket PDF URL</label>
@@ -348,7 +349,7 @@ export default function CatalogPanel({ user }) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="font-black text-xl text-gray-900">📦 Katalog Məhsullarım</h2>
+          <h2 className="font-black text-xl text-gray-900 flex items-center gap-2"><Icon name="package" size={22} className="text-brand-600" /> Katalog Məhsullarım</h2>
           <p className="text-sm text-gray-500 mt-0.5">Mağazanızın sabit ürün kataloğu — stok, SKU, qiymət idarəetməsi</p>
         </div>
         {(storeId || isAdmin) && (
@@ -361,13 +362,13 @@ export default function CatalogPanel({ user }) {
       {/* No store warning */}
       {!storeId && !isAdmin && (
         <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-sm text-amber-700">
-          ⚠️ Katalog məhsulu əlavə etmək üçün əvvəlcə <strong>mağaza yaratmalısınız</strong>.
+          <span className="flex items-center gap-1.5"><Icon name="alert" size={16} className="text-amber-600 shrink-0" /> Katalog məhsulu əlavə etmək üçün əvvəlcə <strong>mağaza yaratmalısınız</strong>.</span>
         </div>
       )}
 
       {/* Search */}
       <div className="relative">
-        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
+        <Icon name="search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
         <input
           value={search}
           onChange={e => setSearch(e.target.value)}
@@ -390,7 +391,7 @@ export default function CatalogPanel({ user }) {
         </div>
       ) : products.length === 0 ? (
         <div className="text-center py-16 text-gray-400">
-          <div className="text-6xl mb-3">📦</div>
+          <div className="mb-3 text-gray-300 flex justify-center"><Icon name="package" size={54} /></div>
           <p className="font-semibold text-gray-600">Katalogda məhsul yoxdur</p>
           <p className="text-sm mt-1">İlk məhsulunuzu əlavə edin</p>
           {(storeId || isAdmin) && (

@@ -1,10 +1,11 @@
+import Icon from "@/components/ui/Icon";
 import { Link } from "@/i18n/routing";
 
 const CATEGORY_LABELS = {
-  tips: "Tövsiyyələr 💡",
-  news: "Xəbərlər 📰",
-  market: "Bazar 📈",
-  agronomy: "Aqronomiya 🌿",
+  tips: "Tövsiyyələr",
+  news: "Xəbərlər",
+  market: "Bazar",
+  agronomy: "Aqronomiya",
 };
 
 function readTime(body) {
@@ -28,7 +29,7 @@ export default function BlogSection({ posts }) {
           <p className="section-subtitle mt-1">Kənd təsərrüfatı haqqında faydalı məqalələr</p>
         </div>
         <Link href="/blog" className="text-sm text-brand-600 font-semibold hover:text-brand-700">
-          Hamısı →
+          <span className="flex items-center gap-1">Hamısı <Icon name="arrowRight" size={14} /></span>
         </Link>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
@@ -40,7 +41,7 @@ export default function BlogSection({ posts }) {
           >
             {/* Cover */}
             <div className="h-36 bg-gradient-to-br from-brand-50 to-emerald-100 flex items-center justify-center text-5xl">
-              {post.category === "tips" ? "💡" : post.category === "news" ? "📰" : post.category === "market" ? "📈" : "🌿"}
+              <Icon name={post.category === "tips" ? "lightbulb" : post.category === "news" ? "newspaper" : post.category === "market" ? "trendingUp" : "leaf"} size={16} />
             </div>
             <div className="p-4 flex-1 flex flex-col">
               {post.category && (
@@ -52,9 +53,9 @@ export default function BlogSection({ posts }) {
                 {post.titleAz}
               </h3>
               <div className="flex items-center gap-2 mt-auto pt-3 text-[11px] text-gray-400">
-                <span>✍️ {post.author?.fullName || "FermerMarket"}</span>
+                <span className="flex items-center gap-1"><Icon name="pencil" size={12} /> {post.author?.fullName || "FermerMarket"}</span>
                 <span>·</span>
-                <span>⏱ {readTime(post.contentAz)}</span>
+                <span className="flex items-center gap-1"><Icon name="clock" size={12} /> {readTime(post.contentAz)}</span>
                 <span>·</span>
                 <span suppressHydrationWarning>{new Date(post.createdAt).toLocaleDateString("az-AZ")}</span>
               </div>

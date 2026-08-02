@@ -1,3 +1,4 @@
+import Icon from "@/components/ui/Icon";
 import { Link } from "@/i18n/routing";
 
 export default function AgronomCard() {
@@ -11,7 +12,7 @@ export default function AgronomCard() {
         <div className="relative flex flex-col md:flex-row items-start md:items-center gap-6">
           {/* Icon */}
           <div className="w-16 h-16 rounded-2xl bg-brand-100 flex items-center justify-center text-4xl shrink-0">
-            🤖
+            <Icon name="bot" size={24} className="text-brand-600" />
           </div>
 
           <div className="flex-1">
@@ -25,24 +26,29 @@ export default function AgronomCard() {
             </p>
             <div className="flex flex-wrap gap-2.5 mt-4">
               <Link href="/agronom" className="flex items-center gap-2 btn-primary text-sm">
-                <span>📷</span> Şəkil Göndər
+                <span className="flex items-center gap-1"><Icon name="camera" size={16} /> Şəkil Göndər</span>
               </Link>
               <Link href="/agronom" className="flex items-center gap-2 btn-secondary text-sm">
-                <span>💬</span> Sual Ver
+                <span className="flex items-center gap-1"><Icon name="message" size={16} /> Sual Ver</span>
               </Link>
             </div>
           </div>
 
           {/* Illustration */}
           <div className="flex flex-col items-center gap-1 shrink-0">
-            <div className="text-6xl">🌿</div>
+            <div className="text-brand-500 flex justify-center"><Icon name="sprout" size={64} /></div>
             <div className="text-xs text-gray-400 font-medium">24/7 aktiv</div>
           </div>
         </div>
 
         {/* Feature pills */}
         <div className="relative flex flex-wrap gap-2 mt-5 pt-5 border-t border-green-100">
-          {["🦠 Xəstəlik Analizi", "💊 Gübrə Məsləhəti", "🌡 Hava Proqnozu", "📊 Qiymət İndeksi", "🗓 Əkin Təqvimi"].map((f) => (
+          {[{ label: "Xəstəlik Analizi", icon: "bug" }, { label: "Gübrə Məsləhəti", icon: "flask" }, { label: "Hava Proqnozu", icon: "thermometer" }, { label: "Qiymət İndeksi", icon: "barChart" }, { label: "Əkin Təqvimi", icon: "calendar" }].map((item, idx) => (
+            <div key={idx} className="flex items-center gap-1.5 text-xs bg-brand-50 text-brand-700 px-3 py-1.5 rounded-xl">
+              <Icon name={typeof item === "object" ? item.icon : "info"} size={14} />
+              <span>{typeof item === "object" ? item.label : item}</span>
+            </div>
+          ))
             <span key={f} className="text-[11px] font-medium text-gray-600 bg-white border border-gray-100 px-3 py-1 rounded-full shadow-sm">
               {f}
             </span>

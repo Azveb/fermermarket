@@ -7,7 +7,7 @@ const DEFAULT_SLIDES = [
   {
     title: "Kənd Təsərrüfatının Rəqəmsal Bazarı",
     text: "Fermerlər, mağazalar və alıcılar üçün vahid ekosistem. Alış-verişə indi başlayın.",
-    icon: "🛒",
+    iconName: "cart",
     bg: "from-brand-700 via-brand-600 to-brand-500",
     href: "/products",
     btn: "Elanları Gör"
@@ -15,7 +15,7 @@ const DEFAULT_SLIDES = [
   {
     title: "Süni İntellekt Dəstəyi",
     text: "Aqronom asistanı ilə məhsul, xəstəlik və çeşidləmə ilə bağlı 24/7 pulsuz cavablar alın.",
-    icon: "🤖",
+    iconName: "bot",
     bg: "from-sky-600 via-blue-600 to-indigo-600",
     href: "/agronom",
     btn: "Aqronoma Soruş"
@@ -23,7 +23,7 @@ const DEFAULT_SLIDES = [
   {
     title: "Premium Təcrübə & Satış",
     text: "Sürətli axtarış, premium elanlar və 24/7 onlayn sifariş sistemi ilə satışınızı artırın.",
-    icon: "✨",
+    iconName: "sparkles",
     bg: "from-amber-500 via-orange-500 to-red-500",
     href: "/elan-yerlesdir",
     btn: "Elan Yerləşdir"
@@ -31,7 +31,7 @@ const DEFAULT_SLIDES = [
   {
     title: "İndi Al, Hissə-Hissə Ödə!",
     text: "Təklif olunan məhsulları Birbank vasitəsilə hissəli ödənişlə asanlıqla əldə edin. Tək şəxsiyyət vəsiqəsi ilə WhatsApp-dan müraciət edin.",
-    icon: "💳",
+    iconName: "creditCard",
     bg: "from-emerald-500 via-green-600 to-teal-600",
     href: "/products",
     btn: "Məhsullara Bax"
@@ -50,7 +50,7 @@ export default function HeroSlider() {
           const dbSlides = d.slides.map(s => ({
             title: s.title,
             text: s.subtitle,
-            icon: s.emoji || "🔥",
+            iconName: "flame",
             bg: getHeroBg(s.bg),
             href: s.href || "/products",
             btn: s.cta || "İndi Bax"

@@ -63,7 +63,7 @@ export default async function SellerProfilePage({ params }) {
                    </span>
                    {seller.onTimeDeliveryRate > 0 && (
                      <span className="flex items-center gap-1 bg-blue-50 border border-blue-100 text-blue-700 px-2.5 py-1 rounded-lg font-semibold text-xs">
-                       ⏱ Vaxtında çatdırma: {seller.onTimeDeliveryRate}%
+                       <span className="flex items-center gap-1"><Icon name="clock" size={14} className="text-gray-500" /> Vaxtında çatdırma: {seller.onTimeDeliveryRate}%</span>
                      </span>
                    )}
                  </div>

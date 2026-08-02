@@ -95,7 +95,7 @@ export default async function AdminDashboard() {
             <div>
               <div className="flex justify-between items-start mb-2">
                 <span className="font-bold text-gray-900">Azərbaycan Dili</span>
-                <span className="text-xl">🇦🇿</span>
+                <span className="font-mono font-bold text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">AZ</span>
               </div>
               <p className="text-xs text-gray-500">Əsas dil (Source)</p>
             </div>
@@ -110,7 +110,7 @@ export default async function AdminDashboard() {
             <div className="relative z-10">
               <div className="flex justify-between items-start mb-2">
                 <span className="font-bold text-gray-900">İngilis Dili</span>
-                <span className="text-xl">🇬🇧</span>
+                <span className="font-mono font-bold text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">EN</span>
               </div>
               <p className="text-xs text-gray-500">Avtomatik Tərcümə</p>
             </div>
@@ -125,7 +125,7 @@ export default async function AdminDashboard() {
             <div className="relative z-10">
               <div className="flex justify-between items-start mb-2">
                 <span className="font-bold text-gray-900">Rus Dili</span>
-                <span className="text-xl">🇷🇺</span>
+                <span className="font-mono font-bold text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">RU</span>
               </div>
               <p className="text-xs text-gray-500">Avtomatik Tərcümə</p>
             </div>

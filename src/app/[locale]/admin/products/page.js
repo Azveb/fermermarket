@@ -22,7 +22,7 @@ export default function AdminProductsPage() {
   async function decide(id, status) {
     try { 
       await apiFetch(`/api/products/${id}`, { method: "PATCH", body: JSON.stringify({ status }) }); 
-      toast(status === "ACTIVE" ? "Elan təsdiqləndi ✓" : "Status dəyişdirildi", "success"); 
+      toast(status === "ACTIVE" ? "Elan təsdiqləndi" : "Status dəyişdirildi", "success"); 
       load(); 
     } catch(e) { 
       toast(e.message, "error"); 
@@ -33,7 +33,7 @@ export default function AdminProductsPage() {
     if (!confirm("Bu elanı silmək istədiyinizə əminsiniz?")) return;
     try {
       await apiFetch(`/api/products/${id}`, { method: "DELETE" });
-      toast("Elan silindi ✓", "success");
+      toast("Elan silindi", "success");
       load();
     } catch (e) {
       toast(e.message, "error");

@@ -321,7 +321,7 @@ export default function FarmerPanel({ user }) {
         descriptionAz: data.description || f.descriptionAz,
         tags: data.tags || f.tags || [],
       }));
-      setMsg("✨ AI təsvir yaratdı!");
+      setMsg("AI təsvir yaratdı!");
       setTimeout(() => setMsg(""), 3000);
     } catch (err) {
       setError(err.message);
@@ -548,7 +548,7 @@ export default function FarmerPanel({ user }) {
           productIds: bundleForm.productIds,
         }),
       });
-      setBundlesMsg("Bağlama yaradıldı ✓");
+      setBundlesMsg("Bağlama yaradıldı");
       setBundleForm({ title: "", description: "", discountType: "PERCENTAGE", discountValue: "", productIds: [] });
       loadBundles();
       setTimeout(() => setBundlesMsg(""), 3000);
@@ -598,7 +598,7 @@ export default function FarmerPanel({ user }) {
           logoUrl: storeSettingsForm.logoUrl || undefined,
         }),
       });
-      setStoreSettingsMsg("Mağaza uğurla yaradıldı! ✓");
+      setStoreSettingsMsg("Mağaza uğurla yaradıldı!");
       // Update user object with new store
       if (user) {
         user.store = data.store;
@@ -632,7 +632,7 @@ export default function FarmerPanel({ user }) {
           logoUrl: storeSettingsForm.logoUrl || null,
         }),
       });
-      setStoreSettingsMsg("Mağaza ayarları yadda saxlanıldı ✓");
+      setStoreSettingsMsg("Mağaza ayarları yadda saxlanıldı");
       setTimeout(() => setStoreSettingsMsg(""), 3000);
       
       // Update local user state or just let it be, Next.js dashboard might fetch it later.
@@ -699,14 +699,14 @@ export default function FarmerPanel({ user }) {
       {tab === "products" && (
         <div className="space-y-6">
           <div className="card p-5">
-            <h2 className="font-bold mb-4">➕ Yeni Elan Yerləşdir</h2>
+            <h2 className="font-bold mb-4 flex items-center gap-2"><Icon name="plus" size={20} /> Yeni Elan Yerləşdir</h2>
             {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-2 mb-3">{error}</p>}
             {msg && <p className="text-sm text-brand-700 bg-brand-50 rounded-lg p-2 mb-3">{msg}</p>}
             <form onSubmit={handleSubmit} className="space-y-3">
               <div className="flex gap-2 items-center">
                 <input required placeholder="Məhsul adı" className="input-field flex-1" value={form.titleAz} onChange={(e) => setForm({ ...form, titleAz: e.target.value })} />
                 <button type="button" onClick={() => setIsAiModalOpen(true)} className="btn-secondary !py-2.5 px-3 flex items-center gap-1 text-sm shrink-0 whitespace-nowrap bg-brand-50 text-brand-700 hover:bg-brand-100 border border-brand-200 rounded-lg">
-                  ✨ AI ilə yaz
+                  AI ilə yaz
                 </button>
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -727,7 +727,7 @@ export default function FarmerPanel({ user }) {
                 <button type="button" onClick={handleAiAssist} disabled={aiLoading} className="text-xs text-brand-700 font-semibold mt-1 flex items-center gap-1">
                   {aiLoading ? (
                     <><svg className="animate-spin w-3 h-3" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/></svg>AI yazır...</>
-                  ) : "✨ AI ilə avtomatik yaz"}
+                  ) : "AI ilə avtomatik yaz"}
                 </button>
               </div>
 
@@ -756,7 +756,7 @@ export default function FarmerPanel({ user }) {
                     }
                   }}
                 />
-                <p className="text-[11px] text-gray-400 mt-1">✨ AI avtomatik etiket təklif edir. Enter ilə özünüz də əlavə edə bilərsiniz.</p>
+                <p className="text-[11px] text-gray-400 mt-1 flex items-center gap-1"><Icon name="sparkles" size={13} className="text-amber-500" /> AI avtomatik etiket təklif edir. Enter ilə özünüz də əlavə edə bilərsiniz.</p>
               </div>
               <div className="rounded-lg border border-gray-200 p-3 space-y-2 bg-gray-50">
                 <label className="flex items-center gap-2 text-sm font-medium cursor-pointer">
@@ -913,7 +913,7 @@ export default function FarmerPanel({ user }) {
                     </div>
                     {NEXT_STATUS[o.status] && (
                       <button onClick={() => advanceOrderStatus(o)} className="btn-primary text-xs w-full py-2">
-                        ✓ {ORDER_STATUS_LABELS[NEXT_STATUS[o.status]]} kimi qeyd et
+                        <span className="flex items-center gap-1"><Icon name="check" size={14} /> {ORDER_STATUS_LABELS[NEXT_STATUS[o.status]]} kimi qeyd et</span>
                       </button>
                     )}
                   </div>
@@ -1288,7 +1288,7 @@ export default function FarmerPanel({ user }) {
               &times;
             </button>
             <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-1.5">
-              <span>✨ AI ilə Elan Yaz</span>
+              <span className="flex items-center gap-1.5"><Icon name="sparkles" size={16} className="text-amber-500" /> AI ilə Elan Yaz</span>
             </h3>
             {aiError && (
               <p className="text-sm text-red-600 bg-red-50 rounded-lg p-2 mb-3">

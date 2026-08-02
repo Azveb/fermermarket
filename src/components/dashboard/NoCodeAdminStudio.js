@@ -1,13 +1,14 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useEffect, useMemo, useState } from "react";
 import { apiFetch } from "@/lib/apiClient";
 import { useToast } from "@/components/ui/Toast";
 
 const SECTION_ORDER = [
-  { key: "general", label: "Ümumi ayarlar", icon: "⚙️" },
-  { key: "commerce", label: "Ticarət", icon: "🛒" },
-  { key: "content", label: "Məzmun", icon: "📝" },
-  { key: "access", label: "Giriş və icazə", icon: "🔐" },
+  { key: "general", label: "Ümumi ayarlar", iconName: "settings" },
+  { key: "commerce", label: "Ticarət", iconName: "cart" },
+  { key: "content", label: "Məzmun", iconName: "fileText" },
+  { key: "access", label: "Giriş və icazə", iconName: "lock" },
 ];
 
 const FIELD_DEFS = {
@@ -141,7 +142,7 @@ export default function NoCodeAdminStudio() {
                           className={`inline-flex items-center justify-between rounded-xl px-3 py-2 text-sm font-semibold ${value ? "bg-emerald-500 text-white" : "bg-gray-200 text-gray-700"}`}
                         >
                           <span>{value ? "Aktiv" : "Deaktiv"}</span>
-                          <span>{value ? "✓" : "○"}</span>
+                          {value ? <Icon name="check" size={14} className="text-emerald-600" /> : <span className="w-3.5 h-3.5 rounded-full border border-gray-300 inline-block" />}
                         </button>
                       ) : field.type === "select" ? (
                         <select

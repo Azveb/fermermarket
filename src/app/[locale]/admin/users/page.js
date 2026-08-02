@@ -25,7 +25,7 @@ export default function AdminUsersPage() {
   async function updateUser(id, data) {
     try { 
       await apiFetch(`/api/admin/users/${id}`, { method: "PATCH", body: JSON.stringify(data) }); 
-      toast("Güncəlləndi ✓", "success"); 
+      toast("Güncəlləndi", "success"); 
       setUsers(p => p.map(u => u.id === id ? { ...u, ...data } : u)); 
     } catch(e) {
       toast(e.message, "error");
@@ -53,7 +53,7 @@ export default function AdminUsersPage() {
         method: "PATCH",
         body: JSON.stringify({ balance: walletData.balance, coins: walletData.coins })
       });
-      toast("Balans güncəlləndi ✓", "success");
+      toast("Balans güncəlləndi", "success");
       setWalletModal(null);
     } catch(e) {
       toast(e.message, "error");

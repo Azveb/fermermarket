@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useState, useEffect, use } from "react";
 import { Link } from "@/i18n/routing";
 import Header from "@/components/Header";
@@ -43,7 +44,7 @@ export default function PestDetailPage({ params }) {
           </div>
         ) : error ? (
           <div className="bg-red-50 text-red-700 p-5 rounded-2xl border border-red-100 max-w-lg mx-auto text-center mt-10">
-            <p className="font-bold mb-2">⚠️ Xəta</p>
+            <p className="font-bold mb-2 flex items-center gap-1.5"><Icon name="alert" size={16} /> Xəta</p>
             <p className="text-sm">{error}</p>
           </div>
         ) : !data ? (
@@ -98,7 +99,7 @@ export default function PestDetailPage({ params }) {
                   {data.pest.symptoms && (
                     <div>
                       <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2 mb-2">
-                        🔍 Simptomlar və Zədələnmə
+                        <span className="flex items-center gap-1.5"><Icon name="search" size={16} /> Simptomlar və Zədələnmə</span>
                       </h3>
                       <p className="text-sm text-gray-500 leading-relaxed">{data.pest.symptoms}</p>
                     </div>
@@ -107,7 +108,7 @@ export default function PestDetailPage({ params }) {
                   {data.pest.lifecycle && (
                     <div>
                       <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2 mb-2">
-                        🔄 Həyat Dövrü
+                        <span className="flex items-center gap-1.5"><Icon name="refresh" size={16} /> Həyat Dövrü</span>
                       </h3>
                       <p className="text-sm text-gray-500 leading-relaxed">{data.pest.lifecycle}</p>
                     </div>
@@ -116,7 +117,7 @@ export default function PestDetailPage({ params }) {
                   {data.pest.prevention && (
                     <div>
                       <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2 mb-2">
-                        🛡️ Mübarizə və Profilaktika
+                        <span className="flex items-center gap-1.5"><Icon name="shieldCheck" size={16} /> Mübarizə və Profilaktika</span>
                       </h3>
                       <p className="text-sm text-gray-500 leading-relaxed">{data.pest.prevention}</p>
                     </div>
@@ -146,7 +147,7 @@ export default function PestDetailPage({ params }) {
                           {p.coverImage ? (
                             <SafeImage src={p.coverImage} alt={p.title} fill className="object-cover" />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-xl">🌿</div>
+                            <div className="w-full h-full flex items-center justify-center text-brand-600"><Icon name="sprout" size={24} /></div>
                           )}
                         </div>
                         <div className="flex-1 min-w-0 flex flex-col">

@@ -282,7 +282,7 @@ export default function UserEditProductPage({ params }) {
             {form.images.map((img, idx) => (
               <div key={idx} className="relative w-24 h-24 rounded-lg overflow-hidden border border-gray-200">
                 <img src={img.url} className="w-full h-full object-cover" />
-                <button type="button" onClick={() => removeImage(idx)} className="absolute top-1 right-1 bg-black/60 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">✕</button>
+                <button type="button" onClick={() => removeImage(idx)} className="absolute top-1 right-1 bg-black/60 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs"><Icon name="close" size={12} /></button>
               </div>
             ))}
             {form.images.length < 5 && (
@@ -301,7 +301,7 @@ export default function UserEditProductPage({ params }) {
             {form.tags.map((tag, idx) => (
               <span key={idx} className="bg-brand-50 text-brand-700 px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
                 #{tag}
-                <button type="button" onClick={() => removeTag(idx)}>✕</button>
+                <button type="button" onClick={() => removeTag(idx)}><Icon name="close" size={12} /></button>
               </span>
             ))}
           </div>

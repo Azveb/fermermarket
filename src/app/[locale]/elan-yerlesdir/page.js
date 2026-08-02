@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useEffect, useState } from "react";
 import { Link } from "@/i18n/routing";
 import { apiFetch, getUser, getToken } from "@/lib/apiClient";
@@ -81,7 +82,7 @@ export default function PostListingPage() {
           descriptionAz: data.descriptionAz || data.description || prev.descriptionAz,
           tags: Array.from(new Set([...(prev.tags || []), ...(data.tags || [])])).slice(0, 10)
         }));
-        triggerToast("AI təsvir yazıldı ✨");
+        triggerToast("AI təsvir yazıldı");
       }
     } catch (e) {
       console.error("AI Auto-suggest failed:", e);
@@ -213,7 +214,7 @@ export default function PostListingPage() {
       {/* Toast */}
       {toastMsg && (
         <div className="fixed bottom-5 right-5 z-50 bg-brand-800 text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-2 text-sm animate-bounce">
-          ✨ {toastMsg}
+          {toastMsg}
         </div>
       )}
 
@@ -428,7 +429,7 @@ export default function PostListingPage() {
               </label>
               {!form.allowRetail && (
                 <p className="text-xs text-brand-600">
-                  ℹ️ Məhsul yalnız {form.wholesaleMinQty || "..."} {form.unit} və daha yuxarı miqdarda sifariş edilə biləcək.
+                  <Icon name="info" size={14} className="inline mr-1 text-blue-500" /> Məhsul yalnız {form.wholesaleMinQty || "..."} {form.unit} və daha yuxarı miqdarda sifariş edilə biləcək.
                 </p>
               )}
             </div>
@@ -471,7 +472,7 @@ export default function PostListingPage() {
                   onClick={() => removeImage(idx)}
                   className="absolute top-1 right-1 bg-black/60 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
                 >
-                  ✕
+                  <Icon name="close" size={12} />
                 </button>
               </div>
             ))}
@@ -512,7 +513,7 @@ export default function PostListingPage() {
             {form.tags?.map((tag, idx) => (
               <span key={idx} className="bg-brand-50 border border-brand-200 text-brand-700 px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
                 #{tag}
-                <button type="button" onClick={() => removeTag(idx)} className="hover:text-red-600">✕</button>
+                <button type="button" onClick={() => removeTag(idx)} className="hover:text-red-600"><Icon name="close" size={12} /></button>
               </span>
             ))}
           </div>

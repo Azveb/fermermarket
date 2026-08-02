@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useState, useEffect } from "react";
 import { apiFetch } from "@/lib/apiClient";
 
@@ -66,8 +67,8 @@ export default function DeliveryPanel({ user }) {
   const displayed = tab === "active" ? activeOrders : deliveredOrders;
 
   const TABS = [
-    { key: "active", label: `🚚 Aktiv (${activeOrders.length})` },
-    { key: "delivered", label: `✅ Çatdırıldı (${deliveredOrders.length})` },
+    { key: "active", label: `Aktiv (${activeOrders.length})`, icon: "truck" },
+    { key: "delivered", label: `Çatdırıldı (${deliveredOrders.length})`, icon: "checkCircle" },
   ];
 
   return (
@@ -92,7 +93,12 @@ export default function DeliveryPanel({ user }) {
           <button key={t.key} onClick={() => setTab(t.key)}
             className={`pb-2 px-3 text-sm font-semibold border-b-2 transition-colors ${
               tab === t.key ? "border-brand-600 text-brand-700" : "border-transparent text-gray-500"
-            }`}>{t.label}</button>
+            }`}>
+            <span className="flex items-center gap-1.5">
+              <Icon name={t.icon} size={16} />
+              {t.label}
+            </span>
+          </button>
         ))}
       </div>
 
@@ -100,7 +106,9 @@ export default function DeliveryPanel({ user }) {
         <div className="text-center py-10 text-gray-400">Yüklənir...</div>
       ) : displayed.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-4xl mb-3">{tab === "active" ? "🚛" : "📦"}</p>
+          <div className="mb-3 text-gray-300 flex justify-center">
+            <Icon name={tab === "active" ? "truck" : "package"} size={48} />
+          </div>
           <p className="text-gray-500 font-medium">
             {tab === "active" ? "Aktiv sifariş yoxdur" : "Hələ çatdırılmış sifariş yoxdur"}
           </p>
@@ -119,13 +127,13 @@ export default function DeliveryPanel({ user }) {
                   </div>
                   {order.deliveryAddress && (
                     <p className="text-xs text-gray-500 flex items-center gap-1 mt-0.5">
-                      📍 {order.deliveryAddress}
+                      <Icon name="mapPin" size={13} className="shrink-0 text-gray-400" /> {order.deliveryAddress}
                     </p>
                   )}
                   {order.buyer && (
                     <p className="text-xs text-gray-500 mt-0.5">
-                      👤 {order.buyer.fullName || order.buyer.email}
-                      {order.buyer.phone && ` · 📞 ${order.buyer.phone}`}
+                      <Icon name="user" size={13} className="shrink-0 text-gray-400 inline mr-1" />{order.buyer.fullName || order.buyer.email}
+                      {order.buyer.phone && <span className="inline-flex items-center gap-1 ml-1"> · <Icon name="phone" size={13} className="shrink-0 text-gray-400" />{order.buyer.phone}</span>}
                     </p>
                   )}
                   <div className="mt-2 flex flex-wrap gap-1">
@@ -150,7 +158,7 @@ export default function DeliveryPanel({ user }) {
                     disabled={updating === order.id}
                     className="btn-primary text-sm py-2 px-4 shrink-0 disabled:opacity-50"
                   >
-                    {updating === order.id ? "..." : "✅ Çatdırıldı"}
+                    {updating === order.id ? "..." : <span className="flex items-center gap-1.5"><Icon name="check" size={16} /> Çatdırıldı</span>}
                   </button>
                 )}
               </div>

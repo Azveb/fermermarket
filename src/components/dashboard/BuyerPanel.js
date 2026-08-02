@@ -587,7 +587,7 @@ function StoreCreateForm() {
           className="w-full flex items-center justify-between px-4 py-3 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition-colors"
         >
           <span className="flex items-center gap-2"><Icon name="clipboard" size={16} /> Əlavə Biznes Məlumatları (İsteğe Bağlı)</span>
-          <span className="text-gray-400">{showExtra ? "▲ Bağla" : "▼ Aç"}</span>
+          <span className="text-gray-400">{showExtra ? <span className="flex items-center gap-1"><Icon name="chevronDown" size={14} className="rotate-180" /> Bağla</span> : <span className="flex items-center gap-1"><Icon name="chevronDown" size={14} /> Aç</span>}</span>
         </button>
         {showExtra && (
           <div className="px-4 pb-4 grid grid-cols-1 md:grid-cols-2 gap-3 bg-gray-50 border-t border-gray-100">

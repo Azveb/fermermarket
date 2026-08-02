@@ -1,7 +1,7 @@
 "use client";
 
 export const LOCALES = ["az", "en", "ru"];
-export const LOCALE_LABELS = { az: "AZ 🇦🇿", en: "EN 🇬🇧", ru: "RU 🇷🇺" };
+export const LOCALE_LABELS = { az: "AZ", en: "EN", ru: "RU" };
 
 export const translations = {
   az: {

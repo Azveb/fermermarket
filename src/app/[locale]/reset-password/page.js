@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, } from "next/navigation";
 import { useRouter } from "@/i18n/routing";
@@ -85,7 +86,7 @@ function ResetForm() {
         />
       </div>
       <button type="submit" disabled={loading} className="btn-primary w-full">
-        {loading ? "Yenilənir..." : "Şifrəni yenilə →"}
+        {loading ? "Yenilənir..." : <span className="flex items-center justify-center gap-1">Şifrəni yenilə <Icon name="arrowRight" size={14} /></span>}
       </button>
     </form>
   );

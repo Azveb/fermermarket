@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useEffect, useState } from "react";
 import { Link } from "@/i18n/routing";
 
@@ -91,7 +92,7 @@ export default function LeaderboardPage() {
                   )}
                   {seller.avgRating && (
                     <p className="text-xs text-yellow-600 font-semibold">
-                      ⭐ {seller.avgRating.toFixed(1)}
+                      <span className="inline-flex items-center gap-1"><Icon name="star" size={14} className="text-amber-400 fill-amber-400" /> {seller.avgRating.toFixed(1)}</span>
                     </p>
                   )}
                 </div>

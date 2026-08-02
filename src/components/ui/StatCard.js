@@ -43,7 +43,7 @@ export default function StatCard({ icon, label, value, suffix="", prefix="", cha
         </span>
         {change !== undefined && (
           <span className={`badge text-[10px] ${Number(change)>=0?"badge-green":"badge-red"}`}>
-            {Number(change)>=0?"↑":"↓"} {Math.abs(change)}%
+            <Icon name={Number(change)>=0 ? "arrowUp" : "arrowDown"} size={12} className="inline mr-0.5" /> {Math.abs(change)}%
           </span>
         )}
       </div>

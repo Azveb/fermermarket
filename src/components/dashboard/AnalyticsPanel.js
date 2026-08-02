@@ -136,20 +136,20 @@ function AdminAnalytics() {
 
           {/* Top products */}
           <div className="card p-4">
-            <p className="font-semibold text-sm mb-3">🏆 Ən çox satılan məhsullar</p>
+            <p className="font-semibold text-sm mb-3 flex items-center gap-1.5"><Icon name="trophy" size={16} className="text-amber-500" /> Ən çox satılan məhsullar</p>
             <BarChart data={data?.topProducts || []} keyName="title" valueName="sold" colorClass="bg-brand-500"/>
           </div>
 
           {/* Top categories */}
           <div className="card p-4">
-            <p className="font-semibold text-sm mb-3">📂 Kateqoriya üzrə satış</p>
+            <p className="font-semibold text-sm mb-3 flex items-center gap-1.5"><Icon name="folder" size={16} className="text-blue-500" /> Kateqoriya üzrə satış</p>
             <BarChart data={data?.topCategories || []} keyName="category" valueName="sold" colorClass="bg-blue-500"/>
           </div>
 
           {/* Role breakdown */}
           <div className="grid grid-cols-2 gap-3">
             <div className="card p-4">
-              <p className="font-semibold text-sm mb-3">👥 İstifadəçi rolları</p>
+              <p className="font-semibold text-sm mb-3 flex items-center gap-1.5"><Icon name="users" size={16} className="text-purple-500" /> İstifadəçi rolları</p>
               <div className="space-y-1.5">
                 {(data?.roleBreakdown || []).map(r => (
                   <div key={r.role} className="flex justify-between text-xs">
@@ -217,7 +217,7 @@ function FarmerAnalytics() {
 
           {(data?.revenueByProduct || []).length > 0 && (
             <div className="card p-4">
-              <p className="font-semibold text-sm mb-3">🏆 Məhsul üzrə gəlir</p>
+              <p className="font-semibold text-sm mb-3 flex items-center gap-1.5"><Icon name="trophy" size={16} className="text-amber-500" /> Məhsul üzrə gəlir</p>
               <BarChart data={data?.revenueByProduct || []} keyName="title" valueName="revenue" colorClass="bg-emerald-500"/>
             </div>
           )}

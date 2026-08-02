@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useState, useEffect } from "react";
 import { Link } from "@/i18n/routing";
 import Header from "@/components/Header";
@@ -30,7 +31,7 @@ export default function CropsPage() {
       <main className="flex-grow max-w-6xl mx-auto px-4 py-8 w-full">
         <div className="mb-8">
           <h1 className="text-3xl font-black text-gray-900 flex items-center gap-2">
-            🌾 Bitki Mühafizəsi bələdçisi
+            <span className="flex items-center gap-2"><Icon name="wheat" size={24} className="text-brand-600" /> Bitki Mühafizəsi bələdçisi</span>
           </h1>
           <p className="text-gray-500 mt-1">
             Becərdiyiniz bitkini seçərək ona uyğun xəstəlik və zərərverici həllərini, eləcə də gübrələri tapın.
@@ -47,7 +48,7 @@ export default function CropsPage() {
           </div>
         ) : crops.length === 0 ? (
           <div className="bg-white rounded-3xl p-12 border border-gray-100 text-center shadow-sm max-w-md mx-auto mt-10">
-            <span className="text-4xl">🌾</span>
+            <Icon name="wheat" size={32} className="text-brand-600" />
             <p className="text-gray-400 text-sm mt-3 font-medium">Heç bir bitki növü tapılmadı.</p>
           </div>
         ) : (
@@ -62,7 +63,7 @@ export default function CropsPage() {
                   {c.image ? (
                     <SafeImage src={c.image} alt={c.name} fill className="object-cover" />
                   ) : (
-                    "🌱"
+                    "sprout"
                   )}
                 </div>
                 <h4 className="font-extrabold text-gray-800 text-xs line-clamp-1">{c.name}</h4>

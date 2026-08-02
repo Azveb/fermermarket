@@ -77,7 +77,7 @@ export default function CompareButton({ productId, iconOnly = false, className =
           href={`/compare?ids=${getCompareList().join(",")}`}
           className="text-sm font-bold text-brand-600 hover:underline"
         >
-          Bax → ({count})
+          <span className="flex items-center gap-1">Bax <Icon name="arrowRight" size={14} /> ({count})</span>
         </Link>
       )}
     </div>

@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useState, useEffect } from "react";
 import { Link } from "@/i18n/routing";
 
@@ -37,7 +38,7 @@ export default function DiseasesPage() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
             <h1 className="text-3xl font-black text-gray-900 flex items-center gap-2">
-              🦠 Bitki Xəstəlikləri Ensiklopediyası
+              <span className="flex items-center gap-2"><Icon name="bug" size={24} className="text-red-500" /> Bitki Xəstəlikləri Ensiklopediyası</span>
             </h1>
             <p className="text-gray-500 mt-1">
               Bitkilərinizdə yaranan xəstəlikləri müəyyən edin, simptomları oxuyun və müalicə yollarını öyrənin.
@@ -63,7 +64,7 @@ export default function DiseasesPage() {
           </div>
         ) : filtered.length === 0 ? (
           <div className="bg-white rounded-3xl p-12 border border-gray-100 text-center shadow-sm max-w-md mx-auto mt-10">
-            <span className="text-4xl">🦠</span>
+            <Icon name="bug" size={32} className="text-red-500" />
             <p className="text-gray-400 text-sm mt-3 font-medium">Heç bir xəstəlik tapılmadı.</p>
           </div>
         ) : (
@@ -83,7 +84,7 @@ export default function DiseasesPage() {
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-4xl opacity-30">🦠</div>
+                    <div className="w-full h-full flex items-center justify-center opacity-30 text-red-500"><Icon name="bug" size={36} /></div>
                   )}
                 </div>
                 <div className="p-5 flex-grow flex flex-col">

@@ -27,7 +27,7 @@ export default function AdminCategoriesPage() {
       const d = await apiFetch("/api/categories", { method: "POST", body: JSON.stringify(payload) }); 
       setItems(p => [...p, { ...d.category, name: d.category.nameAz }]); 
       setForm({ nameAz: "", slug: "", icon: "", isActive: true, parentId: "" }); 
-      toast("Kateqoriya əlavə edildi ✓", "success"); 
+      toast("Kateqoriya əlavə edildi", "success"); 
     } catch(e) { 
       setErr(e.message); 
       toast(e.message, "error");
@@ -38,7 +38,7 @@ export default function AdminCategoriesPage() {
     try { 
       await apiFetch(`/api/categories/${id}`, { method: "PATCH", body: JSON.stringify({ isActive: val }) }); 
       setItems(p => p.map(c => c.id === id ? { ...c, isActive: val } : c)); 
-      toast("Yeniləndi ✓", "success"); 
+      toast("Yeniləndi", "success"); 
     } catch(e) { 
       toast(e.message, "error"); 
     } 

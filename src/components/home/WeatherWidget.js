@@ -35,7 +35,7 @@ export default function WeatherWidget() {
 
   return (
     <div className="flex items-center gap-2 bg-blue-50/50 hover:bg-blue-50 px-3 py-1.5 rounded-xl border border-blue-100 transition-colors cursor-default">
-      <span className="text-lg">🌤️</span>
+      <Icon name="sun" size={20} className="text-amber-500" />
       <div className="flex flex-col">
         <span className="text-xs font-bold text-blue-900 leading-tight">{weather.temperature}°C</span>
         <span className="text-[10px] text-blue-600 font-medium leading-tight">külək: {weather.windspeed} km/s</span>

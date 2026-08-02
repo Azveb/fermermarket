@@ -60,7 +60,7 @@ export default async function CategorySubcategoryPage({ params }) {
           <div className="container mx-auto max-w-6xl">
             <div className="mb-8">
               <Link href="/categories" className="text-sm text-brand-600 hover:underline mb-2 inline-block">
-                ← Bütün Kateqoriyalar
+                <span className="flex items-center gap-1.5"><Icon name="arrowLeft" size={16} /> Bütün Kateqoriyalar</span>
               </Link>
               <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight mb-4">
                 {category.nameAz} <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-green-400">Alt Kateqoriyaları</span>
@@ -101,7 +101,7 @@ export default async function CategorySubcategoryPage({ params }) {
                       <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-brand-600 transition-colors">{child.nameAz}</h3>
                       <div className="flex items-center justify-between text-gray-500 text-sm">
                         <span className="flex items-center gap-1"><Icon name="package" size={16} /> {child._count?.products || 0} məhsul</span>
-                        <span className="text-brand-600 font-bold group-hover:translate-x-1 transition-transform">→</span>
+                        <span className="text-brand-600 font-bold group-hover:translate-x-1 transition-transform"><Icon name="arrowRight" size={16} /></span>
                       </div>
                     </div>
                   </Link>

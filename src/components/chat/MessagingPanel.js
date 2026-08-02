@@ -69,7 +69,7 @@ function ChatWindow({ conversationId, user, otherName, onBack }) {
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="flex items-center gap-3 p-4 border-b border-gray-100 bg-white">
-        <button onClick={onBack} className="btn-icon">←</button>
+        <button onClick={onBack} className="btn-icon"><Icon name="arrowLeft" size={18} /></button>
         <div className="w-9 h-9 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold text-sm">
           {(otherName || "?")[0].toUpperCase()}
         </div>
@@ -105,7 +105,7 @@ function ChatWindow({ conversationId, user, otherName, onBack }) {
                   <p className="leading-relaxed whitespace-pre-wrap">{msg.content}</p>
                   <p className={`text-[10px] mt-1 ${isMe ? "text-brand-200" : "text-gray-400"} text-right`}>
                     {formatTime(msg.createdAt)}
-                    {isMe && msg.readAt && " ✓✓"}
+                    {isMe && msg.readAt && <Icon name="checkCheck" size={14} className="text-blue-500 inline ml-1" />}
                   </p>
                 </div>
               </div>
@@ -129,7 +129,7 @@ function ChatWindow({ conversationId, user, otherName, onBack }) {
           disabled={!text.trim() || sending}
           className="w-10 h-10 rounded-xl bg-brand-600 text-white flex items-center justify-center disabled:opacity-40 hover:bg-brand-700 transition-colors flex-shrink-0"
         >
-          ➤
+          <Icon name="send" size={16} />
         </button>
       </form>
     </div>

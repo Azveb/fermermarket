@@ -199,7 +199,7 @@ export default function AgronomPage() {
 
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">
-                    ✏️ Simptomları təsvir et
+                    <span className="flex items-center gap-1.5"><Icon name="pencil" size={16} /> Simptomları təsvir et</span>
                   </label>
                   <textarea
                     value={text}

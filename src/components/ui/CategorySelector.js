@@ -86,7 +86,7 @@ export default function CategorySelector({ categories, defaultValue }) {
                   (selected.icon.length <= 2 || selected.icon.includes("http")) 
                     ? (selected.icon.includes("http") ? <img src={selected.icon} alt="" className="w-5 h-5 object-contain" /> : <span>{selected.icon}</span>)
                     : <Icon name={selected.icon} size={18} />
-                ) : "🌾"}
+                ) : <Icon name="sprout" size={16} />}
               </span>
               <span className="whitespace-normal break-words text-left">{selected.name}</span>
             </div>
@@ -118,7 +118,7 @@ export default function CategorySelector({ categories, defaultValue }) {
               !selected ? "bg-brand-50 text-brand-700 font-bold" : "text-gray-700 hover:bg-gray-50"
             }`}
           >
-            📂 Bütün kateqoriyalar
+            <span className="flex items-center gap-1.5"><Icon name="folder" size={16} className="text-brand-600" /> Bütün kateqoriyalar</span>
           </button>
 
           {/* Categories list */}
@@ -144,7 +144,7 @@ export default function CategorySelector({ categories, defaultValue }) {
                         (c.icon.length <= 2 || c.icon.includes("http")) 
                           ? (c.icon.includes("http") ? <img src={c.icon} alt="" className="w-5 h-5 object-contain" /> : <span>{c.icon}</span>)
                           : <Icon name={c.icon} size={18} />
-                      ) : "🌾"}
+                      ) : <Icon name="sprout" size={16} />}
                     </span>
                     <span className="whitespace-normal break-words">{c.nameAz}</span>
                   </button>
@@ -193,7 +193,7 @@ export default function CategorySelector({ categories, defaultValue }) {
                                   : "text-gray-600 hover:text-gray-900"
                               }`}
                             >
-                              <span className="text-gray-400 shrink-0">↳</span>
+                              <Icon name="arrowRight" size={12} className="text-gray-400 shrink-0" />
                               <span className="whitespace-normal break-words">{ch.nameAz}</span>
                             </button>
                             

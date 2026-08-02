@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useState, useEffect, useRef } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/home/Footer";
@@ -75,9 +76,9 @@ export default function SalesPointsPage() {
           .bindPopup(`
             <div style="font-family: sans-serif; padding: 2px;">
               <h5 style="margin: 0 0 5px 0; font-weight: bold; font-size: 14px; color: #16a34a;">${sp.store.name}</h5>
-              <p style="margin: 0 0 4px 0; font-size: 11px; color: #6b7280;">📍 ${sp.address}</p>
-              <p style="margin: 0 0 4px 0; font-size: 11px; color: #6b7280;">🕒 ${sp.workHours || "Qeyd edilməyib"}</p>
-              <p style="margin: 0 0 4px 0; font-size: 11px; color: #6b7280;">📞 ${sp.phone || "Qeyd edilməyib"}</p>
+              <p style="margin: 0 0 4px 0; font-size: 11px; color: #6b7280;">${sp.address}</p>
+              <p style="margin: 0 0 4px 0; font-size: 11px; color: #6b7280;">${sp.workHours || "Qeyd edilməyib"}</p>
+              <p style="margin: 0 0 4px 0; font-size: 11px; color: #6b7280;">${sp.phone || "Qeyd edilməyib"}</p>
               <a href="/stores/${sp.store.slug}" style="display: inline-block; font-size: 11px; font-weight: bold; color: #16a34a; text-decoration: none; margin-top: 5px;">Mağazaya keçid &rarr;</a>
             </div>
           `);
@@ -134,7 +135,7 @@ export default function SalesPointsPage() {
         <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-3xl font-black text-gray-900 flex items-center gap-2">
-              🗺️ Satış Nöqtələri Xəritəsi
+              <span className="flex items-center gap-2"><Icon name="map" size={24} className="text-brand-600" /> Satış Nöqtələri Xəritəsi</span>
             </h1>
             <p className="text-gray-500 mt-1">
               FermerMarket mağazalarının sizə ən yaxın satış və təhvil məntəqələrini kəşf edin.
@@ -178,10 +179,10 @@ export default function SalesPointsPage() {
                         {sp.city || sp.region}
                       </span>
                     </div>
-                    <p className="text-xs text-gray-500 line-clamp-2">📍 {sp.address}</p>
+                    <p className="text-xs text-gray-500 line-clamp-2 flex items-center gap-1"><Icon name="mapPin" size={12} /> {sp.address}</p>
                     <div className="flex items-center justify-between mt-1 text-[10px] text-gray-400 font-semibold w-full">
-                      <span>🕒 {sp.workHours || "Qeyd edilməyib"}</span>
-                      {sp.phone && <span className="text-brand-600">📞 {sp.phone}</span>}
+                      <span className="flex items-center gap-1"><Icon name="clock" size={12} /> {sp.workHours || "Qeyd edilməyib"}</span>
+                      {sp.phone && <span className="text-brand-600 flex items-center gap-1"><Icon name="phone" size={12} /> {sp.phone}</span>}
                     </div>
                   </button>
                 ))

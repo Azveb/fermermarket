@@ -1,3 +1,4 @@
+import Icon from "@/components/ui/Icon";
 import SafeImage from "@/components/SafeImage";
 import ProductGallery from "@/components/ProductGallery";
 import AddToCartButton from "@/components/AddToCartButton";
@@ -310,12 +311,12 @@ export default async function ProductDetailPage({ params }) {
               {product.store.slug ? (
                 <a href={`/stores/${product.store.slug}`} className="font-bold text-brand-700 hover:underline text-sm flex items-center gap-1">
                   {product.store.name}
-                  {product.store.isVerified && <span title="Rəsmi Mağaza" className="text-blue-500 text-sm">✔</span>}
+                  {product.store.isVerified && <Icon name="checkCircle" size={16} className="text-blue-500 inline" />}
                 </a>
               ) : (
                 <strong className="text-sm flex items-center gap-1">
                   {product.store.name}
-                  {product.store.isVerified && <span title="Rəsmi Mağaza" className="text-blue-500 text-sm">✔</span>}
+                  {product.store.isVerified && <Icon name="checkCircle" size={16} className="text-blue-500 inline" />}
                 </strong>
               )}
             </div>
@@ -581,7 +582,7 @@ export default async function ProductDetailPage({ params }) {
             <div className="card p-5 mt-6 border border-gray-100 rounded-2xl">
               <div className="flex items-center justify-between mb-3">
                  <h3 className="font-bold text-sm">Satıcı haqqında</h3>
-                 <a href={`/seller/${seller.id}`} className="text-[11px] text-brand-600 font-bold hover:underline bg-brand-50 px-2 py-1 rounded-md">Profilə bax →</a>
+                 <a href={`/seller/${seller.id}`} className="text-[11px] text-brand-600 font-bold hover:underline bg-brand-50 px-2 py-1 rounded-md"><span className="inline-flex items-center gap-1">Profilə bax <Icon name="arrowRight" size={12} /></span></a>
               </div>
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-12 h-12 rounded-2xl bg-brand-100 text-brand-700 flex items-center justify-center text-xl font-bold">
@@ -591,7 +592,7 @@ export default async function ProductDetailPage({ params }) {
                   <p className="font-bold">{seller.fullName}</p>
                   <p className="text-xs text-gray-500">{seller.role === 'STORE' ? ' Mağaza' : 'Fermer'}</p>
                   <div className="flex items-center gap-1 mt-0.5">
-                    {'★'.repeat(Math.round(seller.avgRating||0))}{'☆'.repeat(5-Math.round(seller.avgRating||0))}
+                    <span className="inline-flex items-center gap-0.5">{[...Array(5)].map((_, i) => <Icon key={i} name="star" size={12} className={i < Math.round(seller.avgRating||0) ? "text-amber-400 fill-amber-400" : "text-gray-300"} />)}</span>
                     <span className="text-xs text-gray-400">({seller.reviewCount||0} rəy)</span>
                   </div>
                 </div>
@@ -650,7 +651,7 @@ export default async function ProductDetailPage({ params }) {
 
       <div className="mt-6 text-center">
         <Link href="/products" className="text-brand-700 font-semibold text-sm hover:underline">
-          ← Bütün elanlara bax
+          <span className="inline-flex items-center gap-1"><Icon name="arrowLeft" size={14} /> Bütün elanlara bax</span>
         </Link>
       </div>
 

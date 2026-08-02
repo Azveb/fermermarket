@@ -60,7 +60,7 @@ function AdminSidebar({ tab, setTab, badges, collapsed, setCollapsed }) {
       <div className="flex items-center justify-between px-4 py-4 border-b border-gray-100">
         {!collapsed && <span className="font-extrabold text-gray-900 text-sm">Admin Panel</span>}
         <button onClick={()=>setCollapsed(v=>!v)} className="btn-icon ml-auto">
-          <span className="text-base">{collapsed?"→":"←"}</span>
+          <Icon name={collapsed ? "arrowRight" : "arrowLeft"} size={16} />
         </button>
       </div>
       <nav className="flex-1 overflow-y-auto p-2 space-y-4">
@@ -136,7 +136,7 @@ function DashboardStats({ stats, loading }) {
           <div>
             <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Ümumi Dövriyyə</p>
             <p className="text-3xl font-extrabold text-brand-700 mt-1">₼{Number(stats.revenue.total).toLocaleString("az-AZ")}</p>
-            <p className="text-xs text-gray-500 mt-1">Bu ay: ₼{Number(stats.revenue.thisMonth).toLocaleString("az-AZ")} <span className={`ml-2 font-semibold ${Number(stats.revenue.growth)>=0?"text-emerald-600":"text-red-500"}`}>{Number(stats.revenue.growth)>=0?"↑":"↓"}{Math.abs(Number(stats.revenue.growth))}%</span></p>
+            <p className="text-xs text-gray-500 mt-1">Bu ay: ₼{Number(stats.revenue.thisMonth).toLocaleString("az-AZ")} <span className={`ml-2 font-semibold ${Number(stats.revenue.growth)>=0?"text-emerald-600":"text-red-500"}`}><Icon name={Number(stats.revenue.growth)>=0 ? "arrowUp" : "arrowDown"} size={12} className="inline mr-0.5" />{Math.abs(Number(stats.revenue.growth))}%</span></p>
           </div>
           <div className="text-gray-300 opacity-20"><Icon name="trendingUp" size={48} /></div>
         </div>
@@ -1098,7 +1098,7 @@ function SliderManager() {
                 overIdx === idx && dragIdx !== idx ? "border-brand-400 bg-brand-50 scale-[1.01] shadow-md" : ""
               } ${dragIdx === idx ? "opacity-40" : ""}`}
             >
-              <span className="text-gray-300 text-lg select-none" title="Sürüklə">⠿</span>
+              <span className="text-gray-300 text-lg select-none" title="Sürüklə"><Icon name="grid" size={16} /></span>
               <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${slide.bg} flex items-center justify-center text-xl shrink-0`}>
                 {slide.emoji}
               </div>

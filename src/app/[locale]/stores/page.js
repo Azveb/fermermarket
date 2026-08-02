@@ -82,7 +82,7 @@ export default async function StoresPage() {
                 <div>
                   <h3 className="font-bold text-lg text-gray-900 leading-tight mb-1 flex items-center gap-1">
                     {store.name}
-                    {store.isVerified && <span title="Rəsmi Mağaza" className="text-blue-500 text-base">✔</span>}
+                    {store.isVerified && <Icon name="checkCircle" size={16} className="text-blue-500 inline" />}
                   </h3>
                   <p className="text-sm text-brand-600 font-medium">{store._count.products} məhsul</p>
                 </div>

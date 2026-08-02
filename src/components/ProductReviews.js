@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useEffect, useState } from "react";
 import { apiFetch, getUser } from "@/lib/apiClient";
 
@@ -13,7 +14,7 @@ function Stars({ value, onChange, size = "text-2xl" }) {
           className={onChange ? "cursor-pointer" : "cursor-default"}
           disabled={!onChange}
         >
-          <span className={n <= value ? "text-amber-400" : "text-gray-300"}>★</span>
+          <Icon name="star" size={16} className={n <= value ? "text-amber-400 fill-amber-400" : "text-gray-300"} />
         </button>
       ))}
     </div>
@@ -60,7 +61,7 @@ export default function ProductReviews({ productId }) {
         method: "POST",
         body: JSON.stringify({ rating, comment: comment || undefined }),
       });
-      setMsg(res.message || "Rəyiniz admin təsdiqindən sonra yayımlanacaq ✓");
+      setMsg(res.message || "Rəyiniz admin təsdiqindən sonra yayımlanacaq");
       setComment("");
       setRating(5);
       load();
@@ -96,7 +97,7 @@ export default function ProductReviews({ productId }) {
           .
         </p>
       ) : alreadyReviewed ? (
-        <p className="text-sm text-gray-500 card p-4">Bu məhsula artıq rəy yazmısınız, təşəkkürlər 🙏</p>
+        <p className="text-sm text-gray-500 card p-4 flex items-center gap-2"><Icon name="heart" size={18} className="text-brand-600 shrink-0" /> Bu məhsula artıq rəy yazmısınız, təşəkkürlər</p>
       ) : (
         <form onSubmit={submitReview} className="card p-4 space-y-3 mb-5">
           <p className="text-sm font-semibold">Rəy yazın</p>
@@ -111,7 +112,7 @@ export default function ProductReviews({ productId }) {
           {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-2">{error}</p>}
           {msg && (
             <p className="text-sm text-brand-700 bg-brand-50 rounded-lg p-2 flex items-center gap-2">
-              <span>⏳</span> {msg}
+              <Icon name="clock" size={16} className="text-amber-500 inline mr-1" /> {msg}
             </p>
           )}
           <button className="btn-primary" disabled={submitting}>

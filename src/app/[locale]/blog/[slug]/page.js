@@ -1,3 +1,4 @@
+import Icon from "@/components/ui/Icon";
 import { notFound } from "next/navigation";
 import { Link } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
@@ -45,7 +46,7 @@ export default async function BlogPostPage({ params }) {
     <>
       <main className="max-w-2xl mx-auto px-4 py-6 pb-28 md:pb-10">
         <Link href="/blog" className="text-sm text-brand-700 hover:underline mb-4 inline-block">
-          ← Bloqa qayıt
+          <span className="flex items-center gap-1.5"><Icon name="arrowLeft" size={16} /> Bloqa qayıt</span>
         </Link>
 
         {post.category && (
@@ -65,7 +66,7 @@ export default async function BlogPostPage({ params }) {
         )}
 
         <div className="flex items-center gap-3 text-xs text-gray-400 mb-6">
-          <span>✍️ {post.author?.fullName || "FermerMarket"}</span>
+          <span className="flex items-center gap-1"><Icon name="pencil" size={14} /> {post.author?.fullName || "FermerMarket"}</span>
           <span>·</span>
           <span>
             {new Date(post.createdAt).toLocaleDateString("az-AZ", {

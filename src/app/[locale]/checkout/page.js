@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useEffect, useState } from "react";
 import { useRouter } from "@/i18n/routing";
 import { getCart, cartTotal, clearCart } from "@/lib/cartClient";
@@ -60,7 +61,7 @@ export default function CheckoutPage() {
         
         <div className="mt-6 bg-gradient-to-r from-yellow-100 to-yellow-50 border border-yellow-200 p-4 rounded-2xl">
           <p className="text-sm text-yellow-800 font-bold">Təbriklər!</p>
-          <p className="text-xs text-yellow-700 mt-1">Bu alış-verişdən <strong className="text-lg">+{success.earnedCoin} 🪙</strong> FermerCoin qazandınız. Balansınızı Panelinizdən yoxlaya bilərsiniz.</p>
+          <p className="text-xs text-yellow-700 mt-1">Bu alış-verişdən <strong className="text-lg"><span className="inline-flex items-center gap-1">+{success.earnedCoin} <Icon name="coins" size={18} className="text-amber-500" /></span></strong> FermerCoin qazandınız. Balansınızı Panelinizdən yoxlaya bilərsiniz.</p>
         </div>
 
         <a href="/dashboard" className="btn-primary inline-block mt-6 w-full text-center">Panelimə keç</a>

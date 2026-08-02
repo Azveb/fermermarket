@@ -85,7 +85,7 @@ export default function DynamicHomeRenderer({ initialBlocks, homeData, editMode 
                   </h2>
                   <p className="text-sm text-gray-500 font-medium mt-1">{p.subtitle || "Önə çıxan elanlar"}</p>
                 </div>
-                <Link href="/products?tier=premium" className="text-sm text-brand-600 font-semibold hover:text-brand-700">Hamısı →</Link>
+                <Link href="/products?tier=premium" className="text-sm text-brand-600 font-semibold hover:text-brand-700"><span className="flex items-center gap-1">Hamısı <Icon name="arrowRight" size={14} /></span></Link>
               </div>
               <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2 -mx-4 px-4 scroll-snap-x">
                 {homeData.premiumListings.map((l) => (
@@ -119,7 +119,7 @@ export default function DynamicHomeRenderer({ initialBlocks, homeData, editMode 
                   </h2>
                   <p className="text-sm text-gray-500 font-medium mt-1">{p.subtitle || "Ən son əlavə edilmiş məhsullar"}</p>
                 </div>
-                <Link href="/products" className="text-sm text-brand-600 font-semibold hover:text-brand-700">Hamısı →</Link>
+                <Link href="/products" className="text-sm text-brand-600 font-semibold hover:text-brand-700"><span className="flex items-center gap-1">Hamısı <Icon name="arrowRight" size={14} /></span></Link>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4">
                 {homeData?.latestProducts?.slice(0, p.count || 8).map((prod) => (

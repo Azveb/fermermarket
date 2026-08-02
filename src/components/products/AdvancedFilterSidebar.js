@@ -330,10 +330,10 @@ export default function AdvancedFilterSidebar({ categories }) {
           <label className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2 block">Xüsusiyyətlər</label>
           <div className="space-y-1">
             {[
-              { key: "isDiscounted", label: "🏷️ Endirimli" },
-              { key: "hasInstallment", label: "💳 Taksitli ödəniş" },
-              { key: "hasDelivery", label: "🚚 Çatdırılma edilir" },
-              { key: "isOrganic", label: "🌿 Orqanik" },
+              { key: "isDiscounted", label: "Endirimli", icon: "tag" },
+              { key: "hasInstallment", label: "Taksitli ödəniş", icon: "creditCard" },
+              { key: "hasDelivery", label: "Çatdırılma edilir", icon: "truck" },
+              { key: "isOrganic", label: "Orqanik", icon: "leaf" },
             ].map(({ key, label }) => (
               <label
                 key={key}
@@ -375,7 +375,7 @@ export default function AdvancedFilterSidebar({ categories }) {
             className="w-full flex items-center justify-between group"
           >
             <label className="text-xs font-bold text-gray-500 uppercase tracking-wide cursor-pointer">
-              📍 Şəhər / Rayon
+              <span className="flex items-center gap-1.5"><Icon name="mapPin" size={14} className="text-brand-600" /> Şəhər / Rayon</span>
               {filters.regions.length > 0 && (
                 <span className="ml-2 bg-brand-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
                   {filters.regions.length}

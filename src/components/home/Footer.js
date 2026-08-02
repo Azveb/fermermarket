@@ -1,3 +1,4 @@
+import Icon from "@/components/ui/Icon";
 import { Link } from "@/i18n/routing";
 
 const LINKS = {
@@ -69,7 +70,7 @@ export default function Footer() {
         <div className="mb-8 grid gap-8 md:grid-cols-[1.2fr,repeat(3,minmax(0,1fr))]">
           <div>
             <Link href="/" className="mb-3 flex items-center gap-2">
-              <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-600 text-lg text-white shadow-lg shadow-emerald-600/20">🌾</span>
+              <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-600 text-white shadow-lg shadow-emerald-600/20"><Icon name="wheat" size={20} /></span>
               <span className="text-lg font-extrabold tracking-tight text-gray-900">
                 Fermer<span className="text-emerald-700"> Market</span>
               </span>
@@ -136,7 +137,7 @@ export default function Footer() {
         <div className="flex flex-col items-center justify-between gap-3 border-t border-gray-200 pt-6 text-xs text-gray-500 sm:flex-row">
           <p>© {new Date().getFullYear()} FermerMarket. Bütün hüquqlar qorunur.</p>
           <div className="flex items-center gap-2 rounded-full border border-gray-200 bg-white/70 px-3 py-1.5">
-            <span>🇦🇿</span>
+            <Icon name="globe" size={16} className="text-gray-400" />
             <span>Developed By Gsmv</span>
           </div>
         </div>

@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useRef, useState, useCallback } from "react";
 import { getToken } from "@/lib/apiClient";
 
@@ -105,7 +106,7 @@ export default function ImageUploader({ value = [], onChange, max = 8 }) {
               className="absolute top-0.5 right-0.5 bg-black/60 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs leading-none hover:bg-red-600 transition-colors"
               aria-label="Şəkli sil"
             >
-              ✕
+              <Icon name="close" size={14} />
             </button>
             {idx !== 0 && (
               <button
@@ -114,7 +115,7 @@ export default function ImageUploader({ value = [], onChange, max = 8 }) {
                 className="absolute top-0.5 left-0.5 bg-black/60 text-white rounded px-1 text-[9px] opacity-0 group-hover:opacity-100 transition-opacity hover:bg-brand-600"
                 title="Əsas şəkil et"
               >
-                ★
+                <Icon name="star" size={12} className="text-amber-400 fill-amber-400" />
               </button>
             )}
           </div>
@@ -145,7 +146,7 @@ export default function ImageUploader({ value = [], onChange, max = 8 }) {
       </div>
 
       {value.length > 1 && (
-        <p className="text-[11px] text-gray-400 mb-2">💡 Şəkilləri sürükləyərək sırasını dəyişə bilərsiniz. Birinci şəkil əsas şəkil olur.</p>
+        <p className="text-[11px] text-gray-400 mb-2 flex items-center gap-1.5"><Icon name="lightbulb" size={14} className="text-amber-500 shrink-0" /> Şəkilləri sürükləyərək sırasını dəyişə bilərsiniz. Birinci şəkil əsas şəkil olur.</p>
       )}
 
       {error && <p className="text-xs text-red-600 mt-1">{error}</p>}

@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useState, useEffect } from "react";
 import { Link } from "@/i18n/routing";
 import Header from "@/components/Header";
@@ -39,7 +40,7 @@ export default function PestsPage() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
             <h1 className="text-3xl font-black text-gray-900 flex items-center gap-2">
-              🐛 Zərərvericilər Kataloqu
+              <span className="flex items-center gap-2"><Icon name="bug" size={24} className="text-emerald-600" /> Zərərvericilər Kataloqu</span>
             </h1>
             <p className="text-gray-500 mt-1">
               Təsərrüfatınıza ziyan vuran cücü və digər zərərvericiləri tapın, həyat dövrünü öyrənin və mübarizə aparın.
@@ -65,7 +66,7 @@ export default function PestsPage() {
           </div>
         ) : filtered.length === 0 ? (
           <div className="bg-white rounded-3xl p-12 border border-gray-100 text-center shadow-sm max-w-md mx-auto mt-10">
-            <span className="text-4xl">🐛</span>
+            <Icon name="bug" size={32} className="text-emerald-600" />
             <p className="text-gray-400 text-sm mt-3 font-medium">Heç bir zərərverici tapılmadı.</p>
           </div>
         ) : (
@@ -85,7 +86,7 @@ export default function PestsPage() {
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-4xl opacity-30">🐛</div>
+                    <div className="w-full h-full flex items-center justify-center opacity-30 text-emerald-600"><Icon name="bug" size={36} /></div>
                   )}
                 </div>
                 <div className="p-5 flex-grow flex flex-col">

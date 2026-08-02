@@ -191,7 +191,7 @@ export default function PrivacyPage() {
             </p>
             <div className="flex flex-wrap gap-4 pt-2 text-sm">
               <Link href="/contact" className="inline-flex items-center gap-2 text-brand-700 font-semibold hover:underline">
-                Əlaqə səhifəsinə keçid →
+                <span className="inline-flex items-center gap-1">Əlaqə səhifəsinə keçid <Icon name="arrowRight" size={14} /></span>
               </Link>
               <a href="mailto:privacy@fermermarket.az" className="text-gray-600 hover:text-brand-600 font-medium">
                 privacy@fermermarket.az

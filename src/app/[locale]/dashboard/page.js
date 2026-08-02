@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useEffect, useState } from "react";
 import { useRouter } from "@/i18n/routing";
 import { apiFetch, getUser } from "@/lib/apiClient";
@@ -64,7 +65,7 @@ export default function DashboardPage() {
       <div className="mb-6 flex items-start justify-between gap-4 flex-wrap bg-gradient-to-r from-brand-600 to-green-500 rounded-3xl p-6 text-white shadow-xl">
         <div>
           <h1 className="text-2xl font-black">
-            Salam, {user.fullName?.split(" ")[0]} 👋
+            Salam, {user.fullName?.split(" ")[0]} <Icon name="hand" size={20} className="inline text-amber-500 ml-1" />
           </h1>
           <p className="text-sm opacity-90 mt-1">
             {user.email}
@@ -76,7 +77,7 @@ export default function DashboardPage() {
         <div className="bg-white/20 backdrop-blur-md rounded-2xl px-5 py-3 border border-white/30 text-right">
           <p className="text-xs uppercase font-bold tracking-wider opacity-90">FermerCoin Balansınız</p>
           <div className="text-2xl font-black flex items-center gap-1.5 justify-end">
-            <span className="text-yellow-300">🪙</span> 
+            <Icon name="coins" size={18} className="text-amber-400 inline" /> 
             {fermerCoin}
           </div>
         </div>

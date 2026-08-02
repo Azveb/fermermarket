@@ -261,7 +261,7 @@ export default function Header() {
                     {wallet && (
                       <div className="mt-1.5 pt-1.5 border-t border-gray-100 flex items-center justify-between text-xs">
                         <span className="text-brand-700 font-bold">₼{Number(wallet.balance || 0).toFixed(2)}</span>
-                        <span className="text-amber-600 font-bold">🪙 {Number(wallet.coins || 0).toFixed(0)}</span>
+                        <span className="text-amber-600 font-bold"><span className="flex items-center gap-1"><Icon name="coins" size={16} /> {Number(wallet.coins || 0).toFixed(0)}</span></span>
                       </div>
                     )}
                   </div>

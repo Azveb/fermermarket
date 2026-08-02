@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useState, useEffect } from "react";
 import { Link } from "@/i18n/routing";
 import Header from "@/components/Header";
@@ -43,7 +44,7 @@ export default function ActiveIngredientDetailPage({ params }) {
           </div>
         ) : error ? (
           <div className="bg-red-50 text-red-700 p-5 rounded-2xl border border-red-100 max-w-lg mx-auto text-center mt-10">
-            <p className="font-bold mb-2">⚠️ Xəta</p>
+            <p className="font-bold mb-2 flex items-center gap-1.5"><Icon name="alert" size={16} /> Xəta</p>
             <p className="text-sm">{error}</p>
           </div>
         ) : !data ? (
@@ -112,7 +113,7 @@ export default function ActiveIngredientDetailPage({ params }) {
                           {p.coverImage ? (
                             <SafeImage src={p.coverImage} alt={p.title} fill className="object-cover" />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-2xl">🌿</div>
+                            <div className="w-full h-full flex items-center justify-center text-brand-600"><Icon name="sprout" size={32} /></div>
                           )}
                         </div>
                         <div className="flex-1 min-w-0 flex flex-col">

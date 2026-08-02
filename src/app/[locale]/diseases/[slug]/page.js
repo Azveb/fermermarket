@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useState, useEffect, use } from "react";
 import { Link } from "@/i18n/routing";
 
@@ -41,7 +42,7 @@ export default function DiseaseDetailPage({ params }) {
           </div>
         ) : error ? (
           <div className="bg-red-50 text-red-700 p-5 rounded-2xl border border-red-100 max-w-lg mx-auto text-center mt-10">
-            <p className="font-bold mb-2">⚠️ Xəta</p>
+            <p className="font-bold mb-2 flex items-center gap-1.5"><Icon name="alert" size={16} /> Xəta</p>
             <p className="text-sm">{error}</p>
           </div>
         ) : !data ? (
@@ -96,7 +97,7 @@ export default function DiseaseDetailPage({ params }) {
                   {data.disease.symptoms && (
                     <div>
                       <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2 mb-2">
-                        🔍 Simptomlar
+                        <span className="flex items-center gap-1.5"><Icon name="search" size={16} /> Simptomlar</span>
                       </h3>
                       <p className="text-sm text-gray-500 leading-relaxed">{data.disease.symptoms}</p>
                     </div>
@@ -105,7 +106,7 @@ export default function DiseaseDetailPage({ params }) {
                   {data.disease.causes && (
                     <div>
                       <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2 mb-2">
-                        🦠 Səbəblər
+                        <span className="flex items-center gap-1.5"><Icon name="bug" size={16} /> Səbəblər</span>
                       </h3>
                       <p className="text-sm text-gray-500 leading-relaxed">{data.disease.causes}</p>
                     </div>
@@ -114,7 +115,7 @@ export default function DiseaseDetailPage({ params }) {
                   {data.disease.prevention && (
                     <div>
                       <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2 mb-2">
-                        🛡️ Profilaktika və Qarşısının Alınması
+                        <span className="flex items-center gap-1.5"><Icon name="shieldCheck" size={16} /> Profilaktika və Qarşısının Alınması</span>
                       </h3>
                       <p className="text-sm text-gray-500 leading-relaxed">{data.disease.prevention}</p>
                     </div>
@@ -123,7 +124,7 @@ export default function DiseaseDetailPage({ params }) {
                   {data.disease.treatment && (
                     <div>
                       <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2 mb-2">
-                        💊 Müalicə yolları
+                        <span className="flex items-center gap-1.5"><Icon name="flask" size={16} /> Müalicə yolları</span>
                       </h3>
                       <p className="text-sm text-gray-500 leading-relaxed">{data.disease.treatment}</p>
                     </div>
@@ -153,7 +154,7 @@ export default function DiseaseDetailPage({ params }) {
                           {p.coverImage ? (
                             <SafeImage src={p.coverImage} alt={p.title} fill className="object-cover" />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-xl">🌿</div>
+                            <div className="w-full h-full flex items-center justify-center text-brand-600"><Icon name="sprout" size={24} /></div>
                           )}
                         </div>
                         <div className="flex-1 min-w-0 flex flex-col">

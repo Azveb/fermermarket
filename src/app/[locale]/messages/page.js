@@ -232,7 +232,7 @@ function MessagesInner() {
                         <div className="flex items-center gap-1">
                           {lastMsg.senderId === myId && (
                             <span className="text-[10px] text-gray-400">
-                              {lastMsg.readAt ? <span className="text-blue-500 font-bold">✓✓</span> : <span>✓</span>}
+                              {lastMsg.readAt ? <Icon name="checkCheck" size={14} className="text-blue-500 inline" /> : <Icon name="check" size={14} className="inline" />}
                             </span>
                           )}
                           <p className={`text-xs truncate ${unreadCount > 0 ? "font-bold text-gray-800" : "text-gray-500"}`}>
@@ -346,7 +346,7 @@ function MessagesInner() {
                             <span className="text-[10px] font-medium">{new Date(msg.createdAt).toLocaleTimeString("az-AZ", {hour: '2-digit', minute:'2-digit'})}</span>
                             {isMe && !msg._optimistic && (
                               <span className={`text-[10px] ml-0.5 ${msg.readAt ? "text-blue-300" : ""}`}>
-                                {msg.readAt ? "✓✓" : "✓"}
+                                {msg.readAt ? <Icon name="checkCheck" size={14} className="text-blue-500 inline" /> : <Icon name="check" size={14} className="inline" />}
                               </span>
                             )}
                             {msg._optimistic && <Icon name="clock" size={10} />}

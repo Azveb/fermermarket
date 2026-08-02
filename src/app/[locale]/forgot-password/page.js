@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useState } from "react";
 import { Link } from "@/i18n/routing";
 
@@ -64,7 +65,7 @@ export default function ForgotPasswordPage() {
               />
             </div>
             <button type="submit" disabled={loading} className="btn-primary w-full">
-              {loading ? "Göndərilir..." : "Link göndər →"}
+              {loading ? "Göndərilir..." : <span className="flex items-center justify-center gap-1">Link göndər <Icon name="arrowRight" size={14} /></span>}
             </button>
             <p className="text-center text-sm text-gray-500">
               Yadınıza düşdü?{" "}

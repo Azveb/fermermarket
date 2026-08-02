@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useState, useEffect } from "react";
 import { Link } from "@/i18n/routing";
 import Header from "@/components/Header";
@@ -49,7 +50,7 @@ export default function ActiveIngredientsPage() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
             <h1 className="text-3xl font-black text-gray-900 flex items-center gap-2">
-              🧪 Aktiv Maddələr Kataloqu
+              <span className="flex items-center gap-2"><Icon name="flask" size={24} className="text-purple-600" /> Aktiv Maddələr Kataloqu</span>
             </h1>
             <p className="text-gray-500 mt-1">
               Herbisid, fungisid və digər pestisidlərin təsir edici maddələrini və onların oxşarlarını müqayisə edin.
@@ -75,7 +76,7 @@ export default function ActiveIngredientsPage() {
           </div>
         ) : filtered.length === 0 ? (
           <div className="bg-white rounded-3xl p-12 border border-gray-100 text-center shadow-sm max-w-md mx-auto mt-10">
-            <span className="text-4xl">🧪</span>
+            <Icon name="flask" size={32} className="text-purple-600" />
             <p className="text-gray-400 text-sm mt-3 font-medium">Heç bir aktiv maddə tapılmadı.</p>
           </div>
         ) : (

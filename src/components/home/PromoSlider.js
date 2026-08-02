@@ -1,12 +1,13 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "@/i18n/routing";
 
 // Fallback slides when DB is empty
 const FALLBACK_SLIDES = [
-  { id: "1", tag: "🔥 Kampaniya", title: "Yaz Mövsümü Endirimləri", subtitle: "Toxum, gübrə və aqrar avadanlıqlarda 30%-ə qədər endirim", cta: "İndi Bax", href: "/products", bg: "from-brand-700 to-brand-500", emoji: "🌱" },
-  { id: "2", tag: "⭐ Premium", title: "Premium Elanlar", subtitle: "Seçilmiş satıcıların keyfiyyətli məhsulları bir yerdə", cta: "Kəşf Et", href: "/products", bg: "from-amber-600 to-amber-400", emoji: "🏆" },
-  { id: "3", tag: "🤖 Yeni Xüsusiyyət", title: "AI Aqronom", subtitle: "Bitkinizdəki xəstəlikləri şəkil göndərərək analiz etdirin", cta: "Sınayın", href: "/agronom", bg: "from-sky-700 to-sky-500", emoji: "🔬" },
+  { id: "1", tag: "Kampaniya", iconName: "flame", title: "Yaz Mövsümü Endirimləri", subtitle: "Toxum, gübrə və aqrar avadanlıqlarda 30%-ə qədər endirim", cta: "İndi Bax", href: "/products", bg: "from-brand-700 to-brand-500" },
+  { id: "2", tag: "Premium", iconName: "star", title: "Premium Elanlar", subtitle: "Seçilmiş satıcıların keyfiyyətli məhsulları bir yerdə", cta: "Kəşf Et", href: "/products", bg: "from-amber-600 to-amber-400" },
+  { id: "3", tag: "Yeni Xüsusiyyət", iconName: "bot", title: "AI Aqronom", subtitle: "Bitkinizdəki xəstəlikləri şəkil göndərərək analiz etdirin", cta: "Sınayın", href: "/agronom", bg: "from-sky-700 to-sky-500" },
 ];
 
 const getBgStyle = (bg) => {
@@ -76,7 +77,7 @@ export default function PromoSlider() {
               className="inline-block mt-4 bg-white text-gray-900 text-xs font-bold px-5 py-2 rounded-xl hover:bg-gray-100 active:scale-95 transition-all shadow-sm"
               onClick={(e) => e.stopPropagation()}
             >
-              {s.cta || "Bax"} →
+              <>{s.cta || "Bax"} <Icon name="arrowRight" size={14} className="inline ml-1" /></>
             </Link>
           </div>
           <div className="text-7xl md:text-8xl opacity-20">{s.emoji}</div>

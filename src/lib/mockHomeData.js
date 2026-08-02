@@ -38,11 +38,11 @@ const heroProducts = [
 ];
 
 const categories = [
-  { id: "fallback-cat-1", slug: "heyvandarliq", nameAz: "Heyvandarlıq", icon: "🐄" },
-  { id: "fallback-cat-2", slug: "qusculuq", nameAz: "Quşçuluq", icon: "🐔" },
-  { id: "fallback-cat-3", slug: "texnika", nameAz: "Texnika", icon: "🚜" },
-  { id: "fallback-cat-4", slug: "gubre", nameAz: "Gübrə", icon: "🌱" },
-  { id: "fallback-cat-5", slug: "toxum", nameAz: "Toxum", icon: "🌿" },
+  { id: "fallback-cat-1", slug: "heyvandarliq", nameAz: "Heyvandarlıq", icon: "dog" },
+  { id: "fallback-cat-2", slug: "qusculuq", nameAz: "Quşçuluq", icon: "bird" },
+  { id: "fallback-cat-3", slug: "texnika", nameAz: "Texnika", icon: "tractor" },
+  { id: "fallback-cat-4", slug: "gubre", nameAz: "Gübrə", icon: "sprout" },
+  { id: "fallback-cat-5", slug: "toxum", nameAz: "Toxum", icon: "leaf" },
 ];
 
 const bundles = [

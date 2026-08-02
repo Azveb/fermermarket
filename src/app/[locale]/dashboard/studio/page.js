@@ -150,7 +150,7 @@ export default function StudioPage() {
                 onClick={() => setActiveBlockIndex(null)}
                 className="absolute top-2 right-2 text-gray-400 hover:text-gray-800"
               >
-                ✕
+                <Icon name="close" size={16} />
               </button>
               <h3 className="font-bold text-brand-800 text-sm mb-3">
                 Edit: {activeBlock.type}
@@ -187,15 +187,15 @@ export default function StudioPage() {
                   onClick={() => setActiveBlockIndex(i)}
                 >
                   <div className="flex flex-col gap-1">
-                    <button onClick={(e) => { e.stopPropagation(); moveBlock(i, 'up'); }} className="text-gray-400 hover:text-brand-600">▲</button>
-                    <button onClick={(e) => { e.stopPropagation(); moveBlock(i, 'down'); }} className="text-gray-400 hover:text-brand-600">▼</button>
+                    <button onClick={(e) => { e.stopPropagation(); moveBlock(i, 'up'); }} className="text-gray-400 hover:text-brand-600"><Icon name="arrowUp" size={14} /></button>
+                    <button onClick={(e) => { e.stopPropagation(); moveBlock(i, 'down'); }} className="text-gray-400 hover:text-brand-600"><Icon name="arrowDown" size={14} /></button>
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-bold text-gray-800 truncate">{b.type}</p>
                     <p className="text-[10px] text-gray-400 truncate">{b.props.title || "No title"}</p>
                   </div>
                   <button onClick={(e) => { e.stopPropagation(); removeBlock(i); }} className="text-red-400 hover:text-red-600 p-1">
-                    ✕
+                    <Icon name="close" size={14} />
                   </button>
                 </div>
               ))}

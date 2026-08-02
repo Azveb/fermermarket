@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useState, useEffect, use } from "react";
 import { Link } from "@/i18n/routing";
 import Header from "@/components/Header";
@@ -92,7 +93,7 @@ export default function CropDetailPage({ params }) {
                   Bitki üçün qeydiyyatdan keçmiş dərmanların və gübrələrin tam siyahısı.
                 </p>
               </div>
-              <div className="text-3xl bg-brand-50 w-16 h-16 rounded-2xl flex items-center justify-center">🌾</div>
+              <div className="bg-brand-50 w-16 h-16 rounded-2xl flex items-center justify-center text-brand-600"><Icon name="wheat" size={32} /></div>
             </div>
 
             {/* Filters Section */}
@@ -161,7 +162,7 @@ export default function CropDetailPage({ params }) {
 
               {products.length === 0 ? (
                 <div className="bg-white rounded-3xl p-12 text-center border border-gray-100 shadow-sm">
-                  <span className="text-4xl">🌾</span>
+                  <Icon name="wheat" size={32} className="text-brand-600" />
                   <p className="text-gray-400 text-sm mt-3 font-medium">Bu kateqoriyada məhsul tapılmadı.</p>
                 </div>
               ) : (
@@ -181,7 +182,7 @@ export default function CropDetailPage({ params }) {
                             className="object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-4xl opacity-30">📦</div>
+                          <div className="w-full h-full flex items-center justify-center opacity-30 text-gray-400"><Icon name="package" size={36} /></div>
                         )}
                       </div>
                       <div className="p-4 flex-grow flex flex-col">

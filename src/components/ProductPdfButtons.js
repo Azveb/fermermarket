@@ -1,3 +1,4 @@
+import Icon from "@/components/ui/Icon";
 import React from "react";
 
 export default function ProductPdfButtons({ product }) {
@@ -16,7 +17,7 @@ export default function ProductPdfButtons({ product }) {
           className="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-semibold px-4 py-2 rounded-xl transition-colors"
           download
         >
-          📄 Etiketi Yüklə (PDF)
+          <span className="flex items-center gap-1.5"><Icon name="fileText" size={16} /> Etiketi Yüklə (PDF)</span>
         </a>
       )}
       {hasInstruction && (
@@ -25,7 +26,7 @@ export default function ProductPdfButtons({ product }) {
           className="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-semibold px-4 py-2 rounded-xl transition-colors"
           download
         >
-          📄 Təlimatı Yüklə (PDF)
+          <span className="flex items-center gap-1.5"><Icon name="fileText" size={16} /> Təlimatı Yüklə (PDF)</span>
         </a>
       )}
     </div>

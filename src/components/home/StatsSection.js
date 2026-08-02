@@ -1,11 +1,12 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useEffect, useRef, useState } from "react";
 
 const STATS = [
-  { value: 15000, suffix: "+", label: "Aktiv Elan", icon: "📋" },
-  { value: 4500,  suffix: "+", label: "Fermer",     icon: "👨‍🌾" },
-  { value: 1200,  suffix: "+", label: "Mağaza",     icon: "🏪" },
-  { value: 98,    suffix: "%", label: "Məmnun İstifadəçi", icon: "⭐" },
+  { value: 15000, suffix: "+", label: "Aktiv Elan", iconName: "clipboard" },
+  { value: 4500,  suffix: "+", label: "Fermer",     iconName: "sprout" },
+  { value: 1200,  suffix: "+", label: "Mağaza",     iconName: "store" },
+  { value: 98,    suffix: "%", label: "Məmnun İstifadəçi", iconName: "star" },
 ];
 
 function useCountUp(target, started) {

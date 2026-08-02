@@ -31,7 +31,7 @@ export default function AdminCampaignsPage() {
       setItems(p => [d.campaign, ...p]);
       setShowForm(false);
       setForm({ title: "", type: "HOMEPAGE_BANNER", targetUrl: "", imageUrl: "", startDate: "", endDate: "", status: "ACTIVE" });
-      toast("Kampaniya əlavə edildi ✓", "success");
+      toast("Kampaniya əlavə edildi", "success");
     } catch (e) {
       toast(e.message, "error");
     }
@@ -41,7 +41,7 @@ export default function AdminCampaignsPage() {
     try {
       await apiFetch(`/api/campaigns/${id}`, { method: "PATCH", body: JSON.stringify({ status: st }) });
       setItems(p => p.map(c => c.id === id ? { ...c, status: st } : c));
-      toast("Yeniləndi ✓", "success");
+      toast("Yeniləndi", "success");
     } catch (e) {
       toast(e.message, "error");
     }
@@ -94,7 +94,7 @@ export default function AdminCampaignsPage() {
               <tr key={c.id} className="hover:bg-gray-50 transition-colors">
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
-                    {c.imageUrl ? <img src={c.imageUrl} alt="" className="w-10 h-10 rounded-lg object-cover" /> : <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-xl">📢</div>}
+                    {c.imageUrl ? <img src={c.imageUrl} alt="" className="w-10 h-10 rounded-lg object-cover" /> : <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500"><Icon name="megaphone" size={20} /></div>}
                     <div>
                       <p className="font-bold text-gray-900 text-sm">{c.title}</p>
                       <p className="text-xs text-gray-500">{c.targetUrl || "Link yoxdur"}</p>

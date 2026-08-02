@@ -1,3 +1,4 @@
+import Icon from "@/components/ui/Icon";
 import { Link } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
 import SideBanner from "@/components/Banners/SideBanner";
@@ -60,7 +61,7 @@ export default async function BlogPage() {
                   <p className="text-gray-600 text-sm line-clamp-2">{post.contentAz.slice(0, 120)}</p>
                 )}
                 <div className="flex items-center gap-3 mt-3 text-xs text-gray-400">
-                  <span>✍️ {post.author?.fullName || "FermerMarket"}</span>
+                  <span className="flex items-center gap-1"><Icon name="pencil" size={14} /> {post.author?.fullName || "FermerMarket"}</span>
                   <span>·</span>
                   <span>{new Date(post.createdAt).toLocaleDateString("az-AZ")}</span>
                 </div>

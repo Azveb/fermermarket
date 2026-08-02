@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useRouter } from "@/i18n/routing";
 
@@ -92,11 +93,11 @@ export default function HeroSearch() {
         <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50 max-h-[450px] overflow-y-auto">
           {showTrending && (
             <>
-              <p className="text-[11px] font-semibold text-gray-400 px-4 pt-3 pb-1 uppercase tracking-wide">🔥 Trend Axtarışlar</p>
+              <p className="text-[11px] font-semibold text-gray-400 px-4 pt-3 pb-1 uppercase tracking-wide"><span className="flex items-center gap-1"><Icon name="flame" size={14} className="text-amber-500" /> Trend Axtarışlar</span></p>
               {TRENDING.map((s) => (
                 <button key={s} type="button" onMouseDown={() => submit(s)}
                   className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-brand-50 text-left transition-colors">
-                  <span className="text-base">🔍</span>
+                  <Icon name="search" size={16} className="text-gray-400" />
                   <span className="text-sm text-gray-700">{s}</span>
                 </button>
               ))}
@@ -119,7 +120,7 @@ export default function HeroSearch() {
                       {p.coverImage ? (
                         <img src={p.coverImage} alt="" className="w-8 h-8 rounded-lg object-cover flex-shrink-0"/>
                       ) : (
-                        <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-lg flex-shrink-0">📦</div>
+                        <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500 flex-shrink-0"><Icon name="package" size={18} /></div>
                       )}
                       <div className="flex-1 min-w-0">
                         <p className="text-xs font-semibold text-gray-800 line-clamp-1">{p.titleAz}</p>
@@ -133,7 +134,7 @@ export default function HeroSearch() {
               {/* Active Ingredients Section */}
               {results.ingredients && results.ingredients.length > 0 && (
                 <div>
-                  <p className="text-[10px] font-bold text-gray-400 px-4 pt-2.5 pb-1 uppercase tracking-wider bg-gray-50/50">🧪 Aktiv Maddələr</p>
+                  <p className="text-[10px] font-bold text-gray-400 px-4 pt-2.5 pb-1 uppercase tracking-wider bg-gray-50/50"><span className="flex items-center gap-1"><Icon name="flask" size={14} className="text-purple-500" /> Aktiv Maddələr</span></p>
                   {results.ingredients.map((ing) => (
                     <button key={ing.id} type="button" onMouseDown={() => router.push(`/active-ingredients/${ing.id}`)}
                       className="w-full flex items-center justify-between px-4 py-2 hover:bg-brand-50 text-left transition-colors text-xs font-semibold text-gray-700">
@@ -147,11 +148,11 @@ export default function HeroSearch() {
               {/* Diseases Section */}
               {results.diseases && results.diseases.length > 0 && (
                 <div>
-                  <p className="text-[10px] font-bold text-gray-400 px-4 pt-2.5 pb-1 uppercase tracking-wider bg-gray-50/50">🦠 Xəstəliklər</p>
+                  <p className="text-[10px] font-bold text-gray-400 px-4 pt-2.5 pb-1 uppercase tracking-wider bg-gray-50/50"><span className="flex items-center gap-1"><Icon name="bug" size={14} className="text-red-500" /> Xəstəliklər</span></p>
                   {results.diseases.map((d) => (
                     <button key={d.id} type="button" onMouseDown={() => router.push(`/diseases/${d.slug}`)}
                       className="w-full flex items-center gap-2 px-4 py-2 hover:bg-brand-50 text-left transition-colors text-xs font-semibold text-gray-700">
-                      <span>🦠</span>
+                      <Icon name="bug" size={16} className="text-red-500" />
                       <span>{d.nameAz}</span>
                     </button>
                   ))}
@@ -161,11 +162,11 @@ export default function HeroSearch() {
               {/* Pests Section */}
               {results.pests && results.pests.length > 0 && (
                 <div>
-                  <p className="text-[10px] font-bold text-gray-400 px-4 pt-2.5 pb-1 uppercase tracking-wider bg-gray-50/50">🐛 Zərərvericilər</p>
+                  <p className="text-[10px] font-bold text-gray-400 px-4 pt-2.5 pb-1 uppercase tracking-wider bg-gray-50/50"><span className="flex items-center gap-1"><Icon name="bug" size={14} className="text-emerald-500" /> Zərərvericilər</span></p>
                   {results.pests.map((pest) => (
                     <button key={pest.id} type="button" onMouseDown={() => router.push(`/pests/${pest.slug}`)}
                       className="w-full flex items-center gap-2 px-4 py-2 hover:bg-brand-50 text-left transition-colors text-xs font-semibold text-gray-700">
-                      <span>🐛</span>
+                      <Icon name="bug" size={16} className="text-emerald-500" />
                       <span>{pest.nameAz}</span>
                     </button>
                   ))}
@@ -175,11 +176,11 @@ export default function HeroSearch() {
               {/* Companies Section */}
               {results.companies && results.companies.length > 0 && (
                 <div>
-                  <p className="text-[10px] font-bold text-gray-400 px-4 pt-2.5 pb-1 uppercase tracking-wider bg-gray-50/50">🏪 Mağazalar</p>
+                  <p className="text-[10px] font-bold text-gray-400 px-4 pt-2.5 pb-1 uppercase tracking-wider bg-gray-50/50"><span className="flex items-center gap-1"><Icon name="store" size={14} className="text-blue-500" /> Mağazalar</span></p>
                   {results.companies.map((store) => (
                     <button key={store.id} type="button" onMouseDown={() => router.push(`/stores/${store.slug}`)}
                       className="w-full flex items-center gap-2 px-4 py-2 hover:bg-brand-50 text-left transition-colors text-xs font-semibold text-gray-700">
-                      <span>🏪</span>
+                      <Icon name="store" size={16} className="text-blue-500" />
                       <span>{store.name}</span>
                     </button>
                   ))}

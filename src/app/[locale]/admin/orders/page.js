@@ -17,7 +17,7 @@ export default function AdminOrdersPage() {
     try {
       await apiFetch(`/api/orders/${id}`, { method: "PATCH", body: JSON.stringify({ status: st }) });
       setItems(p => p.map(o => o.id === id ? { ...o, status: st } : o));
-      toast("Sifariş statusu yeniləndi ✓", "success");
+      toast("Sifariş statusu yeniləndi", "success");
     } catch (e) {
       toast(e.message, "error");
     }

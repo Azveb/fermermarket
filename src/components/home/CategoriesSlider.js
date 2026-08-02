@@ -65,7 +65,7 @@ export default function CategoriesSlider({ categories, title, subtitle }) {
       <div className="flex flex-col items-center justify-center text-center relative mb-6 px-2">
         <h2 className="text-2xl font-bold text-gray-900">{title || "Kateqoriyalar"}</h2>
         <p className="text-sm text-gray-500 font-medium mt-1">{subtitle || "Məhsul növünü seçin"}</p>
-        <Link href="/products" className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-brand-600 font-semibold hover:text-brand-700 hidden sm:block">Hamısı →</Link>
+        <Link href="/products" className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-brand-600 font-semibold hover:text-brand-700 hidden sm:block"><span className="flex items-center gap-1">Hamısı <Icon name="arrowRight" size={14} /></span></Link>
       </div>
 
       <div 
