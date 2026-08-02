@@ -55,7 +55,7 @@ const SIDEBAR_GROUPS = [
 // ─── Sidebar ─────────────────────────────────────────────────────────────────
 function AdminSidebar({ tab, setTab, badges, collapsed, setCollapsed }) {
   return (
-    <aside className={`${collapsed?"w-16":"w-64"} shrink-0 hidden md:flex flex-col bg-white border-r border-gray-100 transition-all duration-200`}>
+    <aside className={`${collapsed?"w-16":"w-64"} hidden md:flex flex-col bg-white border-r border-gray-100 transition-all duration-200 max-h-screen overflow-hidden`}>
       <div className="flex items-center justify-between px-4 py-4 border-b border-gray-100">
         {!collapsed && <span className="font-extrabold text-gray-900 text-sm">Admin Panel</span>}
         <button onClick={()=>setCollapsed(v=>!v)} className="btn-icon ml-auto">
@@ -1163,18 +1163,23 @@ export default function AdminPanel() {
       case "analytics":   return (
         <div className="space-y-4"><h2 className="font-bold text-lg">📈 Analitika Paneli</h2><AnalyticsPanel mode="admin" /></div>
       );
+      case "user-modules": return <UserModulesPanel/>;
       case "studio":      return <NoCodeAdminStudio />;
       default:            return <EmptyState icon="🚧" title="Gəlir..."/>;
     }
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-64px)]">
+    <div className="md:grid md:grid-cols-[auto_1fr] h-full">
       <ToastContainer/>
+      {/* Desktop sidebar — fixed height, own scroll */}
       <AdminSidebar tab={tab} setTab={setTab} badges={badges} collapsed={collapsed} setCollapsed={setCollapsed}/>
-      <div className="flex-1 min-w-0 flex flex-col">
+      {/* Content area */}
+      <div className="flex flex-col min-w-0">
+        {/* Mobile horizontal tab nav */}
         <AdminMobileNav tab={tab} setTab={setTab}/>
-        <div className="flex-1 p-4 md:p-6 overflow-auto">
+        {/* Main content */}
+        <div className="flex-1 p-4 md:p-6 overflow-x-hidden">
           <div className="max-w-5xl animate-fade-in-up">
             {renderPanel()}
           </div>
