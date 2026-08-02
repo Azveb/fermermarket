@@ -36,6 +36,7 @@ export async function GET(request) {
       select: {
         id: true, email: true, fullName: true, phone: true, role: true,
         status: true, locale: true, createdAt: true,
+        modules: { select: { module: true } },
       },
     }),
   ]);

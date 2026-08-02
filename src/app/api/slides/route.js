@@ -21,7 +21,7 @@ export async function POST(request) {
   if (!authUser || !["SUPER_ADMIN","ADMIN"].includes(authUser.role))
     return Response.json({ error: "Forbidden" }, { status: 403 });
 
-  const body = await request.json();
+  const body = await request.json().catch(() => null);
   const { tag, title, subtitle, cta, href, bg, emoji } = body;
   if (!title || !href) return Response.json({ error: "title və href tələb olunur" }, { status: 422 });
 
@@ -38,7 +38,7 @@ export async function PUT(request) {
   if (!authUser || !["SUPER_ADMIN","ADMIN"].includes(authUser.role))
     return Response.json({ error: "Forbidden" }, { status: 403 });
 
-  const { order } = await request.json(); // [{ id, sortOrder }]
+  const { order } = await request.json().catch(() => null); // [{ id, sortOrder }]
   if (!Array.isArray(order)) return Response.json({ error: "order array tələb olunur" }, { status: 422 });
 
   await Promise.all(order.map(({ id, sortOrder }) =>

@@ -31,7 +31,9 @@ export async function POST(request) {
     return Response.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const { userId, module } = await request.json();
+  let body;
+  try { body = await request.json(); } catch { return Response.json({ error: "Invalid JSON" }, { status: 400 }); }
+  const { userId, module } = body;
   if (!userId || !module) {
     return Response.json({ error: "userId və module tələb olunur" }, { status: 400 });
   }
@@ -61,7 +63,9 @@ export async function DELETE(request) {
     return Response.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const { userId, module } = await request.json();
+  let body;
+  try { body = await request.json(); } catch { return Response.json({ error: "Invalid JSON" }, { status: 400 }); }
+  const { userId, module } = body;
   if (!userId || !module) {
     return Response.json({ error: "userId və module tələb olunur" }, { status: 400 });
   }

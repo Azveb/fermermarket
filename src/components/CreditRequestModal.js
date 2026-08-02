@@ -11,7 +11,7 @@ export default function CreditRequestModal({ product }) {
 
   const handleWhatsAppRedirect = () => {
     if (!accepted) return;
-    const message = `Salam, "${product.title}" (Qiymət: ${product.price} AZN, Kod: ${product.code || product.id}) məhsulunu kreditlə almaq istəyirəm. İlkin yoxlama üçün şəxsiyyət vəsiqəmin şəkillərini əlavə edirəm.`;
+    const message = `Salam, "${product.titleAz}" (Qiymət: ${product.price} AZN, Kod: ${product.code || product.id}) məhsulunu kreditlə almaq istəyirəm. İlkin yoxlama üçün şəxsiyyət vəsiqəmin şəkillərini əlavə edirəm.`;
     const url = `https://wa.me/${creditPhoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank");
     setIsOpen(false);
@@ -50,7 +50,7 @@ export default function CreditRequestModal({ product }) {
 
               <div className="bg-gray-50 rounded-xl p-4 mb-5 text-sm border border-gray-100">
                 <p className="text-gray-500 mb-1">Məhsul:</p>
-                <p className="font-bold text-gray-900 line-clamp-1">{product.title}</p>
+                <p className="font-bold text-gray-900 line-clamp-1">{product.titleAz}</p>
                 <p className="font-bold text-brand-700 mt-1">{product.price} AZN</p>
               </div>
 
