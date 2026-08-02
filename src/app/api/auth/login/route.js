@@ -120,7 +120,7 @@ export async function POST(request) {
     },
   }).catch(() => {});
 
-  return Response.json({
+  const res = Response.json({
     user: {
       id: user.id,
       email: user.email,
@@ -132,4 +132,7 @@ export async function POST(request) {
     accessToken,
     refreshToken,
   });
+  // Set cookie so middleware can verify auth on server-side
+  res.headers.set("Set-Cookie", `fmk_access_token=${accessToken}; Path=/; Max-Age=31536000; SameSite=Lax`);
+  return res;
 }

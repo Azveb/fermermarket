@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
-import { useRouter, Link } from "@/i18n/routing";
+import { useRouter, Link, usePathname } from "@/i18n/routing";
 import { useLocale } from "next-intl";
+import { useSearchParams } from "next/navigation";
 
 import { apiFetch, saveSession } from "@/lib/apiClient";
 import PasswordInput from "@/components/PasswordInput";
@@ -13,6 +14,8 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const searchParams = useSearchParams();
+
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true); setError("");
@@ -22,7 +25,18 @@ export default function LoginPage() {
         body: JSON.stringify(form),
       });
       saveSession({ accessToken: data.accessToken, refreshToken: data.refreshToken, user: data.user });
-      router.push("/dashboard");
+      
+      // Use callbackUrl if present, otherwise go to dashboard
+      const callbackUrl = searchParams.get("callbackUrl");
+      const target = callbackUrl || "/dashboard";
+      
+      // Hard redirect ensures cookie is sent with the request
+      const locale = "az"; // current locale
+      // If callbackUrl already has locale prefix, use as-is; otherwise add locale
+      const hasLocale = /^\/(az|en|ru)\//.test(target) || /^\/(az|en|ru)$/.test(target);
+      const finalUrl = hasLocale ? target : `/${locale}${target}`;
+      
+      window.location.href = finalUrl;
     } catch (err) {
       const msg = err?.code === "DB_CONN"
         ? "Sunucu bağlantısı hatası. Lütfen yöneticinizle iletişime geçin."

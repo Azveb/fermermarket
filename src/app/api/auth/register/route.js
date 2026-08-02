@@ -104,7 +104,7 @@ export async function POST(request) {
     sendWelcomeEmail({ to: user.email, fullName: user.fullName }).catch(() => {});
   }
 
-  return Response.json(
+  const res = Response.json(
     {
       user: {
         id: user.id,
@@ -119,4 +119,6 @@ export async function POST(request) {
     },
     { status: 201 }
   );
+  res.headers.set("Set-Cookie", `fmk_access_token=${accessToken}; Path=/; Max-Age=31536000; SameSite=Lax`);
+  return res;
 }

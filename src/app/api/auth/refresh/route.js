@@ -37,7 +37,7 @@ export async function POST(request) {
 
   const accessToken = signAccessToken(user);
 
-  return Response.json({
+  const res = Response.json({
     accessToken,
     user: {
       id: user.id,
@@ -48,4 +48,6 @@ export async function POST(request) {
       status: user.status,
     },
   });
+  res.headers.set("Set-Cookie", `fmk_access_token=${accessToken}; Path=/; Max-Age=31536000; SameSite=Lax`);
+  return res;
 }
