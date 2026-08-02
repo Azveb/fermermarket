@@ -97,7 +97,7 @@ export default function HeroSlider() {
 
            <div className="relative max-w-2xl mx-auto flex flex-col items-center">
               <span className="flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-[2rem] bg-white/20 text-3xl md:text-4xl shadow-lg backdrop-blur-md mb-5 animate-fade-in-up">
-                {slide.icon}
+                <Icon name={slide.iconName} size={32} className="text-white" strokeWidth={1.8} />
               </span>
               <h2 className="text-2xl md:text-5xl font-extrabold text-white mb-4 drop-shadow-md tracking-tight leading-tight animate-fade-in-up" style={{animationDelay: "0.1s"}}>
                 {slide.title}

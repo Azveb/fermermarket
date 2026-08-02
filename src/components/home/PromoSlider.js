@@ -80,7 +80,7 @@ export default function PromoSlider() {
               <>{s.cta || "Bax"} <Icon name="arrowRight" size={14} className="inline ml-1" /></>
             </Link>
           </div>
-          <div className="text-7xl md:text-8xl opacity-20">{s.emoji}</div>
+          <div className="opacity-20"><Icon name={s.iconName || "flame"} size={80} className="text-white" strokeWidth={1.5} /></div>
         </div>
       ))}
 
