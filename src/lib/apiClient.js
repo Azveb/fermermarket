@@ -88,7 +88,11 @@ async function doFetch(path, options, token) {
     ...(options.headers || {}),
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
-  return fetch(path, { ...options, headers });
+  return fetch(path, {
+    ...options,
+    headers,
+    credentials: "include", // Send cookies (HttpOnly auth cookie) with every request
+  });
 }
 
 export async function apiFetch(path, options = {}) {

@@ -16,7 +16,8 @@
     "profile": "Профиль",
     "sell": "Продать",
     "brands": "Бренды",
-    "agroServices": "Агро Услуги"
+    "agroServices": "Агро Услуги",
+    "newListing": "Новое объявление"
   },
   "Home": {
     "popularBrands": "Популярные Бренды",
@@ -26,6 +27,7 @@
     "opportunity": "Возможность!",
     "discountText": "Скидка 20% на все удобрения",
     "details": "Подробнее",
-    "products": "товаров"
+    "products": "товаров",
+    "newListing": "Новое объявление"
   }
 }

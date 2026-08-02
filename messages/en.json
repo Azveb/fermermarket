@@ -16,7 +16,8 @@
     "profile": "Profile",
     "sell": "Sell",
     "brands": "Brands",
-    "agroServices": "Agro Services"
+    "agroServices": "Agro Services",
+    "newListing": "New Listing"
   },
   "Home": {
     "popularBrands": "Popular Brands",
@@ -26,6 +27,7 @@
     "opportunity": "Opportunity!",
     "discountText": "20% discount on all fertilizers",
     "details": "Details",
-    "products": "products"
+    "products": "products",
+    "newListing": "New Listing"
   }
 }

@@ -62,10 +62,21 @@ export function verifyRefreshToken(token) {
  * Returns the decoded payload or null.
  */
 export function getAuthUser(request) {
+  // 1. Try Authorization: Bearer header (client-side apiFetch)
   const authHeader = request.headers.get("authorization") || "";
   const [scheme, token] = authHeader.split(" ");
-  if (scheme !== "Bearer" || !token) return null;
-  return verifyAccessToken(token);
+  if (scheme === "Bearer" && token) {
+    return verifyAccessToken(token);
+  }
+
+  // 2. Fallback: try HttpOnly cookie (set by server on login/refresh)
+  const cookieHeader = request.headers.get("cookie") || "";
+  const match = cookieHeader.match(/(?:^|;\s*)fmk_access_token=([^;]+)/);
+  if (match) {
+    return verifyAccessToken(match[1]);
+  }
+
+  return null;
 }
 
 /**

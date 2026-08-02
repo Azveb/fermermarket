@@ -16,7 +16,8 @@
     "profile": "Profil",
     "sell": "Sat",
     "brands": "Brendlər",
-    "agroServices": "Aqro Xidmət"
+    "agroServices": "Aqro Xidmət",
+    "newListing": "Yeni Elan"
   },
   "Home": {
     "popularBrands": "Populyar Brendlər",
@@ -26,6 +27,7 @@
     "opportunity": "Fürsəti!",
     "discountText": "Bütün gübrələrdə 20% endirim",
     "details": "Ətraflı",
-    "products": "məhsul"
+    "products": "məhsul",
+    "newListing": "Yeni Elan"
   }
 }
