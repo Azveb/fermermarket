@@ -50,7 +50,7 @@ export const viewport = {
 };
 
 export default async function RootLayout({ children, params }) {
-  const { locale } = params;
+  const { locale } = await params;
 
   let footerAd = null;
   try { footerAd = await getAdSlotContent("FOOTER_STRIP"); } catch (_) {}

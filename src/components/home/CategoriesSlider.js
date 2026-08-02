@@ -107,7 +107,7 @@ export default function CategoriesSlider({ categories, title, subtitle }) {
           onClick={scrollLeft}
           className={`absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center text-gray-700 hover:bg-gray-50 hover:text-brand-600 transition-all z-20 ${showArrows ? 'opacity-100 translate-x-1' : 'opacity-0 -translate-x-4 pointer-events-none'}`}
         >
-          <Icon name="chevron-left" size={24} />
+          <Icon name="arrowLeft" size={24} />
         </button>
         
         {/* Right Arrow */}
@@ -115,7 +115,7 @@ export default function CategoriesSlider({ categories, title, subtitle }) {
           onClick={scrollRight}
           className={`absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center text-gray-700 hover:bg-gray-50 hover:text-brand-600 transition-all z-20 ${showArrows ? 'opacity-100 -translate-x-1' : 'opacity-0 translate-x-4 pointer-events-none'}`}
         >
-          <Icon name="chevron-right" size={24} />
+          <Icon name="arrowRight" size={24} />
         </button>
       </div>
     </section>
