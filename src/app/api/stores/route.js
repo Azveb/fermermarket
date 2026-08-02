@@ -39,10 +39,10 @@ export async function GET(request) {
         coverUrl: true,
         address: true,
         isVerified: true,
+        isActive: true,
         _count: { select: { products: true } },
         ...(isAdminView
           ? {
-              isActive: true,
               createdAt: true,
               owner: { select: { fullName: true, email: true, phone: true } },
             }
@@ -58,7 +58,9 @@ export async function GET(request) {
   });
 }
 
-// POST /api/stores — create a store for the current user (one per user)
+// POST /api/stores — create a store for the current user
+// First store: isActive = true (auto-active)
+// Additional stores: isActive = false (needs admin approval)
 export async function POST(request) {
   const authUser = getAuthUser(request);
   if (!authUser) return Response.json({ error: "Unauthorized" }, { status: 401 });
@@ -68,10 +70,15 @@ export async function POST(request) {
     return Response.json({ error: "Bu rol mağaza yarada bilməz" }, { status: 403 });
   }
 
-  const existing = await prisma.store.findUnique({ where: { ownerId: authUser.sub } });
-  if (existing) {
-    return Response.json({ error: "Artıq mağazanız var" }, { status: 409 });
-  }
+  // Count how many ACTIVE stores the user already has
+  const activeStoresCount = await prisma.store.count({
+    where: { ownerId: authUser.sub, isActive: true },
+  });
+
+  // Count total stores (active + inactive)
+  const totalStoresCount = await prisma.store.count({
+    where: { ownerId: authUser.sub },
+  });
 
   let body;
   try {
@@ -96,16 +103,30 @@ export async function POST(request) {
     slug = `${baseSlug}-${counter++}`;
   }
 
+  // First store gets isActive = true, subsequent stores get isActive = false
+  const isFirstStore = activeStoresCount === 0;
   const store = await prisma.store.create({
-    data: { ...data, slug, ownerId: authUser.sub },
+    data: {
+      ...data,
+      slug,
+      ownerId: authUser.sub,
+      isActive: isFirstStore,
+    },
   });
 
-  if (authUser.role === "BUYER" || authUser.role === "AGRONOMIST") {
+  // Update user role to STORE if they were BUYER/AGRONOMIST (only on first store)
+  if (isFirstStore && (authUser.role === "BUYER" || authUser.role === "AGRONOMIST")) {
     await prisma.user.update({
       where: { id: authUser.sub },
       data: { role: "STORE" }
     });
   }
 
-  return Response.json({ store }, { status: 201 });
+  return Response.json({
+    store,
+    isFirstStore,
+    message: isFirstStore
+      ? "Mağaza uğurla yaradıldı və aktivləşdirildi!"
+      : "Mağaza yaradıldı, lakin deaktivdir. Aktivləşdirmək üçün adminlə əlaqə saxlayın.",
+  }, { status: 201 });
 }

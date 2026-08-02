@@ -148,14 +148,14 @@ export default function ProductCard({ product, tier, compact = false, initialFav
       <Link
         href={`/products/${product.slug}`}
         className="absolute inset-0 z-0"
-        aria-label={product.titleAz}
+        aria-label={product.titleAz || product.title}
       />
       {/* Image */}
       <div className="relative w-full bg-gray-50 overflow-hidden pointer-events-none" style={{ aspectRatio: "4/3" }}>
         {product.coverImage ? (
           <SafeImage
             src={product.coverImage}
-            alt={product.titleAz}
+            alt={product.titleAz || product.title}
             fill
             sizes="(max-width: 640px) 50vw, 25vw"
             className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -199,7 +199,7 @@ export default function ProductCard({ product, tier, compact = false, initialFav
       {/* Info */}
       <div className={`flex-1 flex flex-col pointer-events-none z-10 bg-white ${compact ? "p-2.5 gap-0.5" : "p-3 gap-1"}`}>
         <h3 className={`font-semibold text-gray-900 line-clamp-2 leading-snug ${compact ? "text-xs" : "text-sm"}`}>
-          {product.titleAz}
+          {product.titleAz || product.title}
         </h3>
         {product.isCorporate && (
           <span className="self-start text-[10px] font-semibold bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded-md">
