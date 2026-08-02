@@ -6,21 +6,22 @@ const USER_KEY = "fmk_user";
 
 export function saveSession({ accessToken, refreshToken, user }) {
   if (typeof window === "undefined") return;
-  if (accessToken) {
-    localStorage.setItem(TOKEN_KEY, accessToken);
-    document.cookie = `${TOKEN_KEY}=${accessToken}; path=/; max-age=31536000; SameSite=Lax`;
-  }
+  // Token is saved to localStorage for client-side API calls
+  // Cookie is set by the server (HttpOnly) for middleware auth checks
+  if (accessToken) localStorage.setItem(TOKEN_KEY, accessToken);
   if (refreshToken) localStorage.setItem(REFRESH_KEY, refreshToken);
   if (user) localStorage.setItem(USER_KEY, JSON.stringify(user));
   window.dispatchEvent(new Event("fmk-auth-changed"));
 }
 
-export function clearSession() {
+export async function clearSession() {
   if (typeof window === "undefined") return;
+  // Clear localStorage
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(REFRESH_KEY);
   localStorage.removeItem(USER_KEY);
-  document.cookie = `${TOKEN_KEY}=; path=/; max-age=0`;
+  // Clear HttpOnly cookie via logout API
+  try { await fetch("/api/auth/logout", { method: "POST" }); } catch {}
   window.dispatchEvent(new Event("fmk-auth-changed"));
 }
 
@@ -76,7 +77,7 @@ async function refreshAccessToken() {
   }
 
   localStorage.setItem(TOKEN_KEY, data.accessToken);
-  document.cookie = `${TOKEN_KEY}=${data.accessToken}; path=/; max-age=31536000; SameSite=Lax`;
+  // Cookie is updated by the refresh API's Set-Cookie header
   if (data.user) localStorage.setItem(USER_KEY, JSON.stringify(data.user));
   return data.accessToken;
 }

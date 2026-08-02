@@ -48,6 +48,6 @@ export async function POST(request) {
       status: user.status,
     },
   });
-  res.headers.set("Set-Cookie", `fmk_access_token=${accessToken}; Path=/; Max-Age=31536000; SameSite=Lax`);
+  res.headers.set("Set-Cookie", `fmk_access_token=${accessToken}; Path=/; Max-Age=31536000; SameSite=Lax; HttpOnly`);
   return res;
 }

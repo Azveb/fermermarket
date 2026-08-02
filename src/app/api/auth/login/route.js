@@ -133,6 +133,6 @@ export async function POST(request) {
     refreshToken,
   });
   // Set cookie so middleware can verify auth on server-side
-  res.headers.set("Set-Cookie", `fmk_access_token=${accessToken}; Path=/; Max-Age=31536000; SameSite=Lax`);
+  res.headers.set("Set-Cookie", `fmk_access_token=${accessToken}; Path=/; Max-Age=31536000; SameSite=Lax; HttpOnly`);
   return res;
 }
