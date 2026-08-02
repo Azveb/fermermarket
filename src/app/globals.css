@@ -171,6 +171,8 @@ body {
 /* No scrollbar */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
 /* Scroll snap */
 .scroll-snap-x    { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
