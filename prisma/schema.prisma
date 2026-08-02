@@ -436,6 +436,29 @@ model Store {
   installmentEnabled Boolean @default(false)
   installmentWhatsapp String?
 
+  // Social & business fields
+  email        String?
+  facebook     String?
+  instagram    String?
+  tiktok       String?
+  linkedin    String?
+  youtube      String?
+  telegram    String?
+  workingHours Json?
+  deliveryRegions String[] @default([])
+  taxInfo      String?
+  bankName     String?
+  bankAccount  String?
+  iban         String?
+  supportEmail String?
+  supportPhone String?
+  primaryColor String? @default("#16a34a")
+  secondaryColor String?
+  themeMode    String? @default("light")
+  followerCount Int @default(0)
+  storeViewCount Int @default(0)
+  totalSales   Int @default(0)
+
   products     Product[]
   campaigns    Campaign[]
   subscription StoreSubscription?

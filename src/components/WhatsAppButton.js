@@ -1,4 +1,5 @@
 "use client";
+import Icon from "@/components/ui/Icon";
 
 // Click-to-chat WhatsApp button. Uses the platform support number by default,
 // or a specific seller/store number when passed in (product page).
