@@ -118,19 +118,12 @@ export default function Header() {
   };
 
   const changeLanguage = (newLocale) => {
-    // Update locale cookie for next-intl
-    document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=31536000`;
+    if (locale === newLocale) return;
+    // Strip the locale prefix to get the path without it
     const currentPath = window.location.pathname;
-    // Replace existing locale segment if present, otherwise prepend new locale
-    const newPath = currentPath.replace(/^\/(az|en|ru)(?=\/|$)/, `/${newLocale}`) || `/${newLocale}${currentPath === '/' ? '' : currentPath}`;
-    // Preserve query string
-    const newUrl = newPath + window.location.search;
-    // Use router for client-side navigation when possible
-    if (typeof window !== 'undefined' && window.location.pathname !== newPath) {
-      router.push(newUrl);
-    } else {
-      window.location.href = newUrl;
-    }
+    const pathWithoutLocale = currentPath.replace(/^\/(az|en|ru)(?=\/|$)/, '') || '/';
+    // Use next-intl router with locale option — it handles prefixing automatically
+    router.push(pathWithoutLocale + window.location.search, { locale: newLocale });
   };
 
   const handleSearch = (e) => {
