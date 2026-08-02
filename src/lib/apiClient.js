@@ -72,6 +72,7 @@ async function refreshAccessToken() {
   }
 
   localStorage.setItem(TOKEN_KEY, data.accessToken);
+  document.cookie = `${TOKEN_KEY}=${data.accessToken}; path=/; max-age=31536000; SameSite=Lax`;
   if (data.user) localStorage.setItem(USER_KEY, JSON.stringify(data.user));
   return data.accessToken;
 }
