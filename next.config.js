@@ -48,7 +48,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "img-src * data: blob:",
               "font-src 'self' https://fonts.gstatic.com",
-              "connect-src 'self' https://api.resend.com https://*.vercel.app https://*.neon.tech",
+              "connect-src 'self' https://api.resend.com https://*.vercel.app https://*.neon.tech https://api.open-meteo.com",
               "frame-ancestors 'none'",
             ].join("; "),
           },
