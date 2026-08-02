@@ -924,6 +924,93 @@ export default function FarmerPanel({ user }) {
         </div>
       )}
 
+      {tab === "create-store" && !user?.store && (
+        <div className="card p-5">
+          <h2 className="font-bold mb-4">Mağaza Aç</h2>
+          <p className="text-sm text-gray-500 mb-4">
+            Öz mağazanızı açaraq məhsullarınızı bir yerdə təqdim edin, brendinizi qurun və daha çox alıcıya çatın.
+          </p>
+          {storeSettingsError && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-2 mb-3">{storeSettingsError}</p>}
+          {storeSettingsMsg && <p className="text-sm text-green-700 bg-green-50 rounded-lg p-2 mb-3">{storeSettingsMsg}</p>}
+          
+          <form onSubmit={createStore} className="space-y-4 max-w-2xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="label-sm">Mağaza Adı *</label>
+                <input 
+                  value={storeSettingsForm.name} 
+                  onChange={e=>setStoreSettingsForm(f=>({...f,name:e.target.value}))} 
+                  className="input-field" 
+                  placeholder="Məs: Ağsu Fermer Mağazası"
+                  required 
+                />
+              </div>
+              <div>
+                <label className="label-sm">Ünvan</label>
+                <input 
+                  value={storeSettingsForm.address} 
+                  onChange={e=>setStoreSettingsForm(f=>({...f,address:e.target.value}))} 
+                  className="input-field" 
+                  placeholder="Məs: Ağsu rayonu, Kənd təsərrüfatı bazarı"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="label-sm">Haqqında (Qısa təsvir)</label>
+              <textarea 
+                value={storeSettingsForm.description} 
+                onChange={e=>setStoreSettingsForm(f=>({...f,description:e.target.value}))} 
+                className="input-field" 
+                rows="2"
+                placeholder="Mağazanız haqqında qısa məlumat..."
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="label-sm">Əlaqə Nömrəsi</label>
+                <input 
+                  value={storeSettingsForm.phone} 
+                  onChange={e=>setStoreSettingsForm(f=>({...f,phone:e.target.value}))} 
+                  className="input-field" 
+                  placeholder="+994501234567"
+                />
+              </div>
+              <div>
+                <label className="label-sm">WhatsApp Nömrəsi</label>
+                <input 
+                  value={storeSettingsForm.whatsapp} 
+                  onChange={e=>setStoreSettingsForm(f=>({...f,whatsapp:e.target.value}))} 
+                  className="input-field" 
+                  placeholder="+994501234567"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="label-sm">Logo URL (istəyə görə)</label>
+              <input 
+                value={storeSettingsForm.logoUrl} 
+                onChange={e=>setStoreSettingsForm(f=>({...f,logoUrl:e.target.value}))} 
+                className="input-field" 
+                placeholder="https://..."
+              />
+            </div>
+
+            <div className="rounded-xl border border-brand-200 bg-brand-50/50 p-4 mt-4">
+              <p className="text-sm text-brand-800 font-medium">
+                İlk mağazanız avtomatik aktivləşdiriləcək. Əlavə mağazalar üçün admin təsdiqi lazımdır.
+              </p>
+            </div>
+
+            <button type="submit" disabled={storeSettingsLoading} className="btn-primary w-full mt-4">
+              {storeSettingsLoading ? "Yaradılır..." : "Mağaza Yarat"}
+            </button>
+          </form>
+        </div>
+      )}
+
       {tab === "settings" && user?.store && (
         <div className="card p-5">
           <h2 className="font-bold mb-4">Mağaza Ayarları</h2>
