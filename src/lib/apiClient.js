@@ -6,7 +6,10 @@ const USER_KEY = "fmk_user";
 
 export function saveSession({ accessToken, refreshToken, user }) {
   if (typeof window === "undefined") return;
-  if (accessToken) localStorage.setItem(TOKEN_KEY, accessToken);
+  if (accessToken) {
+    localStorage.setItem(TOKEN_KEY, accessToken);
+    document.cookie = `${TOKEN_KEY}=${accessToken}; path=/; max-age=31536000; SameSite=Lax`;
+  }
   if (refreshToken) localStorage.setItem(REFRESH_KEY, refreshToken);
   if (user) localStorage.setItem(USER_KEY, JSON.stringify(user));
   window.dispatchEvent(new Event("fmk-auth-changed"));
@@ -17,6 +20,7 @@ export function clearSession() {
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(REFRESH_KEY);
   localStorage.removeItem(USER_KEY);
+  document.cookie = `${TOKEN_KEY}=; path=/; max-age=0`;
   window.dispatchEvent(new Event("fmk-auth-changed"));
 }
 
