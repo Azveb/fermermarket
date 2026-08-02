@@ -1,4 +1,4 @@
-const CACHE_NAME = "fermermarket-shell-v2";
+const CACHE_NAME = "fermermarket-shell-v3";
 const APP_SHELL = [
   "/manifest.json",
   "/icons/icon-192.png",
@@ -30,15 +30,12 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const { request } = event;
 
-  // Only handle GET requests
   if (request.method !== "GET") return;
 
   const url = new URL(request.url);
 
-  // Skip non-http(s) schemes
   if (!url.protocol.startsWith("http")) return;
 
-  // Never cache API calls or Next.js HMR — pass through to network
   if (
     url.pathname.startsWith("/api/") ||
     url.pathname.startsWith("/_next/webpack-hmr")
@@ -46,13 +43,21 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Navigation requests (HTML pages)
   if (request.mode === "navigate") {
     event.respondWith(
       (async () => {
         try {
-          const networkResponse = await fetch(request);
-          if (networkResponse && networkResponse.status === 200) {
+          // IMPORTANT: browsers set redirect mode to "manual" on navigation
+          // requests intercepted by a service worker. Our middleware issues
+          // 307 redirects for locale detection (e.g. "/" -> "/az"). If we
+          // fetch(request) as-is, a redirect response comes back as an
+          // opaque "opaqueredirect" with status 0 — NOT 200 — even though
+          // the server and network are perfectly fine. That falsely
+          // triggered the offline fallback page. Explicitly force
+          // redirect: "follow" so real redirects resolve to their final
+          // 200 response instead of being misread as a network failure.
+          const networkResponse = await fetch(request, { redirect: "follow" });
+          if (networkResponse && (networkResponse.ok || networkResponse.status === 200)) {
             return networkResponse;
           }
           const offlinePage = await caches.match("/offline.html");
@@ -74,7 +79,6 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Handle static assets
   const isStaticAsset =
     url.pathname.startsWith("/_next/static/") ||
     url.pathname.startsWith("/icons/") ||
@@ -99,7 +103,7 @@ self.addEventListener("fetch", (event) => {
           return cachedResponse;
         }
 
-        const networkResponse = await fetch(request);
+        const networkResponse = await fetch(request, { redirect: "follow" });
         if (networkResponse && networkResponse.status === 200) {
           const responseToCache = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
@@ -114,13 +118,11 @@ self.addEventListener("fetch", (event) => {
         if (cachedResponse) return cachedResponse;
       }
 
-      // Guarantee a valid Response object is ALWAYS returned
       return new Response("", { status: 408, statusText: "Request Timeout" });
     })()
   );
 });
 
-// ---- Web Push (order status / new message notifications) ----
 self.addEventListener("push", (event) => {
   if (!event.data) return;
   let payload;
