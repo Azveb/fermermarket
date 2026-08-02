@@ -17,5 +17,15 @@
     "sell": "Sell",
     "brands": "Brands",
     "agroServices": "Agro Services"
+  },
+  "Home": {
+    "popularBrands": "Popular Brands",
+    "popularStores": "Popular Sellers",
+    "allCategories": "All Categories",
+    "viewAll": "View All",
+    "opportunity": "Opportunity!",
+    "discountText": "20% discount on all fertilizers",
+    "details": "Details",
+    "products": "products"
   }
 }

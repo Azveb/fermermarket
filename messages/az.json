@@ -17,5 +17,15 @@
     "sell": "Sat",
     "brands": "Brendlər",
     "agroServices": "Aqro Xidmət"
+  },
+  "Home": {
+    "popularBrands": "Populyar Brendlər",
+    "popularStores": "Populyar Satıcılar",
+    "allCategories": "Bütün Kateqoriyalar",
+    "viewAll": "Hamısı",
+    "opportunity": "Fürsəti!",
+    "discountText": "Bütün gübrələrdə 20% endirim",
+    "details": "Ətraflı",
+    "products": "məhsul"
   }
 }

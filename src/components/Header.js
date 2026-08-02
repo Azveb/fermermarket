@@ -25,7 +25,7 @@ export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const locale = useLocale();
-  const t = useTranslations();
+  const t = useTranslations('Navigation');
 
   const [user, setUser] = useState(null);
   const [count, setCount] = useState(0);

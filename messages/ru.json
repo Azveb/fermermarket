@@ -17,5 +17,15 @@
     "sell": "Продать",
     "brands": "Бренды",
     "agroServices": "Агро Услуги"
+  },
+  "Home": {
+    "popularBrands": "Популярные Бренды",
+    "popularStores": "Популярные Продавцы",
+    "allCategories": "Все категории",
+    "viewAll": "Все",
+    "opportunity": "Возможность!",
+    "discountText": "Скидка 20% на все удобрения",
+    "details": "Подробнее",
+    "products": "товаров"
   }
 }
