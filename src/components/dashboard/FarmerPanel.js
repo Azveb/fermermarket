@@ -254,15 +254,16 @@ export default function FarmerPanel({ user }) {
   const [bundlesMsg, setBundlesMsg] = useState("");
   const [promoteModal, setPromoteModal] = useState(null);
   const [promoteLoading, setPromoteLoading] = useState(false);
+  const _store = user?.store || user?.ownedStores?.[0];
   const [storeSettingsForm, setStoreSettingsForm] = useState({ 
-    name: user?.store?.name || "",
-    description: user?.store?.description || "",
-    address: user?.store?.address || "",
-    phone: user?.store?.phone || "",
-    whatsapp: user?.store?.whatsapp || "",
-    installmentEnabled: user?.store?.installmentEnabled || false, 
-    installmentWhatsapp: user?.store?.installmentWhatsapp || "",
-    logoUrl: user?.store?.logoUrl || "",
+    name: _store?.name || "",
+    description: _store?.description || "",
+    address: _store?.address || "",
+    phone: _store?.phone || "",
+    whatsapp: _store?.whatsapp || "",
+    installmentEnabled: _store?.installmentEnabled || false, 
+    installmentWhatsapp: _store?.installmentWhatsapp || "",
+    logoUrl: _store?.logoUrl || "",
   });
   const [storeSettingsLoading, setStoreSettingsLoading] = useState(false);
   const [storeSettingsMsg, setStoreSettingsMsg] = useState("");
@@ -366,7 +367,7 @@ export default function FarmerPanel({ user }) {
     setLoading(true);
     try {
       const payload = {
-        storeId: user?.store?.id || undefined,
+        storeId: (_store?.id || user?.store?.id) || undefined,
         titleAz: form.titleAz,
         price: form.price ? Number(form.price) : 0,
         stock: form.stock !== "" && form.stock !== null ? Number(form.stock) : 1,
@@ -404,7 +405,7 @@ export default function FarmerPanel({ user }) {
     setError("");
     try {
       const payload = {
-        storeId: user?.store?.id || undefined,
+        storeId: (_store?.id || user?.store?.id) || undefined,
         titleAz: editForm.titleAz,
         price: editForm.price ? Number(editForm.price) : 0,
         stock: editForm.stock !== "" && editForm.stock !== null ? Number(editForm.stock) : 1,
@@ -604,6 +605,8 @@ export default function FarmerPanel({ user }) {
       // Update user object with new store
       if (user) {
         user.store = data.store;
+        user.ownedStores = user.ownedStores || [];
+        if (!user.ownedStores.find(s => s.id === data.store.id)) user.ownedStores.push(data.store);
         user.role = data.store?.ownerId ? user.role : "STORE";
       }
       // Force page reload to pick up new store data
@@ -673,9 +676,9 @@ export default function FarmerPanel({ user }) {
           { id: "wallet", label: "Pul Kisəm" },
           { id: "messages", label: "Mesajlar" },
           { id: "analytics", label: "Analitika" },
-          ...(user?.store ? [{ id: "catalog", label: "Məhsullarım" }] : []),
-          ...(user?.store ? [{ id: "settings", label: "Mağazam" }] : []),
-          ...(!user?.store ? [{ id: "create-store", label: "Mağaza Aç" }] : []),
+          ...((user?.store || user?.ownedStores?.length > 0) ? [{ id: "catalog", label: "Məhsullarım" }] : []),
+          ...((user?.store || user?.ownedStores?.length > 0) ? [{ id: "settings", label: "Mağazam" }] : []),
+          ...((!user?.store && !user?.ownedStores?.length) ? [{ id: "create-store", label: "Mağaza Aç" }] : []),
         ].map((t) => (
           <button
             key={t.id}
@@ -775,7 +778,7 @@ export default function FarmerPanel({ user }) {
                 )}
               </div>
               
-              {user?.store?.installmentEnabled && (
+              {_store?.installmentEnabled && (
                 <div className="rounded-lg border border-brand-200 p-3 bg-brand-50">
                   <label className="flex items-center gap-2 text-sm font-medium cursor-pointer text-brand-900">
                     <input type="checkbox" checked={form.allowInstallment} onChange={(e) => setForm({ ...form, allowInstallment: e.target.checked })} className="rounded text-brand-600 focus:ring-brand-500" />
@@ -810,7 +813,7 @@ export default function FarmerPanel({ user }) {
                         </div>
                         <ImageUploader value={editForm.images} onChange={(images) => setEditForm({ ...editForm, images })} />
                         
-                        {user?.store?.installmentEnabled && (
+                        {_store?.installmentEnabled && (
                           <label className="flex items-center gap-2 text-sm font-medium cursor-pointer mt-2 bg-brand-50 p-2 rounded-lg border border-brand-100">
                             <input type="checkbox" checked={editForm.allowInstallment} onChange={(e) => setEditForm({ ...editForm, allowInstallment: e.target.checked })} className="rounded text-brand-600 focus:ring-brand-500" />
                             <span className="text-brand-900">Hissəli satışa icazə ver (Kreditlə)</span>
@@ -926,7 +929,7 @@ export default function FarmerPanel({ user }) {
         </div>
       )}
 
-      {tab === "create-store" && !user?.store && (
+      {tab === "create-store" && !user?.store && !user?.ownedStores?.length && (
         <div className="card p-5">
           <h2 className="font-bold mb-4">Mağaza Aç</h2>
           <p className="text-sm text-gray-500 mb-4">
@@ -1013,7 +1016,7 @@ export default function FarmerPanel({ user }) {
         </div>
       )}
 
-      {tab === "settings" && user?.store && (
+      {tab === "settings" && (user?.store || user?.ownedStores?.length > 0) && (
         <div className="card p-5">
           <h2 className="font-bold mb-4">Mağaza Ayarları</h2>
           {storeSettingsError && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-2 mb-3">{storeSettingsError}</p>}

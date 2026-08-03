@@ -55,7 +55,7 @@ export default function DashboardPage() {
   }
   if (!user) return null;
   const roleLabel = ROLE_LABELS[user.role] || user.role;
-  const hasStore = user.store || ["STORE", "FARMER"].includes(user.role);
+  const hasStore = user.store || user.ownedStores?.length > 0 || ["STORE", "FARMER"].includes(user.role);
 
   if (user.role === "ADMIN" || user.role === "SUPER_ADMIN") {
     return <AdminPanel />;

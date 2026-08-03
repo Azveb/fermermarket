@@ -14,6 +14,7 @@ export async function GET(request) {
       status: true, locale: true, emailVerified: true, phoneVerified: true,
       createdAt: true,
       store: { select: { id: true, name: true, slug: true, description: true, address: true, phone: true, whatsapp: true, logoUrl: true, coverUrl: true, isVerified: true, isActive: true, installmentEnabled: true, installmentWhatsapp: true } },
+      ownedStores: { select: { id: true, name: true, slug: true, isVerified: true, isActive: true } },
       modules: { select: { module: true } },
     },
   });

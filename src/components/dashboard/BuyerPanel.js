@@ -229,7 +229,7 @@ export default function BuyerPanel({ user }) {
     { id: "favorites", label: "Sevimlilər", icon: "heart" },
     ...(user?.store ? [] : [{ id: "messages", label: "Mesajlar", icon: "message" }]),
     { id: "analytics", label: "Statistika", icon: "dashboard" },
-    ...(user?.store ? [] : [{ id: "store", label: "Mağazam", icon: "store" }]),
+    ...(user?.store || user?.ownedStores?.length > 0 ? [] : [{ id: "store", label: "Mağazam", icon: "store" }]),
     { id: "profile", label: "Profil", icon: "user" },
   ];
   if (user?.role === "AGRONOMIST") tabs.push({ id: "agro", label: "Aqronom", icon: "sprout" });
