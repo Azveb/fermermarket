@@ -87,12 +87,8 @@ export default function CategoriesSlider({ categories, title, subtitle }) {
                 href={`/products?category=${c.slug}`}
                 className={`snap-center shrink-0 w-64 group/card flex items-center gap-3.5 p-4 rounded-2xl border bg-gradient-to-br ${theme.bg} ${theme.border} hover:shadow-md hover:-translate-y-1 transition-all duration-300`}
               >
-                <span className={`w-12 h-12 shrink-0 rounded-xl flex items-center justify-center shadow-sm ${theme.iconBg} group-hover/card:scale-110 transition-transform duration-300`}>
-                  {c.icon && (c.icon.length <= 2 || c.icon.includes("http")) ? (
-                    c.icon.includes("http") ? <img src={c.icon} alt="" className="w-8 h-8 object-contain" /> : <span className="text-2xl">{c.icon}</span>
-                  ) : (
-                    <Icon name={c.icon || CATEGORY_ICONS[c.slug] || "sprout"} size={26} strokeWidth={1.5} />
-                  )}
+                <span className={`w-12 h-12 shrink-0 rounded-xl flex items-center justify-center p-1.5 shadow-sm ${theme.iconBg} group-hover/card:scale-110 transition-transform duration-300`}>
+                  <img src="/logo.png" alt={c.nameAz || "FermerMarket"} className="w-full h-full object-contain" />
                 </span>
                 <div className="flex flex-col min-w-0 flex-1">
                   <span className={`text-sm font-bold leading-tight ${theme.text} line-clamp-2`}>{c.nameAz}</span>
