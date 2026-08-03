@@ -48,10 +48,6 @@ export default function AgronomCard() {
               <Icon name={typeof item === "object" ? item.icon : "info"} size={14} />
               <span>{typeof item === "object" ? item.label : item}</span>
             </div>
-          ))
-            <span key={f} className="text-[11px] font-medium text-gray-600 bg-white border border-gray-100 px-3 py-1 rounded-full shadow-sm">
-              {f}
-            </span>
           ))}
         </div>
       </div>
