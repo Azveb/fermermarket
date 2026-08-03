@@ -31,7 +31,7 @@ function LoginContent() {
       const target = callbackUrl || "/dashboard";
       
       // Hard redirect ensures cookie is sent with the request
-      const locale = "az"; // current locale
+      const locale = "az"; // default locale
       // If callbackUrl already has locale prefix, use as-is; otherwise add locale
       const hasLocale = /^\/(az|en|ru)\//.test(target) || /^\/(az|en|ru)$/.test(target);
       const finalUrl = hasLocale ? target : `/${locale}${target}`;

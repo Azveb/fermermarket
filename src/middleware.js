@@ -15,6 +15,7 @@ export default function middleware(request) {
   let locale = routing.defaultLocale;
   let normalizedPath = pathname;
 
+  // Detect explicit locale prefix (e.g. /en/products)
   if (pathSegments.length > 0 && locales.includes(pathSegments[0])) {
     locale = pathSegments[0];
     normalizedPath = '/' + pathSegments.slice(1).join('/');
@@ -38,7 +39,9 @@ export default function middleware(request) {
     const authUser = token ? verifyAccessToken(token) : null;
 
     if (!authUser) {
-      const loginUrl = new URL(`/${locale}/login`, request.url);
+      // With as-needed prefix, don't add /az for default locale
+      const prefix = locale === routing.defaultLocale ? '' : `/${locale}`;
+      const loginUrl = new URL(`${prefix}/login`, request.url);
       loginUrl.searchParams.set('callbackUrl', pathname);
       return NextResponse.redirect(loginUrl);
     }
@@ -46,7 +49,8 @@ export default function middleware(request) {
     if (isAdminRoute) {
       const allowedAdminRoles = ['ADMIN', 'SUPER_ADMIN', 'MODERATOR'];
       if (!allowedAdminRoles.includes(authUser.role)) {
-        const dashboardUrl = new URL(`/${locale}/dashboard`, request.url);
+        const prefix = locale === routing.defaultLocale ? '' : `/${locale}`;
+        const dashboardUrl = new URL(`${prefix}/dashboard`, request.url);
         return NextResponse.redirect(dashboardUrl);
       }
     }
@@ -56,6 +60,6 @@ export default function middleware(request) {
 }
 
 export const config = {
-  matcher: ['/', '/(az|en|ru)/:path*', '/admin', '/admin/:path*', '/dashboard', '/dashboard/:path*']
+  // Match all paths except: API routes, Next.js internals, files with extensions
+  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)']
 };
-
