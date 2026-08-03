@@ -19,7 +19,7 @@ export default function NewProductPage() {
 
   useEffect(() => {
     const user = getUser();
-    if (!user || (user.role !== "STORE" && user.role !== "FARMER")) {
+    if (!user) {
       router.push("/dashboard");
     }
 

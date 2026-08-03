@@ -4,17 +4,10 @@ import { useRouter } from "@/i18n/routing";
 import { Link } from "@/i18n/routing";
 import { apiFetch, saveSession } from "@/lib/apiClient";
 
-const ROLES = [
-  { value: "BUYER",      label: " Alıcı" },
-  { value: "FARMER",     label: "Fermer" },
-  { value: "STORE",      label: "Mağaza" },
-  { value: "AGRONOMIST", label: "‍Aqronom" },
-];
-
 export default function RegisterPage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("B2C");
-  const [form, setForm] = useState({ email: "", username: "", password: "", confirmPassword: "", fullName: "", phone: "", role: "BUYER" });
+  const [form, setForm] = useState({ email: "", username: "", password: "", confirmPassword: "", fullName: "", phone: "", });
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);

@@ -272,7 +272,7 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const authUser = getAuthUser(request);
-    const canPostAsSeller = authUser && ["FARMER", "STORE", "ADMIN", "SUPER_ADMIN"].includes(authUser.role);
+    const canPostAsSeller = !!authUser;
 
     let body;
     try {

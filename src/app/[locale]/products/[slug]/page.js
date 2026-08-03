@@ -590,7 +590,7 @@ export default async function ProductDetailPage({ params }) {
                 </div>
                 <div>
                   <p className="font-bold">{seller.fullName}</p>
-                  <p className="text-xs text-gray-500">{seller.role === 'STORE' ? ' Mağaza' : 'Fermer'}</p>
+                  <p className="text-xs text-gray-500">{seller.role === 'STORE' ? 'Mağaza' : 'İstifadəçi'}</p>
                   <div className="flex items-center gap-1 mt-0.5">
                     <span className="inline-flex items-center gap-0.5">{[...Array(5)].map((_, i) => <Icon key={i} name="star" size={12} className={i < Math.round(seller.avgRating||0) ? "text-amber-400 fill-amber-400" : "text-gray-300"} />)}</span>
                     <span className="text-xs text-gray-400">({seller.reviewCount||0} rəy)</span>

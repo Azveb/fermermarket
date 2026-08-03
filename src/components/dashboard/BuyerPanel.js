@@ -232,7 +232,7 @@ export default function BuyerPanel({ user }) {
     ...(user?.store || user?.ownedStores?.length > 0 ? [] : [{ id: "store", label: "Mağazam", icon: "store" }]),
     { id: "profile", label: "Profil", icon: "user" },
   ];
-  if (user?.role === "AGRONOMIST") tabs.push({ id: "agro", label: "Aqronom", icon: "sprout" });
+  tabs.push({ id: "agro", label: "Aqronom", icon: "sprout" });
 
   return (
     <div className="space-y-4">

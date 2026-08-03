@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@/i18n/routing";
 import { apiFetch, getUser, getToken } from "@/lib/apiClient";
 
-const SELLER_ROLES = ["FARMER", "STORE", "ADMIN", "SUPER_ADMIN"];
+// Role-based restrictions removed — all users can post listings
 
 export default function PostListingPage() {
   const [user, setUser] = useState(null);
@@ -51,7 +51,7 @@ export default function PostListingPage() {
       .catch(() => {});
   }, []);
 
-  const isSellerAccount = user && SELLER_ROLES.includes(user.role);
+  const isSellerAccount = !!user;
 
   // Trigger toast notification
   const triggerToast = (msg) => {

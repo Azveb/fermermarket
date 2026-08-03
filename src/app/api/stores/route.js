@@ -65,11 +65,6 @@ export async function POST(request) {
   const authUser = getAuthUser(request);
   if (!authUser) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-  const allowedRoles = ["STORE", "FARMER", "ADMIN", "SUPER_ADMIN", "BUYER", "AGRONOMIST"];
-  if (!allowedRoles.includes(authUser.role)) {
-    return Response.json({ error: "Bu rol mağaza yarada bilməz" }, { status: 403 });
-  }
-
   // Count how many ACTIVE stores the user already has
   const activeStoresCount = await prisma.store.count({
     where: { ownerId: authUser.sub, isActive: true },
@@ -113,14 +108,6 @@ export async function POST(request) {
       isActive: isFirstStore,
     },
   });
-
-  // Update user role to STORE if they were BUYER/AGRONOMIST (only on first store)
-  if (isFirstStore && (authUser.role === "BUYER" || authUser.role === "AGRONOMIST")) {
-    await prisma.user.update({
-      where: { id: authUser.sub },
-      data: { role: "STORE" }
-    });
-  }
 
   return Response.json({
     store,

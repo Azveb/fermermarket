@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { getAuthUser, requireRole } from "@/lib/auth";
+import { getAuthUser } from "@/lib/auth";
 import { listingUpsertSchema } from "@/lib/validators";
 
 // GET /api/listings?tier=VIP — public: active premium/VIP/featured listings
@@ -44,8 +44,7 @@ export async function GET(request) {
 // POST /api/listings — Store/Farmer promotes their own product; Admin can promote any
 export async function POST(request) {
   const authUser = getAuthUser(request);
-  const denied = requireRole(authUser, ["FARMER", "STORE", "ADMIN", "SUPER_ADMIN"]);
-  if (denied) return denied;
+  if (!authUser) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
   let body;
   try {
