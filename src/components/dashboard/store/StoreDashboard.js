@@ -5,6 +5,7 @@ import { useRouter } from "@/i18n/routing";
 import { apiFetch } from "@/lib/apiClient";
 import Icon from "@/components/ui/Icon";
 
+import ImageUploader from "@/components/ImageUploader";
 // Existing subcomponents
 import StoreProfileHeader from "@/components/dashboard/store/StoreProfileHeader";
 import StoreAnalytics from "@/components/dashboard/store/StoreAnalytics";
@@ -39,11 +40,64 @@ export default function StoreDashboard({ user }) {
   });
 
   const [toastMsg, setToastMsg] = useState(null);
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [createForm, setCreateForm] = useState({ titleAz: "", price: "", stock: "1", categoryId: "", region: "", city: "", descriptionAz: "", images: [], tags: [], isCorporate: false, minOrderQty: "" });
+  const [creating, setCreating] = useState(false);
+  const [createError, setCreateError] = useState("");
+  const [createSuccess, setCreateSuccess] = useState("");
 
   function showToast(msg) {
     setToastMsg(msg);
     setTimeout(() => setToastMsg(null), 3500);
   }
+  // ─── Create Product ───
+  async function handleCreateProduct(e) {
+    e.preventDefault();
+    setCreating(true);
+    setCreateError("");
+    setCreateSuccess("");
+    try {
+      const payload = {
+        storeId: store?.id || undefined,
+        titleAz: createForm.titleAz,
+        price: createForm.price ? Number(createForm.price) : 0,
+        stock: createForm.stock ? Number(createForm.stock) : 1,
+        categoryId: createForm.categoryId,
+        region: createForm.region || undefined,
+        city: createForm.city || undefined,
+        descriptionAz: createForm.descriptionAz || undefined,
+        images: createForm.images || [],
+        tags: createForm.tags || [],
+        isCorporate: !!createForm.isCorporate,
+        minOrderQty: createForm.isCorporate && createForm.minOrderQty ? parseInt(createForm.minOrderQty, 10) : null,
+      };
+      Object.keys(payload).forEach(k => { if (payload[k] === undefined) delete payload[k]; });
+      await apiFetch("/api/products", { method: "POST", body: JSON.stringify(payload) });
+      setCreateSuccess("Elan yaradıldı! Admin təsdiqindən sonra aktivləşəcək.");
+      setCreateForm({ titleAz: "", price: "", stock: "1", categoryId: "", region: "", city: "", descriptionAz: "", images: [], tags: [], isCorporate: false, minOrderQty: "" });
+      loadProducts();
+      setTimeout(() => { setShowCreateForm(false); setCreateSuccess(""); }, 2000);
+    } catch (err) {
+      const details = err.details ? Object.values(err.details).flat().join(" · ") : "";
+      setCreateError(details || err.message || "Xəta baş verdi");
+    } finally {
+      setCreating(false);
+    }
+  }
+
+  // Tag input handler
+  function handleTagInput(e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const val = e.target.value.trim().toLowerCase().replace(/^#+/, "");
+      if (val && !createForm.tags.includes(val) && createForm.tags.length < 10) {
+        setCreateForm(f => ({ ...f, tags: [...f.tags, val] }));
+        e.target.value = "";
+      }
+    }
+  }
+
+
 
   // Load initial store, stats, categories, products
   useEffect(() => {
@@ -379,6 +433,188 @@ export default function StoreDashboard({ user }) {
           {/* TAB 2: PRODUCTS */}
           {activeTab === "products" && (
             <div className="space-y-4">
+              {/* YENI ELAN DUYMESI */}
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-extrabold text-gray-900">Məhsullarım</h2>
+                <button
+                  type="button"
+                  onClick={() => setShowCreateForm(s => !s)}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-brand-600 text-white text-sm font-bold rounded-xl hover:bg-brand-700 transition-colors shadow-sm"
+                >
+                  <Icon name="plus" size={18} />
+                  Yeni Elan
+                </button>
+              </div>
+
+              {/* YENI ELAN FORMASI */}
+              {showCreateForm && (
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
+                  <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+                    <h3 className="font-bold text-gray-900 flex items-center gap-2">
+                      <Icon name="plus" size={20} className="text-brand-600" />
+                      Yeni Elan Yerləşdir
+                    </h3>
+                    <button type="button" onClick={() => setShowCreateForm(false)} className="text-gray-400 hover:text-gray-600">
+                      <Icon name="close" size={20} />
+                    </button>
+                  </div>
+
+                  {createError && (
+                    <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3">
+                      {createError}
+                    </div>
+                  )}
+                  {createSuccess && (
+                    <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-xl px-4 py-3 flex items-center gap-2">
+                      <Icon name="checkCircle" size={16} /> {createSuccess}
+                    </div>
+                  )}
+
+                  <form onSubmit={handleCreateProduct} className="space-y-4">
+                    {/* Başlıq */}
+                    <div>
+                      <label className="text-sm font-semibold text-gray-700 mb-1.5 block">Məhsulun adı *</label>
+                      <input
+                        type="text" required
+                        placeholder="Məs: Qlifosat 48%"
+                        className="w-full p-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all"
+                        value={createForm.titleAz}
+                        onChange={e => setCreateForm({...createForm, titleAz: e.target.value})}
+                      />
+                    </div>
+
+                    {/* Kateqoriya */}
+                    <div>
+                      <label className="text-sm font-semibold text-gray-700 mb-1.5 block">Kateqoriya *</label>
+                      <select
+                        required
+                        className="w-full p-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all"
+                        value={createForm.categoryId}
+                        onChange={e => setCreateForm({...createForm, categoryId: e.target.value})}
+                      >
+                        <option value="">Kateqoriya seçin</option>
+                        {categories.map(c => (
+                          <option key={c.id} value={c.id}>{c.name || c.nameAz}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Qiymət + Stok */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-sm font-semibold text-gray-700 mb-1.5 block">Qiymət (AZN) *</label>
+                        <input
+                          type="number" step="0.01" required
+                          placeholder="0.00"
+                          className="w-full p-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all"
+                          value={createForm.price}
+                          onChange={e => setCreateForm({...createForm, price: e.target.value})}
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-semibold text-gray-700 mb-1.5 block">Stok sayı</label>
+                        <input
+                          type="number" required
+                          placeholder="1"
+                          className="w-full p-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all"
+                          value={createForm.stock}
+                          onChange={e => setCreateForm({...createForm, stock: e.target.value})}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Region + Şəhər */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-sm font-semibold text-gray-700 mb-1.5 block">Region</label>
+                        <input
+                          type="text"
+                          placeholder="Məs: Bakı"
+                          className="w-full p-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all"
+                          value={createForm.region}
+                          onChange={e => setCreateForm({...createForm, region: e.target.value})}
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-semibold text-gray-700 mb-1.5 block">Şəhər</label>
+                        <input
+                          type="text"
+                          placeholder="Məs: Bakı"
+                          className="w-full p-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all"
+                          value={createForm.city}
+                          onChange={e => setCreateForm({...createForm, city: e.target.value})}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Şəkil yükləmə */}
+                    <div>
+                      <label className="text-sm font-semibold text-gray-700 mb-1.5 block">Şəkillər</label>
+                      <ImageUploader value={createForm.images} onChange={(images) => setCreateForm({...createForm, images})} max={5} />
+                    </div>
+
+                    {/* Təsvir */}
+                    <div>
+                      <label className="text-sm font-semibold text-gray-700 mb-1.5 block">Təsvir</label>
+                      <textarea
+                        rows="3"
+                        placeholder="Məhsul haqqında ətraflı məlumat..."
+                        className="w-full p-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all resize-none"
+                        value={createForm.descriptionAz}
+                        onChange={e => setCreateForm({...createForm, descriptionAz: e.target.value})}
+                      />
+                    </div>
+
+                    {/* Etiketlər */}
+                    <div>
+                      <label className="text-sm font-semibold text-gray-700 mb-1.5 block">Etiketlər (hashtags)</label>
+                      <div className="flex flex-wrap gap-1.5 mb-2">
+                        {createForm.tags.map((tag, i) => (
+                          <span key={i} className="inline-flex items-center gap-1 text-xs bg-brand-50 text-brand-700 border border-brand-200 px-2 py-0.5 rounded-full font-medium">
+                            #{tag}
+                            <button type="button" onClick={() => setCreateForm(f => ({...f, tags: f.tags.filter((_, j) => j !== i)}))} className="text-brand-400 hover:text-red-500">×</button>
+                          </span>
+                        ))}
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Etiket əlavə et (Enter ilə)"
+                        className="w-full p-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none transition-all text-sm"
+                        onKeyDown={handleTagInput}
+                      />
+                    </div>
+
+                    {/* Korporativ */}
+                    <div className="rounded-lg border border-gray-200 p-3 space-y-2 bg-gray-50">
+                      <label className="flex items-center gap-2 text-sm font-medium cursor-pointer">
+                        <input type="checkbox" checked={createForm.isCorporate} onChange={e => setCreateForm({...createForm, isCorporate: e.target.checked, minOrderQty: ""})} className="rounded" />
+                        <span>Korporativ elan (toplu satış)</span>
+                      </label>
+                      {createForm.isCorporate && (
+                        <div className="flex items-center gap-2">
+                          <label className="text-xs text-gray-600 whitespace-nowrap">Minimum alış miqdarı:</label>
+                          <input type="number" min="1" placeholder="məs: 50"
+                            className="w-32 p-1.5 border border-gray-200 rounded-lg text-sm"
+                            value={createForm.minOrderQty}
+                            onChange={e => setCreateForm({...createForm, minOrderQty: e.target.value})}
+                          />
+                          <span className="text-xs text-gray-400">ədəd</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Submit */}
+                    <button
+                      type="submit"
+                      disabled={creating}
+                      className="w-full py-3 bg-brand-600 text-white font-bold rounded-xl hover:bg-brand-700 disabled:opacity-50 transition-colors"
+                    >
+                      {creating ? "Göndərilir..." : "Elanı Yerləşdir"}
+                    </button>
+                  </form>
+                </div>
+              )}
+
               <ProductFilters
                 onFilterChange={setFilters}
                 categories={categories}
