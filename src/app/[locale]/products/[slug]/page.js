@@ -152,7 +152,7 @@ export default async function ProductDetailPage({ params }) {
         },
         include: {
           images: { orderBy: { sortOrder: "asc" }, take: 1 },
-          store: { select: { name: true, slug: true } }
+          store: { select: { name: true, slug: true, isVerified: true } }
         },
         orderBy: { price: "asc" },
         take: 4
@@ -172,7 +172,7 @@ export default async function ProductDetailPage({ params }) {
           id: { not: product.id },
           diseases: { some: { diseaseId: { in: diseaseIds } } }
         },
-        include: { images: { orderBy: { sortOrder: "asc" }, take: 1 }, store: { select: { name: true, slug: true } } },
+        include: { images: { orderBy: { sortOrder: "asc" }, take: 1 }, store: { select: { name: true, slug: true, isVerified: true } } },
         orderBy: { createdAt: "desc" },
         take: 4
       });
@@ -191,7 +191,7 @@ export default async function ProductDetailPage({ params }) {
           id: { not: product.id },
           pests: { some: { pestId: { in: pestIds } } }
         },
-        include: { images: { orderBy: { sortOrder: "asc" }, take: 1 }, store: { select: { name: true, slug: true } } },
+        include: { images: { orderBy: { sortOrder: "asc" }, take: 1 }, store: { select: { name: true, slug: true, isVerified: true } } },
         orderBy: { createdAt: "desc" },
         take: 4
       });

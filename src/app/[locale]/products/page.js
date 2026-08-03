@@ -120,7 +120,7 @@ export default async function ProductsPage({ searchParams }) {
         })(),
         skip: (pageNum - 1) * pageSize,
         take: pageSize,
-        include: { images: { take: 1 }, category: true },
+        include: { images: { take: 1 }, category: true, store: { select: { name: true, slug: true, isVerified: true } } },
       }),
       prisma.category.findMany({
         where: { isActive: true, parentId: null },
@@ -150,7 +150,7 @@ export default async function ProductsPage({ searchParams }) {
             where: { status: 'ACTIVE', categoryId: { in: siblingIds } },
             orderBy: { createdAt: 'desc' },
             take: 12,
-            include: { images: { take: 1 }, category: true }
+            include: { images: { take: 1 }, category: true, store: { select: { name: true, slug: true, isVerified: true } } }
           });
           isFallback = true;
           total = products.length;

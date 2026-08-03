@@ -223,6 +223,12 @@ export default function ProductCard({ product, tier, compact = false, initialFav
             {product.city || product.region}
           </p>
         )}
+        {product.store && (
+          <p className="text-[11px] text-brand-600 font-medium flex items-center gap-1 truncate">
+            <Icon name="store" size={13} />
+            {product.store.name}
+          </p>
+        )}
       {/* Hashtags — max 3 */}
       {product.tags && product.tags.length > 0 && !compact && (
         <div className="flex flex-wrap gap-1 mt-1">

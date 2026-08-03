@@ -122,7 +122,7 @@ export async function GET(request) {
         include: {
           images: { orderBy: { sortOrder: "asc" }, ...(mine ? {} : { take: 1 }) },
           category: { select: { slug: true, nameAz: true, nameEn: true, nameRu: true } },
-          store: { select: { name: true, slug: true } },
+          store: { select: { name: true, slug: true, isVerified: true } },
           seller: { select: { fullName: true, email: true, phone: true } },
           activeIngredients: { include: { ingredient: true } },
           crops: { include: { crop: true } },
@@ -227,7 +227,7 @@ export async function GET(request) {
             include: {
               category: true,
               images: { orderBy: { sortOrder: "asc" }, take: 1 },
-              store: { select: { name: true, slug: true } },
+              store: { select: { name: true, slug: true, isVerified: true } },
               seller: { select: { fullName: true, email: true, phone: true } }
             }
           });

@@ -29,14 +29,14 @@ async function getHomeData() {
         where: { tier: { not: "STANDARD" }, OR: [{ endDate: null }, { endDate: { gt: now } }] },
         orderBy: [{ tier: "desc" }, { createdAt: "desc" }],
         take: 8,
-        include: { product: { include: { images: { take: 1 }, category: true } } },
+        include: { product: { include: { images: { take: 1 }, category: true, store: { select: { name: true, slug: true } } } } },
       }),
       getAdSlotContent("HOMEPAGE_TOP"),
       prisma.product.findMany({
         where: { status: "ACTIVE" },
         orderBy: { createdAt: "desc" },
         take: 8,
-        include: { images: { take: 1 }, category: true, seller: { select: { fullName: true } } },
+        include: { images: { take: 1 }, category: true, seller: { select: { fullName: true } }, store: { select: { name: true, slug: true, isVerified: true } } },
       }),
       prisma.bundle.findMany({
         where: { isActive: true },

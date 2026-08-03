@@ -366,6 +366,7 @@ export default function FarmerPanel({ user }) {
     setLoading(true);
     try {
       const payload = {
+        storeId: user?.store?.id || undefined,
         titleAz: form.titleAz,
         price: form.price ? Number(form.price) : 0,
         stock: form.stock !== "" && form.stock !== null ? Number(form.stock) : 1,
@@ -403,6 +404,7 @@ export default function FarmerPanel({ user }) {
     setError("");
     try {
       const payload = {
+        storeId: user?.store?.id || undefined,
         titleAz: editForm.titleAz,
         price: editForm.price ? Number(editForm.price) : 0,
         stock: editForm.stock !== "" && editForm.stock !== null ? Number(editForm.stock) : 1,
