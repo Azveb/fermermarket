@@ -280,6 +280,19 @@ model StoreSubscription {
   @@index([planId])
 }
 
+model StoreFollow {
+  id        String   @id @default(cuid())
+  storeId   String
+  store     Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([storeId, userId])
+  @@index([storeId])
+  @@index([userId])
+}
+
 model User {
   id                 String     @id @default(cuid())
   email              String?    @unique
@@ -313,6 +326,7 @@ model User {
   reviews        Review[]
   deliveryOrders Order[]              @relation("DeliveryPartnerOrders")
   favorites      Favorite[]
+  followedStores StoreFollow[]
 
   wallet              Wallet?
   bundles             Bundle[]           @relation("SellerBundles")
@@ -463,6 +477,7 @@ model Store {
   campaigns    Campaign[]
   subscription StoreSubscription?
   salesPoints  SalesPoint[]
+  followers    StoreFollow[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
