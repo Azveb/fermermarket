@@ -57,16 +57,19 @@ export default async function StorePage({ params }) {
     isFollowing = !!follow;
   }
 
-  // Compute store stats
+  // Compute store stats — IMPORTANT: scope everything by storeId (store.id), NOT sellerId
+  // (store.ownerId). A user can own multiple stores (ownedStores[]), so filtering by the
+  // owner's user id would leak product/sales/review counts from their OTHER stores into
+  // this store's profile. Products are linked to a specific store via product.storeId.
   const [deliveredOrders, avgRating, totalProducts, activeProducts, passiveProducts, archivedProducts, draftProducts, outOfStock] = await Promise.all([
-    prisma.orderItem.count({ where: { sellerId: store.ownerId, order: { status: "DELIVERED" } } }),
-    prisma.review.aggregate({ where: { product: { sellerId: store.ownerId }, isApproved: true }, _avg: { rating: true } }),
-    prisma.product.count({ where: { sellerId: store.ownerId } }),
-    prisma.product.count({ where: { sellerId: store.ownerId, status: "ACTIVE" } }),
-    prisma.product.count({ where: { sellerId: store.ownerId, status: "EXPIRED" } }),
-    prisma.product.count({ where: { sellerId: store.ownerId, status: "REJECTED" } }),
-    prisma.product.count({ where: { sellerId: store.ownerId, status: "DRAFT" } }),
-    prisma.product.count({ where: { sellerId: store.ownerId, stock: { lte: 0 } } }),
+    prisma.orderItem.count({ where: { product: { storeId: store.id }, order: { status: "DELIVERED" } } }),
+    prisma.review.aggregate({ where: { product: { storeId: store.id }, isApproved: true }, _avg: { rating: true } }),
+    prisma.product.count({ where: { storeId: store.id } }),
+    prisma.product.count({ where: { storeId: store.id, status: "ACTIVE" } }),
+    prisma.product.count({ where: { storeId: store.id, status: "EXPIRED" } }),
+    prisma.product.count({ where: { storeId: store.id, status: "REJECTED" } }),
+    prisma.product.count({ where: { storeId: store.id, status: "DRAFT" } }),
+    prisma.product.count({ where: { storeId: store.id, stock: { lte: 0 } } }),
   ]);
 
   const rating = avgRating._avg.rating ? Number(avgRating._avg.rating.toFixed(1)) : null;
