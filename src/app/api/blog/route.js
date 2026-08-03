@@ -32,7 +32,7 @@ export async function GET(request) {
 // POST /api/blog — admin/agronomist writes a new tips/news post
 export async function POST(request) {
   const authUser = getAuthUser(request);
-  const denied = requireRole(authUser, ["ADMIN", "SUPER_ADMIN", "AGRONOMIST"]);
+  const denied = requireRole(authUser, ["ADMIN", "SUPER_ADMIN", "BUYER"]); // All authenticated users can write blog posts
   if (denied) return denied;
 
   let body;

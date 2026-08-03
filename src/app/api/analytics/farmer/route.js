@@ -3,7 +3,7 @@ import { getAuthUser, requireRole } from "@/lib/auth";
 
 export async function GET(request) {
   const authUser = getAuthUser(request);
-  const denied = requireRole(authUser, ["FARMER", "STORE", "ADMIN", "SUPER_ADMIN"]);
+  const denied = requireRole(authUser, ["ADMIN", "SUPER_ADMIN", "BUYER"]); // All authenticated users can view analytics
   if (denied) return denied;
 
   const { searchParams } = new URL(request.url);

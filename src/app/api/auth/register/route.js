@@ -24,7 +24,8 @@ export async function POST(request) {
     );
   }
 
-  const { email, username, password, fullName, phone, role, locale } = parsed.data;
+  const { email, username, password, fullName, phone, locale } = parsed.data;
+  const role = "BUYER"; // Force default role — no role selection
 
   const cleanEmail = email?.trim() || null;
   const cleanPhone = phone?.trim() || null;

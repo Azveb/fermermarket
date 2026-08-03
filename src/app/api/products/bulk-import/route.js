@@ -16,7 +16,7 @@ import slugify from "slugify";
  */
 export async function POST(request) {
   const authUser = getAuthUser(request);
-  const denied = requireRole(authUser, ["FARMER", "STORE", "ADMIN", "SUPER_ADMIN"]);
+  const denied = requireRole(authUser, ["ADMIN", "SUPER_ADMIN", "BUYER"]); // All authenticated users can bulk import
   if (denied) return denied;
 
   let body;

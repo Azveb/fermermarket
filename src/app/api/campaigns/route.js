@@ -56,7 +56,7 @@ export async function GET(request) {
 // POST /api/campaigns — Store owners create campaigns for their own store; Admin any
 export async function POST(request) {
   const authUser = getAuthUser(request);
-  const denied = requireRole(authUser, ["STORE", "ADMIN", "SUPER_ADMIN"]);
+  const denied = requireRole(authUser, ["ADMIN", "SUPER_ADMIN", "BUYER"]); // All authenticated users can create campaigns
   if (denied) return denied;
 
   let body;

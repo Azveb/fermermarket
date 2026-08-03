@@ -14,7 +14,7 @@ export async function GET(request, { params }) {
 
 export async function PATCH(request, { params }) {
   const authUser = getAuthUser(request);
-  const denied = requireRole(authUser, ["STORE", "ADMIN", "SUPER_ADMIN"]);
+  const denied = requireRole(authUser, ["ADMIN", "SUPER_ADMIN", "BUYER"]);
   if (denied) return denied;
 
   const { id } = await params;

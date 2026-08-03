@@ -10,9 +10,7 @@ export const registerSchema = z.object({
     .regex(/[0-9]/, "Şifrədə ən azı bir rəqəm olmalıdır"),
   fullName: z.string().min(2, "Ad Soyad tələb olunur"),
   phone: z.string().optional().or(z.literal("")),
-  role: z
-    .enum(["FARMER", "STORE", "AGRONOMIST", "BUYER", "DELIVERY_PARTNER"])
-    .default("BUYER"),
+  role: z.enum(["BUYER"]).default("BUYER").optional(),
   locale: z.enum(["AZ", "EN", "RU"]).default("AZ"),
 }).refine((data) => data.email || data.phone || data.username, {
   message: "E-poçt, telefon və ya istifadəçi adı daxil edilməlidir",

@@ -39,7 +39,7 @@ export async function GET(request) {
 // POST /api/bundles — farmer/store/admin creates a product bundle deal
 export async function POST(request) {
   const authUser = getAuthUser(request);
-  const denied = requireRole(authUser, ["FARMER", "STORE", "ADMIN", "SUPER_ADMIN"]);
+  const denied = requireRole(authUser, ["ADMIN", "SUPER_ADMIN", "BUYER"]); // All authenticated users can create bundles
   if (denied) return denied;
 
   let body;

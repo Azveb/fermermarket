@@ -3,7 +3,6 @@ import Icon from "@/components/ui/Icon";
 import { useEffect, useState } from "react";
 import { useRouter } from "@/i18n/routing";
 import { apiFetch, getUser } from "@/lib/apiClient";
-import FarmerPanel from "@/components/dashboard/FarmerPanel";
 import StoreDashboard from "@/components/dashboard/store/StoreDashboard";
 import AdminPanel from "@/components/dashboard/AdminPanel";
 import BuyerPanel from "@/components/dashboard/BuyerPanel";

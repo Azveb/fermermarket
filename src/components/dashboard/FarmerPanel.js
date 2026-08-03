@@ -607,7 +607,7 @@ export default function FarmerPanel({ user }) {
         user.store = data.store;
         user.ownedStores = user.ownedStores || [];
         if (!user.ownedStores.find(s => s.id === data.store.id)) user.ownedStores.push(data.store);
-        user.role = data.store?.ownerId ? user.role : "STORE";
+        // Role stays as BUYER — all users can create stores
       }
       // Force page reload to pick up new store data
       setTimeout(() => window.location.reload(), 1500);
