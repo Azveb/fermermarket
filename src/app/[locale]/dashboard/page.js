@@ -56,9 +56,7 @@ export default function DashboardPage() {
   const roleLabel = ROLE_LABELS[user.role] || user.role;
   const hasStore = true; // All non-admin users get store + buyer features
 
-  if (user.role === "ADMIN" || user.role === "SUPER_ADMIN") {
-    return <AdminPanel />;
-  }
+  const isAdminLevel = ["ADMIN", "SUPER_ADMIN", "MODERATOR"].includes(user.role);
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6">
@@ -83,8 +81,9 @@ export default function DashboardPage() {
         </div>
       </div>
 
+      {(user.role === "ADMIN" || user.role === "SUPER_ADMIN") && <AdminPanel />}
       {user.role === "MODERATOR" && <ModeratorPanel />}
-      {!["ADMIN", "SUPER_ADMIN", "MODERATOR"].includes(user.role) && <DeliveryPanel user={user} />}
+      {!isAdminLevel && <DeliveryPanel user={user} />}
       
       <div className="space-y-4">
         {hasStore && (
