@@ -63,8 +63,8 @@ export default async function StorePage({ params }) {
     prisma.review.aggregate({ where: { product: { sellerId: store.ownerId }, isApproved: true }, _avg: { rating: true } }),
     prisma.product.count({ where: { sellerId: store.ownerId } }),
     prisma.product.count({ where: { sellerId: store.ownerId, status: "ACTIVE" } }),
-    prisma.product.count({ where: { sellerId: store.ownerId, status: "PASSIVE" } }),
-    prisma.product.count({ where: { sellerId: store.ownerId, status: "ARCHIVED" } }),
+    prisma.product.count({ where: { sellerId: store.ownerId, status: "EXPIRED" } }),
+    prisma.product.count({ where: { sellerId: store.ownerId, status: "REJECTED" } }),
     prisma.product.count({ where: { sellerId: store.ownerId, status: "DRAFT" } }),
     prisma.product.count({ where: { sellerId: store.ownerId, stock: { lte: 0 } } }),
   ]);
