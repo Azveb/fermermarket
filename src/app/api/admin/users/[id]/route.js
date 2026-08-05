@@ -82,27 +82,49 @@ export async function DELETE(request, { params }) {
     return Response.json({ error: "Yalnız Super Admin digər Super Admin-i silə bilər" }, { status: 403 });
   }
 
-  // Cascade: delete user's products, stores, orders, reviews, messages first
-  await prisma.review.deleteMany({ where: { authorId: id } });
-  await prisma.conversation.deleteMany({ where: { OR: [{ user1Id: id }, { user2Id: id }] } });
-  await prisma.product.deleteMany({ where: { sellerId: id } });
-  await prisma.store.deleteMany({ where: { ownerId: id } });
-  await prisma.order.deleteMany({ where: { buyerId: id } });
-  await prisma.wallet.deleteMany({ where: { userId: id } });
-  await prisma.auditLog.deleteMany({ where: { OR: [{ userId: id }, { entityId: id }] } });
-  await prisma.favorite.deleteMany({ where: { userId: id } });
+  // Most relations (Review, Favorite, Wallet, Conversation, Store, Bundle, BlogPost,
+  // PushSubscription, Notification, UserModule, FarmerProfile, AgroServiceRequest,
+  // RefreshToken, PasswordResetToken) already cascade automatically via the Prisma
+  // schema's onDelete: Cascade. We only need to manually clear the relations that
+  // have NO onDelete action defined (Product.sellerId, Order.buyerId,
+  // Order.deliveryPartnerId, OrderItem.sellerId) — otherwise Postgres would reject
+  // the user delete with a foreign-key constraint error.
+  try {
+    await prisma.$transaction(async (tx) => {
+      // 1. Remove this user as seller from any OrderItem (their sales history on
+      //    OTHER buyers' orders) — required field, cannot be nulled, must delete.
+      await tx.orderItem.deleteMany({ where: { sellerId: id } });
 
-  await prisma.user.delete({ where: { id } });
+      // 2. Clear delivery-partner assignment on orders where this user only
+      //    delivered (not their own order) — optional field, safe to null out.
+      await tx.order.updateMany({ where: { deliveryPartnerId: id }, data: { deliveryPartnerId: null } });
 
-  await prisma.auditLog.create({
-    data: {
-      userId: authUser.sub,
-      action: "ADMIN_USER_DELETED",
-      entity: "User",
-      entityId: id,
-      metadata: { deletedEmail: target.email, deletedName: target.fullName },
-    },
-  });
+      // 3. Delete this user's own orders (as buyer) — cascades OrderItem + Payment.
+      await tx.order.deleteMany({ where: { buyerId: id } });
+
+      // 4. Delete this user's own product listings (no onDelete on sellerId).
+      await tx.product.deleteMany({ where: { sellerId: id } });
+
+      // 5. Delete the user — cascades Store, Review, Favorite, Wallet, Bundle,
+      //    BlogPost, Conversation, PushSubscription, Notification, UserModule,
+      //    FarmerProfile, AgroServiceRequest, RefreshToken, PasswordResetToken.
+      //    AuditLog.userId is onDelete:SetNull, preserving audit history.
+      await tx.user.delete({ where: { id } });
+
+      await tx.auditLog.create({
+        data: {
+          userId: authUser.sub,
+          action: "ADMIN_USER_DELETED",
+          entity: "User",
+          entityId: id,
+          metadata: { deletedEmail: target.email, deletedName: target.fullName },
+        },
+      });
+    });
+  } catch (error) {
+    console.error("DELETE /api/admin/users/[id] error:", error);
+    return Response.json({ error: "İstifadəçi silinərkən xəta baş verdi: " + (error.message || "naməlum xəta") }, { status: 500 });
+  }
 
   return Response.json({ success: true });
 }
