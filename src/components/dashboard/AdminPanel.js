@@ -230,6 +230,7 @@ function PendingProducts() {
 function UsersManager() {
   const [users,setUsers]=useState([]); const [loading,setLoading]=useState(true);
   const [search,setSearch]=useState(""); const [roleFilter,setRoleFilter]=useState("");
+  const [editUser,setEditUser]=useState(null);
   const { toast, ToastContainer } = useToast();
   useEffect(()=>{
     setLoading(true);
@@ -238,6 +239,26 @@ function UsersManager() {
   },[search,roleFilter]);
   async function updateUser(id,data){
     try{ await apiFetch(`/api/admin/users/${id}`,{method:"PATCH",body:JSON.stringify(data)}); toast("Güncəlləndi"); setUsers(p=>p.map(u=>u.id===id?{...u,...data}:u)); }catch(e){toast(e.message,"error");}
+  }
+  async function deleteUser(id){
+    if(!confirm("Bu istifadəçini və bütün məlumatlarını silmək istədiyinizə əminsiniz? Bu geri alına bilməz!"))return;
+    try{
+      await apiFetch(`/api/admin/users/${id}`,{method:"DELETE"});
+      setUsers(p=>p.filter(u=>u.id!==id));
+      toast("İstifadəçi silindi");
+    }catch(e){toast(e.message,"error");}
+  }
+  async function saveEdit(){
+    if(!editUser)return;
+    try{
+      const res = await apiFetch(`/api/admin/users/${editUser.id}`,{method:"PATCH",body:JSON.stringify({
+        fullName: editUser.fullName, email: editUser.email, phone: editUser.phone||null, username: editUser.username||null
+      })});
+      const updated = res?.user||{};
+      setUsers(p=>p.map(u=>u.id===editUser.id?{...u,...updated, fullName:editUser.fullName, email:editUser.email, phone:editUser.phone, username:editUser.username}:u));
+      toast("Profil güncəlləndi");
+      setEditUser(null);
+    }catch(e){toast(e.message,"error");}
   }
   const STATUS_COLOR = { ACTIVE:"badge-green",PENDING_VERIFICATION:"badge-yellow",SUSPENDED:"badge-yellow",BANNED:"badge-red" };
   return (
@@ -269,7 +290,7 @@ function UsersManager() {
                   <td className="table-cell">
                     <div className="flex items-center gap-2">
                       <div className="w-8 h-8 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold shrink-0">{u.fullName?.[0]}</div>
-                      <div><p className="font-medium text-sm">{u.fullName}</p><p className="caption">{u.email}</p></div>
+                      <div><p className="font-medium text-sm">{u.fullName}</p><p className="caption">{u.email}</p>{u.phone&&<p className="caption text-brand-600">{u.phone}</p>}</div>
                     </div>
                   </td>
                   <td className="table-cell">
@@ -279,16 +300,50 @@ function UsersManager() {
                   </td>
                   <td className="table-cell"><span className={`badge ${STATUS_COLOR[u.status]||"badge-gray"}`}>{u.status}</span></td>
                   <td className="table-cell">
-                    <div className="flex items-center gap-1.5 justify-end">
+                    <div className="flex items-center gap-1.5 justify-end flex-wrap">
+                      <button onClick={()=>setEditUser({...u})} className="btn-secondary btn-xs flex items-center gap-1"><Icon name="edit" size={12}/>Redaktə</button>
                       {u.status!=="BANNED"&&<button onClick={()=>updateUser(u.id,{status:"BANNED"})} className="btn-danger btn-xs">Ban</button>}
                       {u.status==="BANNED"&&<button onClick={()=>updateUser(u.id,{status:"ACTIVE"})} className="btn-secondary btn-xs">Aktivləşdir</button>}
                       {u.status==="ACTIVE"&&<button onClick={()=>updateUser(u.id,{status:"SUSPENDED"})} className="btn-secondary btn-xs">Dondurul</button>}
+                      <button onClick={()=>deleteUser(u.id)} className="btn-danger btn-xs flex items-center gap-1"><Icon name="trash" size={12}/>Sil</button>
                     </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+      {editUser && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4" onClick={()=>setEditUser(null)}>
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4" onClick={e=>e.stopPropagation()}>
+            <div className="flex items-center justify-between">
+              <h3 className="font-bold text-lg">Profil Redaktə</h3>
+              <button onClick={()=>setEditUser(null)} className="btn-icon"><Icon name="x" size={18}/></button>
+            </div>
+            <div className="space-y-3">
+              <div>
+                <label className="text-xs font-semibold text-gray-600 mb-1 block">Ad Soyad</label>
+                <input value={editUser.fullName||""} onChange={e=>setEditUser({...editUser,fullName:e.target.value})} className="input-sm w-full" placeholder="Ad Soyad"/>
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-gray-600 mb-1 block">Email</label>
+                <input value={editUser.email||""} onChange={e=>setEditUser({...editUser,email:e.target.value})} className="input-sm w-full" placeholder="email@example.com"/>
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-gray-600 mb-1 block">Telefon</label>
+                <input value={editUser.phone||""} onChange={e=>setEditUser({...editUser,phone:e.target.value})} className="input-sm w-full" placeholder="+994..."/>
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-gray-600 mb-1 block">İstifadəçi adı</label>
+                <input value={editUser.username||""} onChange={e=>setEditUser({...editUser,username:e.target.value})} className="input-sm w-full" placeholder="username"/>
+              </div>
+            </div>
+            <div className="flex gap-2 justify-end pt-2 border-t border-gray-100">
+              <button onClick={()=>setEditUser(null)} className="btn-secondary px-4 py-2 text-sm rounded-xl">İmtina</button>
+              <button onClick={saveEdit} className="btn-primary px-4 py-2 text-sm rounded-xl flex items-center gap-1"><Icon name="check" size={14}/>Yadda saxla</button>
+            </div>
+          </div>
         </div>
       )}
     </div>

@@ -134,6 +134,10 @@ export const adminUserUpdateSchema = z.object({
     .optional(),
   status: z.enum(["ACTIVE", "PENDING_VERIFICATION", "SUSPENDED", "BANNED"]).optional(),
   isBanned: z.boolean().optional(),
+  fullName: z.string().min(2, "Ad ən azı 2 simvol olmalıdır").optional(),
+  email: z.string().email("Düzgün email daxil edin").optional(),
+  phone: z.string().optional().nullable(),
+  username: z.string().min(2, "İstifadəçi adı ən azı 2 simvol olmalıdır").optional().nullable(),
 });
 
 export const categoryCreateSchema = z.object({
